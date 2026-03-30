@@ -1,9 +1,11 @@
-# .github/workflows/deploy.yml
-# (Example GitHub Actions configuration to build and deploy Vite project)
 name: Deploy to GitHub Pages
 on:
   push:
     branches: ['main']
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
   deploy:
     runs-on: ubuntu-latest
