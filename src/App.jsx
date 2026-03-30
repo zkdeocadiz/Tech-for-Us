@@ -4,7 +4,7 @@ import Results from './features/quiz/Results';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         {/* Redirect root to quiz for now — easy to change later */}
         <Route path="/" element={<Navigate to="/quiz" replace />} />

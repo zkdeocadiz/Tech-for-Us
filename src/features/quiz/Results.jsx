@@ -29,7 +29,9 @@ export default function Results() {
     ? stored.code.replace('F', stored.fSubtype)  // e.g. EPFC → EPFtC or EPFpC
     : stored.code;                                // e.g. EPGC → EPGC (unchanged)
 
-    fetch(`/results/${filename}.md`)
+    const resultsPath = `${import.meta.env.BASE_URL}results/${filename}.md`;
+
+    fetch(resultsPath)
       .then(res => {
         if (!res.ok) throw new Error(`No result file found for type ${stored.code}`);
         return res.text();
