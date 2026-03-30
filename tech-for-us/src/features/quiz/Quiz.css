@@ -1,0 +1,115 @@
+.question {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}
+
+.likert-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ─── Design tokens ────────────────────────────────────────────────────────────
+   Override these in your own stylesheet:
+   .likert-scale { --likert-size: 2.5rem; }
+──────────────────────────────────────────────────────────────────────────── */
+.likert-scale {
+  --likert-size: 2rem;
+  --likert-border-width: 2px;
+  --likert-border-color: #999999;
+  --likert-bg: transparent;
+
+  --likert-hover-border-color: #333333;
+  --likert-hover-bg: #e8e8e8;
+
+  --likert-selected-border-color: #FF83AE;
+  --likert-selected-bg: #FF83AE;
+
+  /* Focus ring — keep this high contrast, don't just match your brand colour */
+  --likert-focus-ring-color: #005fcc;
+  --likert-focus-ring-width: 3px;
+  --likert-focus-ring-offset: 3px;
+
+  --likert-gap: 0.5rem;
+  --likert-transition: 120ms ease;
+
+  display: flex;
+  align-items: center;
+  gap: var(--likert-gap);
+}
+
+/* ─── Label (the clickable wrapper) ─────────────────────────────────────────── */
+.likert-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* Sized to the circle so click area matches visual */
+  width: var(--likert-size);
+  height: var(--likert-size);
+}
+
+/* ─── Native input ────────────────────────────────────────────────────────────
+   Stretched to cover the label area so it intercepts clicks accurately.
+   Transparent so the visual shows through.
+   Kept in the DOM so screen readers and keyboard navigation work normally.
+──────────────────────────────────────────────────────────────────────────── */
+.likert-option input[type="radio"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* ─── Custom visual circle ───────────────────────────────────────────────────── */
+.likert-visual {
+  display: block;
+  width: var(--likert-size);
+  height: var(--likert-size);
+  border-radius: 50%;
+  border: var(--likert-border-width) solid var(--likert-border-color);
+  background-color: var(--likert-bg);
+  transition:
+    background-color var(--likert-transition),
+    border-color var(--likert-transition),
+    transform var(--likert-transition);
+  /* Prevent the visual from blocking clicks meant for the input */
+  pointer-events: none;
+}
+
+/* ─── Hover ───────────────────────────────────────────────────────────────────
+   :has() checks if the input inside is not yet checked, so hovering a
+   selected option doesn't change its appearance
+──────────────────────────────────────────────────────────────────────────── */
+.likert-option:hover:has(input:not(:checked)) .likert-visual {
+  border-color: var(--likert-hover-border-color);
+  background-color: var(--likert-hover-bg);
+}
+
+/* ─── Selected ────────────────────────────────────────────────────────────── */
+.likert-option input[type="radio"]:checked + .likert-visual {
+  border-color: var(--likert-selected-border-color);
+  background-color: var(--likert-selected-bg);
+}
+
+/* ─── Keyboard focus ──────────────────────────────────────────────────────────
+   :focus-visible only triggers for keyboard navigation, not mouse clicks,
+   so mouse users don't see an unsightly ring while keyboard users do.
+──────────────────────────────────────────────────────────────────────────── */
+.likert-option input[type="radio"]:focus-visible + .likert-visual {
+  outline: var(--likert-focus-ring-width) solid var(--likert-focus-ring-color);
+  outline-offset: var(--likert-focus-ring-offset);
+}
+
+.question-text {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin: 0;
+}

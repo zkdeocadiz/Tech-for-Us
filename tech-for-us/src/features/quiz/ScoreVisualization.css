@@ -1,0 +1,114 @@
+/* ─── Design tokens ─────────────────────────────────────────────────────────
+   Override these in your own stylesheet:
+   .score-visualization { --viz-bar-height: 14px; }
+──────────────────────────────────────────────────────────────────────────── */
+.score-visualization {
+  --viz-bar-height: 10px;
+  --viz-bar-radius: 5px;
+
+  /* Gradient: left-leaning color → neutral mid → right-leaning color */
+  --viz-bar-color-left: #5b8dd9;
+  --viz-bar-color-mid: #e0e0e0;
+  --viz-bar-color-right: #d95b5b;
+
+  /* The circle marker */
+  --viz-indicator-size: 20px;
+  --viz-indicator-color: #222222;
+  --viz-indicator-border: 3px solid #ffffff;
+  --viz-indicator-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+
+  /* Labels */
+  --viz-label-color: #999999;
+  --viz-label-font-size: 0.875rem;
+  --viz-label-active-color: currentColor;
+  --viz-label-active-weight: 700;
+  --viz-letter-font-size: 1rem;
+
+  /* Layout */
+  --viz-category-gap: 1.75rem;
+  --viz-subtype-indent: 1.5rem;
+  --viz-subtype-border-color: #e0e0e0;
+}
+
+/* ─── Category list ──────────────────────────────────────────────────────── */
+.viz-category-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--viz-category-gap);
+}
+
+.viz-category-name {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────────── */
+.viz-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.viz-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--viz-label-font-size);
+  color: var(--viz-label-color);
+}
+
+.viz-label--active {
+  color: var(--viz-label-active-color);
+  font-weight: var(--viz-label-active-weight);
+}
+
+.viz-label--right {
+  flex-direction: row-reverse;
+}
+
+.viz-letter {
+  font-size: var(--viz-letter-font-size);
+}
+
+/* ─── Bar ────────────────────────────────────────────────────────────────── */
+.viz-bar {
+  position: relative;
+  height: var(--viz-bar-height);
+  border-radius: var(--viz-bar-radius);
+  background: linear-gradient(
+    to right,
+    var(--viz-bar-color-left),
+    var(--viz-bar-color-mid) 40%,
+    var(--viz-bar-color-mid) 60%,
+    var(--viz-bar-color-right)
+  );
+  /* Allow indicator to visually overflow if near the edges */
+  overflow: visible;
+}
+
+/* ─── Indicator ──────────────────────────────────────────────────────────── */
+.viz-indicator {
+  position: absolute;
+  top: 50%;
+  width: var(--viz-indicator-size);
+  height: var(--viz-indicator-size);
+  background-color: var(--viz-indicator-color);
+  border: var(--viz-indicator-border);
+  border-radius: 50%;
+  box-shadow: var(--viz-indicator-shadow);
+  transform: translate(-50%, -50%);
+}
+
+/* ─── F subtype sub-bar ──────────────────────────────────────────────────── */
+.viz-subtype {
+  margin-top: 0.75rem;
+  padding-left: var(--viz-subtype-indent);
+  border-left: 2px solid var(--viz-subtype-border-color);
+}
+
+.viz-subtype-label {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8rem;
+  color: var(--viz-label-color);
+}

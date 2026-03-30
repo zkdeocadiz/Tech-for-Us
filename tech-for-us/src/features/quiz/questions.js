@@ -1,0 +1,50 @@
+export const questions = [
+  // Mental Health
+  { id: 'mh1', text: "The constant stream of new information online is more stimulating than overwhelming", category: 'mentalHealth', direction: 'E' },
+  { id: 'mh2', text: "Social media algorithms showing you content you enjoy is mostly a good thing", category: 'mentalHealth', direction: 'E' },
+  { id: 'mh3', text: "Staying informed through social media is genuinely good for people's wellbeing", category: 'mentalHealth', direction: 'E' },
+  { id: 'mh4', text: "I feel more energized than drained when I think about using social media", category: 'mentalHealth', direction: 'E' },
+  { id: 'mh5', text: "Always being reachable is more of a burden than a benefit", category: 'mentalHealth', direction: 'D' },
+  { id: 'mh6', text: "The content I see online often leaves me feeling anxious or unsettled", category: 'mentalHealth', direction: 'D' },
+  { id: 'mh7', text: "Social media is deliberately designed to be addictive in ways that aren't good for people", category: 'mentalHealth', direction: 'D' },
+  { id: 'mh8', text: "People would generally be happier if they used social media less", category: 'mentalHealth', direction: 'D' },
+
+  // Social Status
+  { id: 'ss1', text: "Social media is a genuine tool for getting ahead in life", category: 'socialStatus', direction: 'P' },
+  { id: 'ss2', text: "Not being on social media puts you at a real disadvantage socially or professionally", category: 'socialStatus', direction: 'P' },
+  { id: 'ss3', text: "Social media can be a genuine equalizer, giving anyone the chance to build influence regardless of their background", category: 'socialStatus', direction: 'P' },
+  { id: 'ss4', text: "Social media has created real opportunities for people who wouldn't have had them otherwise", category: 'socialStatus', direction: 'P' },
+  { id: 'ss5', text: "I feel like I have to be on social media whether I want to or not", category: 'socialStatus', direction: 'R' },
+  { id: 'ss6', text: "People shouldn't have to be on social media to be taken seriously professionally or socially", category: 'socialStatus', direction: 'R' },
+  { id: 'ss7', text: "Social media platforms have too much power over whether people can participate in society", category: 'socialStatus', direction: 'R' },
+  { id: 'ss8', text: "Being without social media feels like being excluded from conversations that matter", category: 'socialStatus', direction: 'R' },
+
+  // Identity
+  { id: 'id1', text: "Social media gives people the freedom to express sides of themselves they can't show in person", category: 'identity', direction: 'G' },
+  { id: 'id2', text: "People are more authentic online than they're given credit for", category: 'identity', direction: 'G' },
+  { id: 'id3', text: "People are able to find communities online where they can be truly themselves", category: 'identity', direction: 'G' },
+  { id: 'id4', text: "People can use social media to develop their understanding of their own identity better", category: 'identity', direction: 'G' },
+  { id: 'id5', text: "Digital spaces are safer places for people to test out new ways of presenting themselves in public", category: 'identity', direction: 'G' },
+  { id: 'id6', text: "I worry about how things posted online today could affect someone in the future", category: 'identity', direction: 'Ft' },
+  { id: 'id7', text: "The fear of being judged online makes people less likely to express their true opinions", category: 'identity', direction: 'Ft' },
+  { id: 'id8', text: "I am concerned about people's privacy when they are more open about their identity online", category: 'identity', direction: 'Ft' },
+  { id: 'id9', text: "Most people present an unrealistic version of themselves online", category: 'identity', direction: 'Fp' },
+  { id: 'id10', text: "Social media encourages unhealthy comparison between people", category: 'identity', direction: 'Fp' },
+
+  // Connection
+  { id: 'cn1', text: "Online relationships can be just as meaningful as in-person ones", category: 'connection', direction: 'C' },
+  { id: 'cn2', text: "Social media gives people access to community and support they wouldn't otherwise have", category: 'connection', direction: 'C' },
+  { id: 'cn3', text: "Social media has made it easier to stay close to people who don't live nearby", category: 'connection', direction: 'C' },
+  { id: 'cn4', text: "Social media has been an important outlet for people who feel misunderstood or marginalized in their offline lives", category: 'connection', direction: 'C' },
+  { id: 'cn5', text: "Despite connecting people digitally, social media makes people lonelier overall", category: 'connection', direction: 'L' },
+  { id: 'cn6', text: "Seeing other people's social lives online makes you more aware of what you're missing", category: 'connection', direction: 'L' },
+  { id: 'cn7', text: "Social media replaces real connection with something that only looks like it", category: 'connection', direction: 'L' },
+  { id: 'cn8', text: "Online interactions often feel shallow compared to in-person ones", category: 'connection', direction: 'L' },
+];
+
+export const QUESTION_COUNTS = {
+  mentalHealth: { E: 4, D: 4 },
+  socialStatus: { P: 4, R: 4 },
+  identity: { G: 5, Ft: 3, Fp: 2 },
+  connection: { C: 4, L: 4 },
+};
