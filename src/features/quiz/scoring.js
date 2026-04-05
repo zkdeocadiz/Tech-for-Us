@@ -6,8 +6,8 @@ const FP_COUNT = questions.filter(q => q.direction === 'Fp').length; // 2
 
 export function calculateResult(responses) {
   const scores = {
-    mentalHealth: { E: 0, D: 0 },
-    socialStatus: { P: 0, R: 0 },
+    mentalHealth: { E: 0, W: 0 },
+    socialStatus: { D: 0, M: 0 },
     identity: { G: 0, Ft: 0, Fp: 0 },
     connection: { C: 0, L: 0 },
   };
@@ -23,8 +23,8 @@ export function calculateResult(responses) {
     }
   });
 
-  const mh = scores.mentalHealth.E >= scores.mentalHealth.D ? 'E' : 'D';
-  const ss = scores.socialStatus.P >= scores.socialStatus.R ? 'P' : 'R';
+  const mh = scores.mentalHealth.E >= scores.mentalHealth.W ? 'E' : 'W';
+  const ss = scores.socialStatus.D >= scores.socialStatus.M ? 'D' : 'M';
   const cn = scores.connection.C >= scores.connection.L ? 'C' : 'L';
 
   // G vs total F

@@ -6,27 +6,27 @@ const CATEGORY_CONFIG = [
     id: 'mentalHealth',
     name: 'Mental Health',
     left:  { letter: 'E', label: 'Energized' },
-    right: { letter: 'D', label: 'Drained' },
+    right: { letter: 'W', label: 'Weary' },
     getAverages: (scores) => ({
       left:  scores.mentalHealth.E / QUESTION_COUNTS.mentalHealth.E,
-      right: scores.mentalHealth.D / QUESTION_COUNTS.mentalHealth.D,
+      right: scores.mentalHealth.W / QUESTION_COUNTS.mentalHealth.W,
     }),
   },
   {
     id: 'socialStatus',
     name: 'Social Status',
-    left:  { letter: 'P', label: 'Prestige' },
-    right: { letter: 'R', label: 'Required' },
+    left:  { letter: 'D', label: 'Desired' },
+    right: { letter: 'M', label: 'Mandatory' },
     getAverages: (scores) => ({
-      left:  scores.socialStatus.P / QUESTION_COUNTS.socialStatus.P,
-      right: scores.socialStatus.R / QUESTION_COUNTS.socialStatus.R,
+      left:  scores.socialStatus.D / QUESTION_COUNTS.socialStatus.D,
+      right: scores.socialStatus.M / QUESTION_COUNTS.socialStatus.M,
     }),
   },
   {
     id: 'identity',
     name: 'Identity',
     left:  { letter: 'G', label: 'Genuine' },
-    right: { letter: 'F', label: 'Fake' },
+    right: { letter: 'F', label: 'Filtered' },
     getAverages: (scores) => {
       const fTotal = scores.identity.Ft + scores.identity.Fp;
       const fCount = QUESTION_COUNTS.identity.Ft + QUESTION_COUNTS.identity.Fp;
