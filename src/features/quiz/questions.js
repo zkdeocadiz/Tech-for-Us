@@ -43,8 +43,8 @@ export const questions = [
 ];
 
 export const QUESTION_COUNTS = {
-  mentalHealth: { E: 4, D: 4 },
-  socialStatus: { P: 4, R: 4 },
+  mentalHealth: { E: 4, W: 4 },
+  socialStatus: { D: 4, M: 4 },
   identity: { G: 5, Ft: 3, Fp: 2 },
   connection: { C: 4, L: 4 },
 };
