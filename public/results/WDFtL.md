@@ -1,8 +1,8 @@
-# **DRFL — The Hostage**
+# **WDFL — The Burned Out Pursuer**
 
-*drained, required, fake, lonely*
+*weary, desired, filtered, lonely*
 
-You're on social tech because you feel you have no choice, presenting a version of yourself that isn't really you, getting nothing out of it in terms of real connection, and it's draining you. A useful first step might be getting honest with yourself about what you'd actually want — from social tech, and from connection more broadly
+You're chasing the benefits you see others getting from social tech, but it doesn't feel like you're being authentic and the lack of close connections on there is draining you. This is an unsustainable combination. Something needs to change — whether that's what you're chasing, how you're showing up, or whether you're on these platforms at all.
 
 ## What you need
 

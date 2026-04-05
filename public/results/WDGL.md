@@ -1,6 +1,6 @@
 # **DPGL — The Hamster on the Wheel**
 
-*drained, prestige, genuine, lonely*
+*weary, prestige, genuine, lonely*
 
 You're putting genuine effort into building presence and status online, and it's draining you — and yet real connection still feels out of reach. Worth stepping back and asking whether what you're chasing is actually what you want, or just what the platform makes visible to pursue.
 

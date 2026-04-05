@@ -1,8 +1,8 @@
-# **DRFC — The Method Actor**
+# **WDFC — The Exhausted Performer**
 
-*drained, required, fake, connected*
+*weary, desired, filtered, connected*
 
-You have real connections, but maintaining them costs you because you can't quite be yourself online — whether that's due to context collapse, platform norms, or something else. You've built real relationships despite that. The question is whether there are spaces, online or off, where you could drop the act.
+You're connected and have built a reputation, but the performance of it all is draining you. The version of you online isn't quite the real one, and keeping it up takes energy. Finding even one space — online or off — where you can just be yourself might go a long way.
 
 ## What you need
 

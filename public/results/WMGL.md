@@ -1,6 +1,6 @@
-# **DRGL — The Luddite**
+# **WMGL — The Luddite**
 
-*drained, required, genuine, lonely*
+*weary, mandatory, genuine, lonely*
 
 Contrary to the now-common use of the term, historically Luddites were not opposed to technology. What they were opposed to were the manufacturers that employed them not paying them a living wage, so they wrecked machines to protest for better working conditions.
 

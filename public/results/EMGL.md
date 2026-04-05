@@ -1,6 +1,6 @@
-# **ERGL — The Ghost in the Machine**
+# **EMGL — The Ghost in the Machine**
 
-*energized, required, genuine, lonely*
+*energized, mandatory, genuine, lonely*
 
 You show up as yourself and the content genuinely interests you — but real connection isn't materializing. Despite genuine engagement, something about the platforms or the way you're using them isn't translating into real relationships. It might be worth exploring whether you're looking for connection in the right places.
 
