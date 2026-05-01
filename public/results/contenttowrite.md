@@ -1,0 +1,2 @@
+- add list of social apps that is expansive (plus definition of anything that you use that connects you with others)
+- have parts of your identity been able to thrive on social media? (replacing marginalized question)
