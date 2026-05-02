@@ -14,7 +14,7 @@
   /* The circle marker */
   --viz-indicator-size: 20px;
   --viz-indicator-color: #222222;
-  --viz-indicator-border: 3px solid #ffffff;
+  --viz-indicator-border: 3px solid var(--color-white);
   --viz-indicator-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 
   /* Labels */

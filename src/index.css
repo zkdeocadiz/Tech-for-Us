@@ -1,10 +1,52 @@
+ :root {
+  --color-blue: #4300e0;
+  --color-yellow: #ffff00;
+  --color-green: #00af91;
+  --color-white: #ffffff;
+  --color-pale-pink: #ffadf2;
+  --color-hotter-pink: #ff65c9;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
 body {
-  background-color: #000000;
-  color: #ffffff;
+  margin: 0;
+  background-color: var(--color-pale-pink);
+  color: var(--color-blue);
   font-family: "Inclusive Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+}
+
+a[href]:not(.site-nav__item):not(.home-button):not(.activity-link):not(.site-logo-link):not(.site-footer__link):not([role="button"]):not([class*="button"]) {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+  text-decoration-thickness: 0.08em;
+  display: inline-block;
+  padding: 0 2px;
+  transition: background-color 120ms ease;
+}
+
+a[href]:not(.site-nav__item):not(.home-button):not(.activity-link):not(.site-logo-link):not(.site-footer__link):not([role="button"]):not([class*="button"])::after {
+  content: ' \21AA';
+}
+
+a[href]:not(.site-nav__item):not(.home-button):not(.activity-link):not(.site-logo-link):not(.site-footer__link):not([role="button"]):not([class*="button"]):hover,
+a[href]:not(.site-nav__item):not(.home-button):not(.activity-link):not(.site-logo-link):not(.site-footer__link):not([role="button"]):not([class*="button"]):focus-visible {
+  background-color: var(--color-yellow);
 }
 
 /* ─── Visually hidden utility ────────────────────────────────────────────────

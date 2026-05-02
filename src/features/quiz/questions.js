@@ -28,14 +28,14 @@ export const questions = [
   { id: 'id6', text: "I worry about how things posted online today could affect me in the future", category: 'identity', direction: 'Ft' },
   { id: 'id7', text: "The fear of being judged online makes me less likely to express my true opinions", category: 'identity', direction: 'Ft' },
   { id: 'id8', text: "I am concerned about people's privacy when they are more open about their identity online", category: 'identity', direction: 'Ft' },
-  { id: 'id9', text: "Most people present an unrealistic version of themselves online", category: 'identity', direction: 'Fp' },
-  { id: 'id10', text: "Social media encourages unhealthy comparison between people", category: 'identity', direction: 'Fp' },
+  { id: 'id9', text: "I present an unrealistic version of myself online", category: 'identity', direction: 'Fp' },
+  { id: 'id10', text: "I compare my life to others on social media", category: 'identity', direction: 'Fp' },
 
   // Connection
   { id: 'cn1', text: "Online relationships can be just as meaningful as in-person ones", category: 'connection', direction: 'C' },
   { id: 'cn2', text: "Social media gives me access to community and support I wouldn't otherwise have", category: 'connection', direction: 'C' },
   { id: 'cn3', text: "Social media has made it easier to stay close to people who don't live nearby", category: 'connection', direction: 'C' },
-  { id: 'cn4', text: "Social media has been an important outlet for people who feel misunderstood or marginalized in their offline lives", category: 'connection', direction: 'C' },
+  { id: 'cn4', text: "Social media has been an important outlet for me when I feel misunderstood or marginalized in my offline life", category: 'connection', direction: 'C' },
   { id: 'cn5', text: "Despite connecting people digitally, social media makes me lonelier overall", category: 'connection', direction: 'L' },
   { id: 'cn6', text: "Seeing other people's social lives online makes me more aware of what I'm missing", category: 'connection', direction: 'L' },
   { id: 'cn7', text: "Social media replaces real connection with something that only looks like it", category: 'connection', direction: 'L' },

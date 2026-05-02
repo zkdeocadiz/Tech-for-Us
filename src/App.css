@@ -11,8 +11,9 @@
 
 
 body {
-  background-color: #000000;
-  color: #ffffff;
+  margin: 0;
+  background-color: var(--color-pale-pink);
+  color: var(--color-blue);
   font-family: "Inclusive Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
