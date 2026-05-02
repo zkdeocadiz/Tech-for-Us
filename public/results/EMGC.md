@@ -8,6 +8,8 @@ Now, it's not the worst to have spaces pop up that help facilitate you connectin
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

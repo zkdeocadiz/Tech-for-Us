@@ -1,3 +1,6 @@
+LOL the LLM made this page when I was trying to construct a template
+
+
 # Technology Literacy Guide
 
 ## Introduction

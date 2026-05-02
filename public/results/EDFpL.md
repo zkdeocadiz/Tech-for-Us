@@ -8,6 +8,8 @@ It's worth asking yourself if the prestige that you're building is something you
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

@@ -8,6 +8,8 @@ It may be worth asking yourself what you're actually getting out of using social
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

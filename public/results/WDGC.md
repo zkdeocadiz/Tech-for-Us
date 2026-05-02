@@ -6,6 +6,8 @@ You've built something real online——genuine connections and a reputation tha
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

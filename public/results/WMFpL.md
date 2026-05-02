@@ -9,6 +9,8 @@ A useful first step might be getting honest with yourself about what you'd actua
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 Social platforms can give you so much access, but most of the big platforms are incentivized to not create tight bonds, in favor of creating parasocial relationships——audiences rather than close friends. You might want to explore platforms that do better at that.

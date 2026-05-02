@@ -11,5 +11,8 @@ You're putting genuine effort into building presence and status online, and it's
 Find your own metrics around what success looks like, because you don't feel like you're getting what you want out of these social platforms
 
 
+[[RESULT_BARS]]
+
+
 ### Inspiration
 - 

@@ -9,6 +9,8 @@ You're good at connecting with people online, regardless of whether you met them
 - blending in
 - success
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

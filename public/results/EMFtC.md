@@ -6,6 +6,8 @@ You're good at connecting with people online, regardless of whether you met them
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

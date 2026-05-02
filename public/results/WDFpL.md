@@ -6,6 +6,8 @@ You're chasing the benefits you see others getting from social tech, but you con
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

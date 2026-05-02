@@ -7,6 +7,8 @@ Contrary to the now-common use of the term, historically Luddites were not oppos
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 It’s not technology you hate, it’s the tech companies. Of course you’d love ways to contact your friends and family and keep up with their lives! What you’re looking for is something that helps you do that ***on your terms***. You can think about tools that help you be more intentional in connecting with the people you care about (like [Letterloop](https://www.letterloop.co/)), have the ability to be customized (like [Discord](https://docs.discord.com/developers/quick-start/getting-started)), or have values aligned with yours (like [Mastodon](https://mastodon.social/))

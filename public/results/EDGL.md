@@ -6,6 +6,8 @@ You're energized, authentic, and building real presence and reputation online â€
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

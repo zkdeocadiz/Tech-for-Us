@@ -8,6 +8,8 @@ Now, that might not be a bad thing. You're protecting yourself and that's admira
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 The current systems honestly work for you—you know how to leverage them in the best ways that move you towards your goals—but it might be good to carve out some space to connect with others more deeply.

@@ -110,6 +110,35 @@
   background-color: var(--color-yellow);
 }
 
+.markdown-page__resource-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.markdown-page__resource-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--color-green);
+  color: var(--color-white);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: 'Inclusive Sans', sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+}
+
+.markdown-page__resource-button:hover,
+.markdown-page__resource-button:focus-visible {
+  background-color: var(--color-blue);
+  outline: none;
+}
+
 /* Annotated text highlight */
 .markdown-page__annotated-text {
   position: relative;
@@ -186,33 +215,36 @@
   cursor: pointer;
 }
 
-.markdown-page__annotation-card:hover,
+/* .markdown-page__annotation-card:hover {
+  background-color: var(--color-yellow);
+} */
+
+.markdown-page__annotation-card:hover .markdown-page__annotation-text {
+  background-color: var(--color-yellow);
+}
+
 .markdown-page__annotation-card.focused {
   background-color: var(--color-yellow);
   color: var(--color-blue);
   border: none;
 }
 
-.markdown-page__annotation-card:hover .markdown-page__annotation-text,
 .markdown-page__annotation-card.focused .markdown-page__annotation-text {
   background-color: transparent;
   color: var(--color-blue);
 }
 
-.markdown-page__annotation-card:hover .markdown-page__annotation-preview,
 .markdown-page__annotation-card.focused .markdown-page__annotation-preview {
   display: block;
   color: var(--color-blue);
   border-left-color: var(--color-blue);
 }
 
-.markdown-page__annotation-card:hover .markdown-page__annotation-date,
 .markdown-page__annotation-card.focused .markdown-page__annotation-date {
   display: block;
   color: var(--color-blue);
 }
 
-.markdown-page__annotation-card:hover .markdown-page__annotation-actions,
 .markdown-page__annotation-card.focused .markdown-page__annotation-actions {
   display: flex;
 }
@@ -355,6 +387,11 @@
   .markdown-page__body {
     gap: 16px;
     padding: 0 24px;
+  }
+
+  .markdown-page__resource-button {
+    font-size: 0.85rem;
+    padding: 9px 12px;
   }
 
   .markdown-page__annotations {

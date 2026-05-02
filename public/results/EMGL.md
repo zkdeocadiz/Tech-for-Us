@@ -6,6 +6,8 @@ You show up as yourself and the content genuinely interests you — but real con
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

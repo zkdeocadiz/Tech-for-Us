@@ -91,12 +91,12 @@ function SpectrumBar({ left, right, leftAvg, rightAvg }) {
   );
 }
 
-export default function ScoreVisualization({ scores, fSubtype }) {
+export default function ScoreVisualization({ scores, fSubtype, showTitle = true }) {
   const fSubtypeAverages = F_SUBTYPE_CONFIG.getAverages(scores);
 
   return (
     <div className="score-visualization">
-      <h2 className="viz-title">Score Breakdown</h2>
+      {showTitle && <h2 className="viz-title">Score Breakdown</h2>}
       <div className="viz-category-list">
         {CATEGORY_CONFIG.map(cat => {
           const { left: leftAvg, right: rightAvg } = cat.getAverages(scores);

@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
+import { loadResult } from '../features/quiz/storage';
 import './chrome.css';
 
-const navItems = [
-  { label: 'Personality Quiz', to: '/quiz' },
-  { label: 'All Activities', to: '/#activities' },
-  { label: 'Your Content', to: '/#content' },
-];
-
 export default function Header() {
+  const hasResult = !!loadResult();
+  const navItems = [
+    { label: 'Personality Quiz', to: hasResult ? '/technology-types' : '/quiz' },
+    { label: 'All Activities', to: '/#activities' },
+    { label: 'Your Content', to: '/#content' },
+  ];
+
   return (
     <header className="site-header">
       <div className="site-shell site-header__inner">

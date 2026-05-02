@@ -8,6 +8,8 @@ Finding even one space——online or off——where you can just be yourself mi
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

@@ -6,6 +6,8 @@ You're on social tech because your people are there, and you show up genuinely f
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

@@ -6,6 +6,8 @@ You have real connections that you've made through social platforms, in spite of
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x

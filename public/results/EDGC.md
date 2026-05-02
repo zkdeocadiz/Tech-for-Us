@@ -8,6 +8,8 @@ The main thing worth keeping in mind is that your experience isn't universal. St
 ### Words to describe your relationship with tech
 - 
 
+[[RESULT_BARS]]
+
 ## What you need
 
 x
