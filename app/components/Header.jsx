@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import { loadResult } from '../features/quiz/storage';
 import './chrome.css';
+import { useState, useEffect } from 'react';
 
 export default function Header() {
-  const hasResult = !!loadResult();
+  const [hasResult, setHasResult] = useState(false);
+
+  useEffect(() => {
+    setHasResult(!!loadResult());
+  }, []);
+
   const techTypePath = hasResult ? '/technology-types' : '/quiz';
 
   const navItems = [

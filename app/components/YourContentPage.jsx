@@ -6,8 +6,12 @@ import { useState, useEffect } from 'react';
 import { localFileStorage } from '../features/content/localFileStorage';
  
 export default function YourContentPage() {
-  const result = loadResult();
+  const [result, setResult] = useState(null);
   const [annotatedPages, setAnnotatedPages] = useState([]);
+
+  useEffect(() => {
+    setResult(loadResult());
+  }, []);
 
   useEffect(() => {
     const pages = [];
@@ -34,6 +38,16 @@ export default function YourContentPage() {
     // Sort alphabetically for better usability
     setAnnotatedPages(pages.sort());
     setAllLocalStorageKeys(allLocalStorageKeys.sort()); // Store all keys for debugging
+    // Capture a snapshot of localStorage values on the client to avoid reading during render
+    try {
+      const map = {};
+      allLocalStorageKeys.forEach(k => {
+        try { map[k] = localStorage.getItem(k); } catch (e) { map[k] = null; }
+      });
+      setLocalStorageMap(map);
+    } catch (e) {
+      setLocalStorageMap({});
+    }
   }, []);
 
   // Helper to turn a pageId into a readable title (e.g. sample-guide -> Sample Guide)
@@ -147,6 +161,7 @@ export default function YourContentPage() {
   };
 
   const [allLocalStorageKeys, setAllLocalStorageKeys] = useState([]);
+  const [localStorageMap, setLocalStorageMap] = useState({});
 
   return (
     <div className="standard-page">
@@ -261,7 +276,7 @@ export default function YourContentPage() {
           {allLocalStorageKeys.length > 0 ? (
             <ul style={{ listStyle: 'disc', paddingLeft: '20px', fontSize: '0.9rem', color: '#555' }}>
               {allLocalStorageKeys.map(key => (
-                <li key={key}><strong>{key}</strong>: {localStorage.getItem(key)?.substring(0, 100)}...</li>
+                <li key={key}><strong>{key}</strong>: {(localStorageMap[key] || '').substring(0, 100)}...</li>
               ))}
             </ul>
           ) : (

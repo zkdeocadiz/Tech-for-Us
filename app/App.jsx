@@ -48,7 +48,12 @@ export default function MarkdownPageLoader() {
   const [loading, setLoading] = useState(true);
   const [fileMetadata, setFileMetadata] = useState({});
   const [error, setError] = useState(null);
-  const storedResult = loadResult();
+  const [storedResult, setStoredResult] = useState(null);
+
+  useEffect(() => {
+    setStoredResult(loadResult());
+  }, []);
+
   const resultPageId = storedResult
     ? (storedResult.fSubtype
       ? storedResult.code.replace('F', storedResult.fSubtype)
