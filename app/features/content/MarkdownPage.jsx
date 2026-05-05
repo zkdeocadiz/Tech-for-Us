@@ -14,6 +14,7 @@ import './MarkdownPage.css';
  * - Yellow squiggly underline for annotated text
  * - Annotation CRUD with localStorage persistence
  * - Public edit suggestions
+ * - Dynamic SEO meta tags from YAML frontmatter (og-title, og-description, og-image)
  */
 
 const Activity = ({ type, prompt, context, pageId, activityId }) => {

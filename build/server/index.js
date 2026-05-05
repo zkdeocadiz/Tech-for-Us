@@ -1563,6 +1563,7 @@ function ScoreVisualization({ scores, fSubtype, showTitle = true }) {
 * - Yellow squiggly underline for annotated text
 * - Annotation CRUD with localStorage persistence
 * - Public edit suggestions
+* - Dynamic SEO meta tags from YAML frontmatter (og-title, og-description, og-image)
 */
 var Activity = ({ type, prompt, context, pageId, activityId }) => {
 	const [textValue, setTextValue] = useState("");
@@ -3598,7 +3599,32 @@ function MarkdownPageLoader() {
 }
 //#endregion
 //#region app/routes/ContentPage.jsx
-var ContentPage_exports = /* @__PURE__ */ __exportAll({ default: () => ContentPage_default });
+var ContentPage_exports = /* @__PURE__ */ __exportAll({
+	default: () => ContentPage_default,
+	meta: () => meta
+});
+var meta = ({ data, params }) => {
+	const appData = data?.appData || {};
+	const title = appData["og-title"] || appData.title || "Tech for Us";
+	const description = appData["og-description"] || appData.description || "";
+	const image = appData["og-image"] || appData.image || "";
+	const tags = [{ title }, {
+		name: "description",
+		content: description
+	}];
+	if (description) tags.push({
+		property: "og:title",
+		content: title
+	}, {
+		property: "og:description",
+		content: description
+	});
+	if (image) tags.push({
+		property: "og:image",
+		content: image
+	});
+	return tags;
+};
 var ContentPage_default = UNSAFE_withComponentProps(function ContentPageRoute() {
 	return /* @__PURE__ */ jsx(MarkdownPageLoader, {});
 });
@@ -3880,7 +3906,7 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContentPage-DaqyjxYA.js",
+			"module": "/assets/ContentPage-BDKV1E1K.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
 				"/assets/App-BkxCM458.js",
@@ -3952,8 +3978,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-ab7fe897.js",
-	"version": "ab7fe897",
+	"url": "/assets/manifest-fab85d9a.js",
+	"version": "fab85d9a",
 	"sri": void 0
 };
 //#endregion

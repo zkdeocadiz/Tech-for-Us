@@ -1,7 +1,12 @@
 ---
-og-title: 
-og-description: 
-og-image: 
+title: "Technology Literacy Guide"
+og-title: "Technology Literacy Guide"
+og-description: "A comprehensive guide to understanding and developing your technology literacy skills."
+og-image: "/assets/previews/tech-guide.jpg"
+description: "A comprehensive guide to understanding and developing your technology literacy skills."
+tags: ["guide", "literacy", "introduction"]
+date: "2026-04-01"
+author: "Tech for Us"
 ---
 
 LOL the LLM made this page when I was trying to construct a template

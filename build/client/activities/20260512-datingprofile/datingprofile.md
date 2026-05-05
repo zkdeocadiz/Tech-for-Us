@@ -1,7 +1,12 @@
 ---
-og-title: [A clear, catchy title for the page]
-og-description: [A 1-2 sentence summary of what is on this page]
-og-image: [Path to your preview image, e.g., /assets/previews/my-image.jpg]
+title: "How to Write a Better Dating Profile"
+og-title: "How to Write a Better Dating Profile"
+og-description: "Learn how to craft an authentic dating profile that attracts compatible matches."
+og-image: "/assets/previews/dating-profile.jpg"
+description: "Learn how to craft an authentic dating profile that attracts compatible matches."
+tags: ["relationships", "communication", "reflection"]
+date: "2026-05-12"
+author: "Tech for Us"
 ---
 
 # How to Write a Better Dating Profile

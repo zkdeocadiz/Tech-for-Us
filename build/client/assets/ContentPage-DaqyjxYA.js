@@ -1,1 +1,0 @@
-import{A as e,t}from"./jsx-runtime-CyXxvS_Q.js";import{t as n}from"./App-BkxCM458.js";var r=t(),i=e(function(){return(0,r.jsx)(n,{})});export{i as default};

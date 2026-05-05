@@ -99,17 +99,13 @@ export default function MarkdownPageLoader() {
         // Parse YAML frontmatter with gray-matter
         const { data, content } = matter(text);
         let extractedMetadata = {
-          title: data.title || '',
-          description: data.description || '',
+          title: data['og-title'] || data.title || '',
+          description: data['og-description'] || data.description || '',
+          ogImage: data['og-image'] || data.image || '',
           tags: data.tags || [],
           date: data.date || null,
-          ...data,
+          ...data, // Include all frontmatter fields
         };
-
-        // Normalize hyphenated keys (og-title, og-description, og-image)
-        if (data['og-title']) extractedMetadata.title = data['og-title'];
-        if (data['og-description']) extractedMetadata.description = data['og-description'];
-        if (data['og-image']) extractedMetadata.ogImage = data['og-image'];
 
         setFileMetadata(extractedMetadata);
         setContent(content);

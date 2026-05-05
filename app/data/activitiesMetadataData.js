@@ -2,42 +2,32 @@
 export const data = [
   {
     "id": "20260512-datingprofile/datingprofile",
-    "title": "datingprofile",
-    "description": "",
-    "tags": [],
-    "date": null,
-    "author": "",
-    "og-title": [
-      "A clear",
-      "catchy title for the page"
+    "title": "How to Write a Better Dating Profile",
+    "description": "Learn how to craft an authentic dating profile that attracts compatible matches.",
+    "tags": [
+      "relationships",
+      "communication",
+      "reflection"
     ],
-    "og-description": [
-      "A 1-2 sentence summary of what is on this page"
-    ],
-    "og-image": [
-      "Path to your preview image",
-      "e.g.",
-      "/assets/previews/my-image.jpg"
-    ]
+    "date": "2026-05-12",
+    "author": "Tech for Us",
+    "og-title": "How to Write a Better Dating Profile",
+    "og-description": "Learn how to craft an authentic dating profile that attracts compatible matches.",
+    "og-image": "/assets/previews/dating-profile.jpg"
   },
   {
     "id": "20260512-valuesbaseddesign/valuesbaseddesign",
-    "title": "valuesbaseddesign",
-    "description": "",
-    "tags": [],
-    "date": null,
-    "author": "",
-    "og-title": [
-      "A clear",
-      "catchy title for the page"
+    "title": "Values-Based Design",
+    "description": "Discover how to design technology that aligns with your personal values and principles.",
+    "tags": [
+      "design",
+      "values",
+      "workshop"
     ],
-    "og-description": [
-      "A 1-2 sentence summary of what is on this page"
-    ],
-    "og-image": [
-      "Path to your preview image",
-      "e.g.",
-      "/assets/previews/my-image.jpg"
-    ]
+    "date": "2026-05-12",
+    "author": "Tech for Us",
+    "og-title": "Values-Based Design Workshop",
+    "og-description": "Discover how to design technology that aligns with your personal values and principles.",
+    "og-image": "/assets/previews/values-design.jpg"
   }
 ];
