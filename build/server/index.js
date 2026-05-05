@@ -3209,6 +3209,33 @@ var ActivitySetsPage_default = UNSAFE_withComponentProps(function ActivitySetsPa
 //#region app/components/AlternativeSocialTechPage.jsx
 var AlternativeSocialTechPage_exports = /* @__PURE__ */ __exportAll({ default: () => AlternativeSocialTechPage_default });
 var AlternativeSocialTechPage_default = UNSAFE_withComponentProps(function AlternativeSocialTechPage() {
+	const [selectedTag, setSelectedTag] = useState("All");
+	const [platforms, setPlatforms] = useState([]);
+	const [loading, setLoading] = useState(true);
+	useMemo(() => {
+		(async () => {
+			try {
+				setPlatforms((await import("./assets/alternativeSocialTechData-c21i--hz.js")).data || []);
+			} catch (err) {
+				console.error("Failed to load alternative social tech data:", err);
+			} finally {
+				setLoading(false);
+			}
+		})();
+	}, []);
+	const allTags = useMemo(() => {
+		const tags = new Set(["All"]);
+		platforms.forEach((p) => {
+			if (Array.isArray(p.tags)) p.tags.forEach((t) => tags.add(t));
+		});
+		return Array.from(tags);
+	}, [platforms]);
+	const filteredPlatforms = useMemo(() => {
+		return platforms.filter((p) => selectedTag === "All" || Array.isArray(p.tags) && p.tags.includes(selectedTag)).sort((a, b) => {
+			if (a.date && b.date) return new Date(b.date) - new Date(a.date);
+			return (a.title || "").localeCompare(b.title || "");
+		});
+	}, [platforms, selectedTag]);
 	return /* @__PURE__ */ jsxs("div", {
 		className: "standard-page",
 		children: [
@@ -3220,10 +3247,117 @@ var AlternativeSocialTechPage_default = UNSAFE_withComponentProps(function Alter
 					margin: "0 auto",
 					minHeight: "60vh"
 				},
-				children: [/* @__PURE__ */ jsx("h1", {
-					style: { color: "var(--color-blue)" },
-					children: "Alternative Social Tech Ideas"
-				}), /* @__PURE__ */ jsx("p", { children: "A searchable grid of social technology alternatives from the community." })]
+				children: [
+					/* @__PURE__ */ jsx("h1", {
+						style: { color: "var(--color-blue)" },
+						children: "Alternative Social Tech Ideas"
+					}),
+					/* @__PURE__ */ jsx("p", {
+						style: { marginBottom: "3rem" },
+						children: "A searchable collection of social technology alternatives and tools from the community."
+					}),
+					/* @__PURE__ */ jsx("div", {
+						style: {
+							display: "flex",
+							gap: "10px",
+							flexWrap: "wrap",
+							marginBottom: "3rem"
+						},
+						children: allTags.map((tag) => /* @__PURE__ */ jsx("button", {
+							onClick: () => setSelectedTag(tag),
+							style: {
+								padding: "0.5rem 1.25rem",
+								border: "2px solid var(--color-blue)",
+								backgroundColor: selectedTag === tag ? "var(--color-blue)" : "transparent",
+								color: selectedTag === tag ? "white" : "var(--color-blue)",
+								cursor: "pointer",
+								fontFamily: "Inclusive Sans",
+								fontWeight: "bold",
+								borderRadius: "4px",
+								transition: "all 120ms ease"
+							},
+							children: tag
+						}, tag))
+					}),
+					loading ? /* @__PURE__ */ jsx("p", { children: "Loading platforms..." }) : filteredPlatforms.length === 0 ? /* @__PURE__ */ jsx("p", { children: "No platforms found for this filter." }) : /* @__PURE__ */ jsx("div", {
+						style: {
+							display: "grid",
+							gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+							gap: "2rem"
+						},
+						children: filteredPlatforms.map((platform) => /* @__PURE__ */ jsx(Link$1, {
+							to: `/content/alternativesocialtech/${platform.id}`,
+							style: {
+								textDecoration: "none",
+								color: "inherit"
+							},
+							children: /* @__PURE__ */ jsxs("div", {
+								style: {
+									border: "2px solid var(--color-light-gray)",
+									borderRadius: "8px",
+									padding: "1.5rem",
+									cursor: "pointer",
+									transition: "all 200ms ease",
+									height: "100%",
+									display: "flex",
+									flexDirection: "column"
+								},
+								onMouseEnter: (e) => {
+									e.currentTarget.style.borderColor = "var(--color-blue)";
+									e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+								},
+								onMouseLeave: (e) => {
+									e.currentTarget.style.borderColor = "var(--color-light-gray)";
+									e.currentTarget.style.boxShadow = "none";
+								},
+								children: [
+									/* @__PURE__ */ jsx("h3", {
+										style: {
+											marginTop: 0,
+											color: "var(--color-blue)"
+										},
+										children: platform.title
+									}),
+									/* @__PURE__ */ jsx("p", {
+										style: {
+											flex: 1,
+											color: "#666",
+											lineHeight: "1.6"
+										},
+										children: platform.description
+									}),
+									Array.isArray(platform.tags) && platform.tags.length > 0 && /* @__PURE__ */ jsx("div", {
+										style: {
+											display: "flex",
+											gap: "0.5rem",
+											flexWrap: "wrap",
+											marginTop: "1rem"
+										},
+										children: platform.tags.map((tag) => /* @__PURE__ */ jsx("span", {
+											style: {
+												fontSize: "0.85rem",
+												backgroundColor: "var(--color-light-gray)",
+												padding: "0.25rem 0.75rem",
+												borderRadius: "12px",
+												color: "#666"
+											},
+											children: tag
+										}, tag))
+									}),
+									platform.date && /* @__PURE__ */ jsx("p", {
+										style: {
+											fontSize: "0.9rem",
+											color: "#999",
+											marginTop: "1rem",
+											marginBottom: 0
+										},
+										children: new Date(platform.date).toLocaleDateString()
+									})
+								]
+							})
+						}, platform.id))
+					})
+				]
 			}),
 			/* @__PURE__ */ jsx(Footer, {})
 		]
@@ -3478,8 +3612,8 @@ var NotFoundPage_default = UNSAFE_withComponentProps(function NotFoundPageRoute(
 //#region \0virtual:react-router/server-manifest
 var server_manifest_default = {
 	"entry": {
-		"module": "/assets/entry.client-JCooHCd7.js",
-		"imports": ["/assets/jsx-runtime-CMjxtiEt.js"],
+		"module": "/assets/entry.client-DkLG6Opo.js",
+		"imports": ["/assets/jsx-runtime-CyXxvS_Q.js"],
 		"css": []
 	},
 	"routes": {
@@ -3496,8 +3630,8 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/root-RZQL5Bg0.js",
-			"imports": ["/assets/jsx-runtime-CMjxtiEt.js"],
+			"module": "/assets/root-DGBe1jkV.js",
+			"imports": ["/assets/jsx-runtime-CyXxvS_Q.js"],
 			"css": ["/assets/root-Bdlnny9R.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -3517,11 +3651,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/HomePage-D-1plM7E.js",
+			"module": "/assets/HomePage-CAIhG7Vk.js",
 			"imports": [
-				"/assets/HomePage-B0RAx0m6.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js"
+				"/assets/HomePage-BdsGMZsH.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js"
 			],
 			"css": ["/assets/HomePage-70OR2PUC.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3542,11 +3676,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/YourContentPage-Xjh913xm.js",
+			"module": "/assets/YourContentPage-CzXW59Lc.js",
 			"imports": [
-				"/assets/YourContentPage-BUXpWd-T.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js",
+				"/assets/YourContentPage-B3d9lAM6.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js",
 				"/assets/annotationStorage-DQx2n2k4.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
@@ -3568,11 +3702,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Quiz-mUnhl38z.js",
+			"module": "/assets/Quiz-BNlc7AHv.js",
 			"imports": [
-				"/assets/Quiz-uA60DiYm.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js",
+				"/assets/Quiz-dq8pOXLQ.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js",
 				"/assets/questions-CoY3XuON.js"
 			],
 			"css": ["/assets/Quiz-BYPZ9hme.css", "/assets/Footer-B9bAK1iH.css"],
@@ -3594,11 +3728,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Results-DXpw9lZW.js",
+			"module": "/assets/Results-BxQwUV-4.js",
 			"imports": [
-				"/assets/Results-DC2rTyWk.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js",
+				"/assets/Results-DpdCyvOg.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js",
 				"/assets/annotationStorage-DQx2n2k4.js",
 				"/assets/questions-CoY3XuON.js"
 			],
@@ -3621,11 +3755,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/TechnologyTypesPage-DOazNg9O.js",
+			"module": "/assets/TechnologyTypesPage-BAFoiQVG.js",
 			"imports": [
-				"/assets/TechnologyTypesPage-BIvxKok2.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js"
+				"/assets/TechnologyTypesPage-Bd8b0Ijg.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js"
 			],
 			"css": ["/assets/TechnologyTypesPage-jeEItKQy.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3646,11 +3780,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitiesPage-C9IN4x6V.js",
+			"module": "/assets/ActivitiesPage-CK_0yERz.js",
 			"imports": [
-				"/assets/ActivitiesPage-CFA7po5c.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js"
+				"/assets/ActivitiesPage-DQOKnD0c.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3671,11 +3805,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitySetsPage-Ca9CHYcO.js",
+			"module": "/assets/ActivitySetsPage-B8LRULnw.js",
 			"imports": [
-				"/assets/ActivitySetsPage-DS8wipA5.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js"
+				"/assets/ActivitySetsPage-BgeNhFMi.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3696,11 +3830,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/AlternativeSocialTechPage-B0bab3ja.js",
+			"module": "/assets/AlternativeSocialTechPage-BVyIYjqg.js",
 			"imports": [
-				"/assets/AlternativeSocialTechPage-DOEe-Gwb.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js"
+				"/assets/AlternativeSocialTechPage-D5LawpFb.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3721,11 +3855,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContributorsPage-BkncYTPH.js",
+			"module": "/assets/ContributorsPage-kRKY5Te9.js",
 			"imports": [
-				"/assets/ContributorsPage-DN3f4z9c.js",
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-BlaCuUtF.js"
+				"/assets/ContributorsPage-B_Dj8wa6.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/Footer-C-QR4OTB.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3746,20 +3880,20 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContentPage-JAs4l1Ed.js",
+			"module": "/assets/ContentPage-DaqyjxYA.js",
 			"imports": [
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/App-D5I6i9xw.js",
-				"/assets/Quiz-uA60DiYm.js",
-				"/assets/ActivitiesPage-CFA7po5c.js",
-				"/assets/ActivitySetsPage-DS8wipA5.js",
-				"/assets/AlternativeSocialTechPage-DOEe-Gwb.js",
-				"/assets/ContributorsPage-DN3f4z9c.js",
-				"/assets/Footer-BlaCuUtF.js",
-				"/assets/YourContentPage-BUXpWd-T.js",
-				"/assets/Results-DC2rTyWk.js",
-				"/assets/HomePage-B0RAx0m6.js",
-				"/assets/TechnologyTypesPage-BIvxKok2.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/App-BkxCM458.js",
+				"/assets/Quiz-dq8pOXLQ.js",
+				"/assets/ActivitiesPage-DQOKnD0c.js",
+				"/assets/ActivitySetsPage-BgeNhFMi.js",
+				"/assets/AlternativeSocialTechPage-D5LawpFb.js",
+				"/assets/ContributorsPage-B_Dj8wa6.js",
+				"/assets/Footer-C-QR4OTB.js",
+				"/assets/YourContentPage-B3d9lAM6.js",
+				"/assets/Results-DpdCyvOg.js",
+				"/assets/HomePage-BdsGMZsH.js",
+				"/assets/TechnologyTypesPage-Bd8b0Ijg.js",
 				"/assets/questions-CoY3XuON.js",
 				"/assets/annotationStorage-DQx2n2k4.js"
 			],
@@ -3788,20 +3922,20 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/NotFoundPage-DnEsthSF.js",
+			"module": "/assets/NotFoundPage-QbQP2LWQ.js",
 			"imports": [
-				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/App-D5I6i9xw.js",
-				"/assets/Quiz-uA60DiYm.js",
-				"/assets/ActivitiesPage-CFA7po5c.js",
-				"/assets/ActivitySetsPage-DS8wipA5.js",
-				"/assets/AlternativeSocialTechPage-DOEe-Gwb.js",
-				"/assets/ContributorsPage-DN3f4z9c.js",
-				"/assets/Footer-BlaCuUtF.js",
-				"/assets/YourContentPage-BUXpWd-T.js",
-				"/assets/Results-DC2rTyWk.js",
-				"/assets/HomePage-B0RAx0m6.js",
-				"/assets/TechnologyTypesPage-BIvxKok2.js",
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/App-BkxCM458.js",
+				"/assets/Quiz-dq8pOXLQ.js",
+				"/assets/ActivitiesPage-DQOKnD0c.js",
+				"/assets/ActivitySetsPage-BgeNhFMi.js",
+				"/assets/AlternativeSocialTechPage-D5LawpFb.js",
+				"/assets/ContributorsPage-B_Dj8wa6.js",
+				"/assets/Footer-C-QR4OTB.js",
+				"/assets/YourContentPage-B3d9lAM6.js",
+				"/assets/Results-DpdCyvOg.js",
+				"/assets/HomePage-BdsGMZsH.js",
+				"/assets/TechnologyTypesPage-Bd8b0Ijg.js",
 				"/assets/questions-CoY3XuON.js",
 				"/assets/annotationStorage-DQx2n2k4.js"
 			],
@@ -3818,8 +3952,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-b3f923aa.js",
-	"version": "b3f923aa",
+	"url": "/assets/manifest-ab7fe897.js",
+	"version": "ab7fe897",
 	"sri": void 0
 };
 //#endregion
@@ -3851,32 +3985,35 @@ var prerender = [
 	"/content/Categories",
 	"/content/Manifesto",
 	"/content/Privacy",
+	"/content/activities/20260512-datingprofile/datingprofile",
+	"/content/activities/20260512-valuesbaseddesign/valuesbaseddesign",
+	"/content/alternativesocialtech/Platforms",
 	"/content/contenttowrite",
-	"/content/sample-guide",
-	"/content/EDFpC",
-	"/content/EDFpL",
-	"/content/EDFtC",
-	"/content/EDFtL",
-	"/content/EDGC",
-	"/content/EDGL",
-	"/content/EMFpC",
-	"/content/EMFpL",
-	"/content/EMFtC",
-	"/content/EMFtL",
-	"/content/EMGC",
-	"/content/EMGL",
-	"/content/WDFpC",
-	"/content/WDFpL",
-	"/content/WDFtC",
-	"/content/WDFtL",
-	"/content/WDGC",
-	"/content/WDGL",
-	"/content/WMFpC",
-	"/content/WMFpL",
-	"/content/WMFtC",
-	"/content/WMFtL",
-	"/content/WMGC",
-	"/content/WMGL"
+	"/content/results/EDFpC",
+	"/content/results/EDFpL",
+	"/content/results/EDFtC",
+	"/content/results/EDFtL",
+	"/content/results/EDGC",
+	"/content/results/EDGL",
+	"/content/results/EMFpC",
+	"/content/results/EMFpL",
+	"/content/results/EMFtC",
+	"/content/results/EMFtL",
+	"/content/results/EMGC",
+	"/content/results/EMGL",
+	"/content/results/WDFpC",
+	"/content/results/WDFpL",
+	"/content/results/WDFtC",
+	"/content/results/WDFtL",
+	"/content/results/WDGC",
+	"/content/results/WDGL",
+	"/content/results/WMFpC",
+	"/content/results/WMFpL",
+	"/content/results/WMFtC",
+	"/content/results/WMFtL",
+	"/content/results/WMGC",
+	"/content/results/WMGL",
+	"/content/sample-guide"
 ];
 var routeDiscovery = {
 	"mode": "lazy",

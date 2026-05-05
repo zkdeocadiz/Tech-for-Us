@@ -1,0 +1,1 @@
+import{t as e}from"./AlternativeSocialTechPage-D5LawpFb.js";export{e as default};

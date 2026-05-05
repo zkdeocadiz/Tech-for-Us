@@ -1,0 +1,1 @@
+var e=[{id:`Platforms`,title:`Platforms`,description:``,tags:[],date:null,author:``,"og-title":null,"og-description":null,"og-image":null}];export{e as data};

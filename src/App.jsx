@@ -9,6 +9,7 @@ import { loadResult } from './features/quiz/storage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { useState, useEffect } from 'react';
+import matter from 'gray-matter';
 import YourContentPage from './components/YourContentPage';
 import ActivitiesPage from './components/ActivitiesPage';
 import { activities } from './components/activitiesData';
@@ -94,35 +95,24 @@ export default function MarkdownPageLoader() {
         }
 
         console.log('Loaded markdown content:', text.substring(0, 100));
-        setContent(text);
-        // Parse Frontmatter (YAML-like block between --- lines)
-        const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/;
-        const match = text.match(frontmatterRegex);
-        let cleanText = text;
-        let extractedMetadata = {};
+        
+        // Parse YAML frontmatter with gray-matter
+        const { data, content } = matter(text);
+        let extractedMetadata = {
+          title: data.title || '',
+          description: data.description || '',
+          tags: data.tags || [],
+          date: data.date || null,
+          ...data,
+        };
 
-        if (match) {
-          cleanText = text.replace(match[0], '').trim();
-          const yamlLines = match[1].split('\n');
-          yamlLines.forEach(line => {
-            const separatorIndex = line.indexOf(':');
-            if (separatorIndex !== -1) {
-              const key = line.substring(0, separatorIndex).trim();
-              const value = line.substring(separatorIndex + 1).trim();
-              if (key && value) {
-                extractedMetadata[key] = value;
-              }
-            }
-          });
-        }
-
-        // Normalize requested hyphenated keys to internal metadata properties
-        if (extractedMetadata['og-title']) extractedMetadata.title = extractedMetadata['og-title'];
-        if (extractedMetadata['og-description']) extractedMetadata.description = extractedMetadata['og-description'];
-        if (extractedMetadata['og-image']) extractedMetadata.ogImage = extractedMetadata['og-image'];
+        // Normalize hyphenated keys (og-title, og-description, og-image)
+        if (data['og-title']) extractedMetadata.title = data['og-title'];
+        if (data['og-description']) extractedMetadata.description = data['og-description'];
+        if (data['og-image']) extractedMetadata.ogImage = data['og-image'];
 
         setFileMetadata(extractedMetadata);
-        setContent(cleanText);
+        setContent(content);
       } catch (err) {
         console.error('Markdown load error:', err);
         setError(err.message);

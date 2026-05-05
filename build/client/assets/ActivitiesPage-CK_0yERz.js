@@ -1,0 +1,1 @@
+import{t as e}from"./ActivitiesPage-DQOKnD0c.js";export{e as default};

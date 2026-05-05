@@ -1,0 +1,1 @@
+import{t as e}from"./TechnologyTypesPage-Bd8b0Ijg.js";export{e as default};

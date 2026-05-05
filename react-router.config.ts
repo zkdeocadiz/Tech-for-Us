@@ -20,20 +20,23 @@ export default {
     const contentRoutes: string[] = [];
     const publicDir = path.resolve(process.cwd(), "public");
     
-    // Scan folders for markdown files to generate valid static routes
-    const contentDirs = [".", "results", "activities"];
-
-    contentDirs.forEach(dir => {
+    // Recursively scan all directories for markdown files to generate valid static routes
+    const scanDir = (dir: string) => {
       const fullPath = path.join(publicDir, dir);
       if (fs.existsSync(fullPath)) {
-        const files = fs.readdirSync(fullPath);
-        files.forEach(file => {
-          if (file.endsWith(".md")) {
-            contentRoutes.push(`/content/${path.parse(file).name}`);
+        const entries = fs.readdirSync(fullPath, { withFileTypes: true });
+        entries.forEach(entry => {
+          if (entry.isDirectory()) {
+            scanDir(path.join(dir, entry.name));
+          } else if (entry.name.endsWith(".md")) {
+            const routePath = path.join(dir, path.parse(entry.name).name).replace(/\\/g, "/");
+            contentRoutes.push(`/content${routePath === "." ? "" : "/" + routePath}`);
           }
         });
       }
-    });
+    };
+
+    scanDir(".");
 
     return Array.from(new Set([...baseRoutes, ...contentRoutes]));
   },

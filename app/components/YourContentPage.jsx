@@ -4,6 +4,7 @@ import { loadResult } from '../features/quiz/storage';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { localFileStorage } from '../features/content/localFileStorage';
+import { annotationStorage } from '../features/content/annotationStorage';
  
 export default function YourContentPage() {
   const [result, setResult] = useState(null);
@@ -14,29 +15,24 @@ export default function YourContentPage() {
   }, []);
 
   useEffect(() => {
-    const pages = [];
+    const pages = new Set(annotationStorage.getAnnotatedPages());
     // Iterate through localStorage to find pages with user-generated content
     // Also collect all localStorage keys for debugging purposes
     const allLocalStorageKeys = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       allLocalStorageKeys.push(key);
-      // Check for annotations (keyed as annotations-{pageId})
-      if (key.startsWith('annotations-')) {
-        const pageId = key.replace('annotations-', '');
-        if (!pages.includes(pageId)) pages.push(pageId);
-      }
       // Check for activity responses (keyed as activity-{pageId}-{index})
       if (key.startsWith('activity-')) {
         // Extracts pageId from activity-{pageId}-{index}
         // This assumes pageId does not contain hyphens itself, or that the last hyphen is always before the index
         const lastHyphenIndex = key.lastIndexOf('-');
         const pageId = key.substring('activity-'.length, lastHyphenIndex);
-        if (pageId && !pages.includes(pageId)) pages.push(pageId);
+        if (pageId) pages.add(pageId);
       }
     }
     // Sort alphabetically for better usability
-    setAnnotatedPages(pages.sort());
+    setAnnotatedPages(Array.from(pages).sort());
     setAllLocalStorageKeys(allLocalStorageKeys.sort()); // Store all keys for debugging
     // Capture a snapshot of localStorage values on the client to avoid reading during render
     try {
