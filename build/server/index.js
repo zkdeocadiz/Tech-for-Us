@@ -124,20 +124,10 @@ var hasResult = () => canUseStorage() && localStorage.getItem(STORAGE_KEY$1) !==
 //#endregion
 //#region app/components/Header.jsx
 function Header() {
-	const navItems = [
-		{
-			label: "Your Content",
-			to: "/your-content"
-		},
-		{
-			label: "Activities",
-			to: "/activities"
-		},
-		{
-			label: "Your Technology Type",
-			to: !!loadResult() ? "/technology-types" : "/quiz"
-		}
-	];
+	const [hasResult, setHasResult] = useState(false);
+	useEffect(() => {
+		setHasResult(!!loadResult());
+	}, []);
 	return /* @__PURE__ */ jsx("header", {
 		className: "site-header",
 		children: /* @__PURE__ */ jsxs("div", {
@@ -154,7 +144,20 @@ function Header() {
 			}), /* @__PURE__ */ jsx("nav", {
 				className: "site-nav",
 				"aria-label": "Primary",
-				children: navItems.map((item) => /* @__PURE__ */ jsx(Link$1, {
+				children: [
+					{
+						label: "Your Content",
+						to: "/your-content"
+					},
+					{
+						label: "Activities",
+						to: "/activities"
+					},
+					{
+						label: "Your Technology Type",
+						to: hasResult ? "/technology-types" : "/quiz"
+					}
+				].map((item) => /* @__PURE__ */ jsx(Link$1, {
 					className: "site-nav__item",
 					to: item.to,
 					children: item.label
@@ -483,29 +486,168 @@ var localFileStorage = {
 	}
 };
 //#endregion
+//#region app/features/content/annotationStorage.js
+/**
+* Annotation storage utility for localStorage persistence
+* Structure: { [pageId]: [annotations], annotatedPages: [...] }
+*/
+var STORAGE_KEY = "tech-for-us-annotations";
+var annotationStorage = {
+	/**
+	* Get all annotations for a specific page
+	* @param {string} pageId - Unique identifier for the page/file
+	* @returns {Array} Array of annotation objects
+	*/
+	getPageAnnotations(pageId) {
+		return this.getAllData()[pageId] || [];
+	},
+	/**
+	* Save an annotation for a page
+	* @param {string} pageId - Unique identifier for the page
+	* @param {object} annotation - Annotation object with id, text, selectedText, timestamp, etc.
+	*/
+	saveAnnotation(pageId, annotation) {
+		const data = this.getAllData();
+		if (!data[pageId]) data[pageId] = [];
+		data[pageId].push(annotation);
+		if (!data.annotatedPages) data.annotatedPages = [];
+		if (!data.annotatedPages.includes(pageId)) data.annotatedPages.push(pageId);
+		this.saveData(data);
+	},
+	/**
+	* Update an existing annotation
+	* @param {string} pageId - Page identifier
+	* @param {string} annotationId - ID of annotation to update
+	* @param {object} updates - Fields to update
+	*/
+	updateAnnotation(pageId, annotationId, updates) {
+		const data = this.getAllData();
+		if (data[pageId]) {
+			const index = data[pageId].findIndex((a) => a.id === annotationId);
+			if (index !== -1) {
+				data[pageId][index] = {
+					...data[pageId][index],
+					...updates
+				};
+				this.saveData(data);
+			}
+		}
+	},
+	/**
+	* Delete an annotation
+	* @param {string} pageId - Page identifier
+	* @param {string} annotationId - ID of annotation to delete
+	*/
+	deleteAnnotation(pageId, annotationId) {
+		const data = this.getAllData();
+		if (data[pageId]) {
+			data[pageId] = data[pageId].filter((a) => a.id !== annotationId);
+			if (data[pageId].length === 0) {
+				delete data[pageId];
+				data.annotatedPages = data.annotatedPages.filter((id) => id !== pageId);
+			}
+			this.saveData(data);
+		}
+	},
+	/**
+	* Get list of all pages with annotations
+	* @returns {Array} Array of page IDs
+	*/
+	getAnnotatedPages() {
+		return this.getAllData().annotatedPages || [];
+	},
+	/**
+	* Get all data
+	* @returns {object} All stored data
+	*/
+	getAllData() {
+		try {
+			const stored = localStorage.getItem(STORAGE_KEY);
+			return stored ? JSON.parse(stored) : { annotatedPages: [] };
+		} catch (e) {
+			console.error("Failed to read annotations from localStorage:", e);
+			return { annotatedPages: [] };
+		}
+	},
+	/**
+	* Save data to localStorage
+	* @param {object} data - Data to save
+	*/
+	saveData(data) {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+		} catch (e) {
+			console.error("Failed to save annotations to localStorage:", e);
+		}
+	},
+	/**
+	* Export all annotations as JSON
+	* @returns {string} JSON string of all data
+	*/
+	exportAsJSON() {
+		return JSON.stringify(this.getAllData(), null, 2);
+	},
+	/**
+	* Import annotations from JSON
+	* @param {string} jsonString - JSON string to import
+	* @returns {boolean} Success status
+	*/
+	importFromJSON(jsonString) {
+		try {
+			const data = JSON.parse(jsonString);
+			if (typeof data === "object" && data !== null) {
+				this.saveData(data);
+				return true;
+			}
+			return false;
+		} catch (e) {
+			console.error("Failed to import annotations:", e);
+			return false;
+		}
+	},
+	/**
+	* Clear all annotations
+	*/
+	clearAll() {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify({ annotatedPages: [] }));
+	}
+};
+//#endregion
 //#region app/components/YourContentPage.jsx
 var YourContentPage_exports = /* @__PURE__ */ __exportAll({ default: () => YourContentPage_default });
 var YourContentPage_default = UNSAFE_withComponentProps(function YourContentPage() {
-	const result = loadResult();
+	const [result, setResult] = useState(null);
 	const [annotatedPages, setAnnotatedPages] = useState([]);
 	useEffect(() => {
-		const pages = [];
+		setResult(loadResult());
+	}, []);
+	useEffect(() => {
+		const pages = new Set(annotationStorage.getAnnotatedPages());
 		const allLocalStorageKeys = [];
 		for (let i = 0; i < localStorage.length; i++) {
 			const key = localStorage.key(i);
 			allLocalStorageKeys.push(key);
-			if (key.startsWith("annotations-")) {
-				const pageId = key.replace("annotations-", "");
-				if (!pages.includes(pageId)) pages.push(pageId);
-			}
 			if (key.startsWith("activity-")) {
 				const lastHyphenIndex = key.lastIndexOf("-");
 				const pageId = key.substring(9, lastHyphenIndex);
-				if (pageId && !pages.includes(pageId)) pages.push(pageId);
+				if (pageId) pages.add(pageId);
 			}
 		}
-		setAnnotatedPages(pages.sort());
+		setAnnotatedPages(Array.from(pages).sort());
 		setAllLocalStorageKeys(allLocalStorageKeys.sort());
+		try {
+			const map = {};
+			allLocalStorageKeys.forEach((k) => {
+				try {
+					map[k] = localStorage.getItem(k);
+				} catch (e) {
+					map[k] = null;
+				}
+			});
+			setLocalStorageMap(map);
+		} catch (e) {
+			setLocalStorageMap({});
+		}
 	}, []);
 	const formatTitle = (id) => {
 		return id.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
@@ -576,6 +718,7 @@ var YourContentPage_default = UNSAFE_withComponentProps(function YourContentPage
 		}
 	};
 	const [allLocalStorageKeys, setAllLocalStorageKeys] = useState([]);
+	const [localStorageMap, setLocalStorageMap] = useState({});
 	return /* @__PURE__ */ jsxs("div", {
 		className: "standard-page",
 		children: [
@@ -772,7 +915,7 @@ var YourContentPage_default = UNSAFE_withComponentProps(function YourContentPage
 							children: allLocalStorageKeys.map((key) => /* @__PURE__ */ jsxs("li", { children: [
 								/* @__PURE__ */ jsx("strong", { children: key }),
 								": ",
-								localStorage.getItem(key)?.substring(0, 100),
+								(localStorageMap[key] || "").substring(0, 100),
 								"..."
 							] }, key))
 						}) : /* @__PURE__ */ jsx("p", {
@@ -1411,133 +1554,6 @@ function ScoreVisualization({ scores, fSubtype, showTitle = true }) {
 	});
 }
 //#endregion
-//#region app/features/content/annotationStorage.js
-/**
-* Annotation storage utility for localStorage persistence
-* Structure: { [pageId]: [annotations], annotatedPages: [...] }
-*/
-var STORAGE_KEY = "tech-for-us-annotations";
-var annotationStorage = {
-	/**
-	* Get all annotations for a specific page
-	* @param {string} pageId - Unique identifier for the page/file
-	* @returns {Array} Array of annotation objects
-	*/
-	getPageAnnotations(pageId) {
-		return this.getAllData()[pageId] || [];
-	},
-	/**
-	* Save an annotation for a page
-	* @param {string} pageId - Unique identifier for the page
-	* @param {object} annotation - Annotation object with id, text, selectedText, timestamp, etc.
-	*/
-	saveAnnotation(pageId, annotation) {
-		const data = this.getAllData();
-		if (!data[pageId]) data[pageId] = [];
-		data[pageId].push(annotation);
-		if (!data.annotatedPages) data.annotatedPages = [];
-		if (!data.annotatedPages.includes(pageId)) data.annotatedPages.push(pageId);
-		this.saveData(data);
-	},
-	/**
-	* Update an existing annotation
-	* @param {string} pageId - Page identifier
-	* @param {string} annotationId - ID of annotation to update
-	* @param {object} updates - Fields to update
-	*/
-	updateAnnotation(pageId, annotationId, updates) {
-		const data = this.getAllData();
-		if (data[pageId]) {
-			const index = data[pageId].findIndex((a) => a.id === annotationId);
-			if (index !== -1) {
-				data[pageId][index] = {
-					...data[pageId][index],
-					...updates
-				};
-				this.saveData(data);
-			}
-		}
-	},
-	/**
-	* Delete an annotation
-	* @param {string} pageId - Page identifier
-	* @param {string} annotationId - ID of annotation to delete
-	*/
-	deleteAnnotation(pageId, annotationId) {
-		const data = this.getAllData();
-		if (data[pageId]) {
-			data[pageId] = data[pageId].filter((a) => a.id !== annotationId);
-			if (data[pageId].length === 0) {
-				delete data[pageId];
-				data.annotatedPages = data.annotatedPages.filter((id) => id !== pageId);
-			}
-			this.saveData(data);
-		}
-	},
-	/**
-	* Get list of all pages with annotations
-	* @returns {Array} Array of page IDs
-	*/
-	getAnnotatedPages() {
-		return this.getAllData().annotatedPages || [];
-	},
-	/**
-	* Get all data
-	* @returns {object} All stored data
-	*/
-	getAllData() {
-		try {
-			const stored = localStorage.getItem(STORAGE_KEY);
-			return stored ? JSON.parse(stored) : { annotatedPages: [] };
-		} catch (e) {
-			console.error("Failed to read annotations from localStorage:", e);
-			return { annotatedPages: [] };
-		}
-	},
-	/**
-	* Save data to localStorage
-	* @param {object} data - Data to save
-	*/
-	saveData(data) {
-		try {
-			localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-		} catch (e) {
-			console.error("Failed to save annotations to localStorage:", e);
-		}
-	},
-	/**
-	* Export all annotations as JSON
-	* @returns {string} JSON string of all data
-	*/
-	exportAsJSON() {
-		return JSON.stringify(this.getAllData(), null, 2);
-	},
-	/**
-	* Import annotations from JSON
-	* @param {string} jsonString - JSON string to import
-	* @returns {boolean} Success status
-	*/
-	importFromJSON(jsonString) {
-		try {
-			const data = JSON.parse(jsonString);
-			if (typeof data === "object" && data !== null) {
-				this.saveData(data);
-				return true;
-			}
-			return false;
-		} catch (e) {
-			console.error("Failed to import annotations:", e);
-			return false;
-		}
-	},
-	/**
-	* Clear all annotations
-	*/
-	clearAll() {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify({ annotatedPages: [] }));
-	}
-};
-//#endregion
 //#region app/features/content/MarkdownPage.jsx
 /**
 * MarkdownPage - Template for rendering markdown content with annotations
@@ -1682,7 +1698,7 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 	const annotationsRef = useRef(null);
 	const annotationsListRef = useRef(null);
 	const [annotationInputTop, setAnnotationInputTop] = useState(null);
-	const [isMobile, setIsMobile] = useState(window.innerWidth < 850);
+	const [isMobile, setIsMobile] = useState(false);
 	const [mobileModalPos, setMobileModalPos] = useState({
 		top: 0,
 		position: "above"
@@ -1758,6 +1774,7 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 		setAnnotations(annotationStorage.getPageAnnotations(pageId).sort((a, b) => (a.textPosition || 0) - (b.textPosition || 0)));
 	}, [pageId]);
 	useEffect(() => {
+		setIsMobile(window.innerWidth < 850);
 		const handleResize = () => setIsMobile(window.innerWidth < 850);
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
@@ -3292,7 +3309,10 @@ function MarkdownPageLoader() {
 	const [loading, setLoading] = useState(true);
 	const [fileMetadata, setFileMetadata] = useState({});
 	const [error, setError] = useState(null);
-	const storedResult = loadResult();
+	const [storedResult, setStoredResult] = useState(null);
+	useEffect(() => {
+		setStoredResult(loadResult());
+	}, []);
 	const resultPageId = storedResult ? storedResult.fSubtype ? storedResult.code.replace("F", storedResult.fSubtype) : storedResult.code : null;
 	useEffect(() => {
 		const loadMarkdown = async () => {
@@ -3497,11 +3517,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/HomePage-BSyvdnki.js",
+			"module": "/assets/HomePage-D-1plM7E.js",
 			"imports": [
-				"/assets/HomePage-BIJQ66th.js",
+				"/assets/HomePage-B0RAx0m6.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js"
+				"/assets/Footer-BlaCuUtF.js"
 			],
 			"css": ["/assets/HomePage-70OR2PUC.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3522,12 +3542,12 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/YourContentPage-DZIG_Yq4.js",
+			"module": "/assets/YourContentPage-Xjh913xm.js",
 			"imports": [
-				"/assets/YourContentPage-Do2MsFLf.js",
+				"/assets/YourContentPage-BUXpWd-T.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js",
-				"/assets/localFileStorage-BSWCVmaW.js"
+				"/assets/Footer-BlaCuUtF.js",
+				"/assets/annotationStorage-DQx2n2k4.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3548,11 +3568,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Quiz-GIKWxcs1.js",
+			"module": "/assets/Quiz-mUnhl38z.js",
 			"imports": [
-				"/assets/Quiz-B1rw-96v.js",
+				"/assets/Quiz-uA60DiYm.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js",
+				"/assets/Footer-BlaCuUtF.js",
 				"/assets/questions-CoY3XuON.js"
 			],
 			"css": ["/assets/Quiz-BYPZ9hme.css", "/assets/Footer-B9bAK1iH.css"],
@@ -3574,12 +3594,12 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Results-B8fNwehN.js",
+			"module": "/assets/Results-DXpw9lZW.js",
 			"imports": [
-				"/assets/Results-CbWE80wv.js",
+				"/assets/Results-DC2rTyWk.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js",
-				"/assets/localFileStorage-BSWCVmaW.js",
+				"/assets/Footer-BlaCuUtF.js",
+				"/assets/annotationStorage-DQx2n2k4.js",
 				"/assets/questions-CoY3XuON.js"
 			],
 			"css": ["/assets/Results-6BxPi0UY.css", "/assets/Footer-B9bAK1iH.css"],
@@ -3601,11 +3621,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/TechnologyTypesPage-D6NAELZx.js",
+			"module": "/assets/TechnologyTypesPage-DOazNg9O.js",
 			"imports": [
-				"/assets/TechnologyTypesPage-7ZGFRdv2.js",
+				"/assets/TechnologyTypesPage-BIvxKok2.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js"
+				"/assets/Footer-BlaCuUtF.js"
 			],
 			"css": ["/assets/TechnologyTypesPage-jeEItKQy.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3626,11 +3646,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitiesPage-BXrJ0Xim.js",
+			"module": "/assets/ActivitiesPage-C9IN4x6V.js",
 			"imports": [
-				"/assets/ActivitiesPage-CqLQwZf3.js",
+				"/assets/ActivitiesPage-CFA7po5c.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js"
+				"/assets/Footer-BlaCuUtF.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3651,11 +3671,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitySetsPage-Dd8q4X_j.js",
+			"module": "/assets/ActivitySetsPage-Ca9CHYcO.js",
 			"imports": [
-				"/assets/ActivitySetsPage-B957vYAL.js",
+				"/assets/ActivitySetsPage-DS8wipA5.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js"
+				"/assets/Footer-BlaCuUtF.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3676,11 +3696,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/AlternativeSocialTechPage-Bs5hvKOm.js",
+			"module": "/assets/AlternativeSocialTechPage-B0bab3ja.js",
 			"imports": [
-				"/assets/AlternativeSocialTechPage-4ksVjYUz.js",
+				"/assets/AlternativeSocialTechPage-DOEe-Gwb.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js"
+				"/assets/Footer-BlaCuUtF.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3701,11 +3721,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContributorsPage-DSmirTEp.js",
+			"module": "/assets/ContributorsPage-BkncYTPH.js",
 			"imports": [
-				"/assets/ContributorsPage-ZLluzV_0.js",
+				"/assets/ContributorsPage-DN3f4z9c.js",
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/Footer-ClLh1YQU.js"
+				"/assets/Footer-BlaCuUtF.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3726,22 +3746,22 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContentPage-Dlw2G2FH.js",
+			"module": "/assets/ContentPage-JAs4l1Ed.js",
 			"imports": [
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/App-CLM7FjuE.js",
-				"/assets/Quiz-B1rw-96v.js",
-				"/assets/ActivitiesPage-CqLQwZf3.js",
-				"/assets/ActivitySetsPage-B957vYAL.js",
-				"/assets/AlternativeSocialTechPage-4ksVjYUz.js",
-				"/assets/ContributorsPage-ZLluzV_0.js",
-				"/assets/Footer-ClLh1YQU.js",
-				"/assets/YourContentPage-Do2MsFLf.js",
-				"/assets/Results-CbWE80wv.js",
-				"/assets/HomePage-BIJQ66th.js",
-				"/assets/TechnologyTypesPage-7ZGFRdv2.js",
+				"/assets/App-D5I6i9xw.js",
+				"/assets/Quiz-uA60DiYm.js",
+				"/assets/ActivitiesPage-CFA7po5c.js",
+				"/assets/ActivitySetsPage-DS8wipA5.js",
+				"/assets/AlternativeSocialTechPage-DOEe-Gwb.js",
+				"/assets/ContributorsPage-DN3f4z9c.js",
+				"/assets/Footer-BlaCuUtF.js",
+				"/assets/YourContentPage-BUXpWd-T.js",
+				"/assets/Results-DC2rTyWk.js",
+				"/assets/HomePage-B0RAx0m6.js",
+				"/assets/TechnologyTypesPage-BIvxKok2.js",
 				"/assets/questions-CoY3XuON.js",
-				"/assets/localFileStorage-BSWCVmaW.js"
+				"/assets/annotationStorage-DQx2n2k4.js"
 			],
 			"css": [
 				"/assets/Quiz-BYPZ9hme.css",
@@ -3768,22 +3788,22 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/NotFoundPage-CB5dCDwX.js",
+			"module": "/assets/NotFoundPage-DnEsthSF.js",
 			"imports": [
 				"/assets/jsx-runtime-CMjxtiEt.js",
-				"/assets/App-CLM7FjuE.js",
-				"/assets/Quiz-B1rw-96v.js",
-				"/assets/ActivitiesPage-CqLQwZf3.js",
-				"/assets/ActivitySetsPage-B957vYAL.js",
-				"/assets/AlternativeSocialTechPage-4ksVjYUz.js",
-				"/assets/ContributorsPage-ZLluzV_0.js",
-				"/assets/Footer-ClLh1YQU.js",
-				"/assets/YourContentPage-Do2MsFLf.js",
-				"/assets/Results-CbWE80wv.js",
-				"/assets/HomePage-BIJQ66th.js",
-				"/assets/TechnologyTypesPage-7ZGFRdv2.js",
+				"/assets/App-D5I6i9xw.js",
+				"/assets/Quiz-uA60DiYm.js",
+				"/assets/ActivitiesPage-CFA7po5c.js",
+				"/assets/ActivitySetsPage-DS8wipA5.js",
+				"/assets/AlternativeSocialTechPage-DOEe-Gwb.js",
+				"/assets/ContributorsPage-DN3f4z9c.js",
+				"/assets/Footer-BlaCuUtF.js",
+				"/assets/YourContentPage-BUXpWd-T.js",
+				"/assets/Results-DC2rTyWk.js",
+				"/assets/HomePage-B0RAx0m6.js",
+				"/assets/TechnologyTypesPage-BIvxKok2.js",
 				"/assets/questions-CoY3XuON.js",
-				"/assets/localFileStorage-BSWCVmaW.js"
+				"/assets/annotationStorage-DQx2n2k4.js"
 			],
 			"css": [
 				"/assets/Quiz-BYPZ9hme.css",
@@ -3798,8 +3818,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-3c85eee2.js",
-	"version": "3c85eee2",
+	"url": "/assets/manifest-b3f923aa.js",
+	"version": "b3f923aa",
 	"sri": void 0
 };
 //#endregion
@@ -3829,6 +3849,8 @@ var prerender = [
 	"/alternative-social-tech",
 	"/contributors",
 	"/content/Categories",
+	"/content/Manifesto",
+	"/content/Privacy",
 	"/content/contenttowrite",
 	"/content/sample-guide",
 	"/content/EDFpC",

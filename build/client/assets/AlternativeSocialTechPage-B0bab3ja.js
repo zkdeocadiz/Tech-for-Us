@@ -1,0 +1,1 @@
+import{t as e}from"./AlternativeSocialTechPage-DOEe-Gwb.js";export{e as default};

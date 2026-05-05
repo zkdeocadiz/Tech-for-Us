@@ -1,9 +1,9 @@
 ---
-title: Privacy (deployed placeholder)
+title: Privacy
 ---
 
 # Privacy
 
-This deployed placeholder exists so `/content/Privacy` can be loaded on static hosts.
+This is a placeholder privacy page for Tech for Us. Replace with the real privacy policy.
 
-Replace with final markdown in `public/Privacy.md` and rebuild.
+We value your privacy. This placeholder explains how we store content locally and do not collect personal data by default.

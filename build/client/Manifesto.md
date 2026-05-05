@@ -1,9 +1,12 @@
 ---
-title: Manifesto (deployed placeholder)
+title: Manifesto
+description: Placeholder manifesto content for Tech for Us
 ---
 
 # The Manifesto
 
-This deployed placeholder exists so `/content/Manifesto` can be loaded on static hosts.
+This is a placeholder for the Tech for Us Manifesto. Replace with the canonical manifesto content.
 
-Replace with final markdown in `public/Manifesto.md` and rebuild.
+- Principle 1: People-first technology
+- Principle 2: Privacy and agency
+- Principle 3: Community-driven design
