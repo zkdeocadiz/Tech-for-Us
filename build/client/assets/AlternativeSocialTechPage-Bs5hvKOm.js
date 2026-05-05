@@ -1,0 +1,1 @@
+import{t as e}from"./AlternativeSocialTechPage-4ksVjYUz.js";export{e as default};
