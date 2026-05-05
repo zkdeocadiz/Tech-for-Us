@@ -155,7 +155,7 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
   const annotationsRef = useRef(null);
   const annotationsListRef = useRef(null);
   const [annotationInputTop, setAnnotationInputTop] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 850);
+  const [isMobile, setIsMobile] = useState(false);
   const [mobileModalPos, setMobileModalPos] = useState({ top: 0, position: 'above' });
   const annotationInputRef = useRef(null);
   
@@ -252,6 +252,7 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
 
   // Monitor screen size for mobile responsiveness
   useEffect(() => {
+    setIsMobile(window.innerWidth < 850);
     const handleResize = () => setIsMobile(window.innerWidth < 850);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
