@@ -3,6 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 
 export default {
+  routeDiscovery: {
+    mode: "initial",
+  },
   // Define the paths you want to prerender into static HTML
   async prerender() {
     const baseRoutes = [

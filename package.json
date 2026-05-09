@@ -7,7 +7,7 @@
     "dev": "react-router dev",
     "prebuild": "node scripts/prebuild.js",
     "build": "react-router build",
-    "postbuild": "cp build/client/assets/manifest-*.js build/client/__manifest && cp build/client/assets/manifest-*.js public/__manifest",
+    "postbuild": "node scripts/postbuild-manifest.js",
     "start": "react-router-serve ./build/server/index.js",
     "lint": "eslint .",
     "preview": "vite preview"

@@ -3,7 +3,7 @@
  * Structure: { [pageId]: [annotations], annotatedPages: [...] }
  */
 
-const STORAGE_KEY = 'tech-for-us-annotations';
+export const STORAGE_KEY = 'tech-for-us-annotations';
 
 export const annotationStorage = {
   /**

@@ -1,10 +1,18 @@
 import Header from './Header';
 import Footer from './Footer';
-import { loadResult } from '../features/quiz/storage';
+import { loadResult, STORAGE_KEY as QUIZ_RESULT_STORAGE_KEY } from '../features/quiz/storage';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { localFileStorage } from '../features/content/localFileStorage';
-import { annotationStorage } from '../features/content/annotationStorage';
+import { annotationStorage, STORAGE_KEY as ANNOTATIONS_STORAGE_KEY } from '../features/content/annotationStorage';
+
+const isQuizStorageKey = (key) =>
+  key === QUIZ_RESULT_STORAGE_KEY || key.startsWith('quiz-');
+
+const isDataKey = (key) =>
+  key === ANNOTATIONS_STORAGE_KEY ||
+  key.startsWith('activity-') ||
+  isQuizStorageKey(key);
  
 export default function YourContentPage() {
   const [result, setResult] = useState(null);
@@ -61,7 +69,7 @@ export default function YourContentPage() {
     // 1. Pack everything from localStorage
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key.startsWith('annotations-') || key.startsWith('activity-') || key.startsWith('quiz-')) {
+      if (isDataKey(key)) {
         backup.localStorage[key] = localStorage.getItem(key);
       }
     }
@@ -139,7 +147,7 @@ export default function YourContentPage() {
       const keysToRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key.startsWith('annotations-') || key.startsWith('activity-') || key.startsWith('quiz-')) {
+        if (isDataKey(key)) {
           keysToRemove.push(key);
         }
       }

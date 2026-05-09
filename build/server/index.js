@@ -112,15 +112,57 @@ var root_default = UNSAFE_withComponentProps(function Root() {
 //#endregion
 //#region app/features/quiz/storage.js
 var STORAGE_KEY$1 = "socialtech_quiz_result";
+var LEGACY_PREFIX = "quiz-";
 var canUseStorage = () => typeof window !== "undefined" && typeof window.localStorage !== "undefined";
-var saveResult = (result) => canUseStorage() && localStorage.setItem(STORAGE_KEY$1, JSON.stringify(result));
+var isValidResult = (value) => {
+	if (!value || typeof value !== "object") return false;
+	if (typeof value.code !== "string" || value.code.length === 0) return false;
+	if (!value.scores || typeof value.scores !== "object") return false;
+	return true;
+};
+var parseStoredResult = (rawValue) => {
+	if (!rawValue) return null;
+	try {
+		const parsed = JSON.parse(rawValue);
+		return isValidResult(parsed) ? parsed : null;
+	} catch {
+		return null;
+	}
+};
+var collectLegacyKeys = () => {
+	const keys = [];
+	for (let i = 0; i < localStorage.length; i += 1) {
+		const key = localStorage.key(i);
+		if (key && key.startsWith(LEGACY_PREFIX)) keys.push(key);
+	}
+	return keys;
+};
+var migrateLegacyResultIfPresent = () => {
+	if (!canUseStorage()) return null;
+	const legacyKeys = collectLegacyKeys();
+	if (legacyKeys.length === 0) return null;
+	let migratedResult = null;
+	for (const key of legacyKeys) {
+		const parsed = parseStoredResult(localStorage.getItem(key));
+		if (!migratedResult && parsed) migratedResult = parsed;
+		localStorage.removeItem(key);
+	}
+	if (migratedResult) localStorage.setItem(STORAGE_KEY$1, JSON.stringify(migratedResult));
+	return migratedResult;
+};
+var saveResult = (result) => canUseStorage() && localStorage.setItem("socialtech_quiz_result", JSON.stringify(result));
 var loadResult = () => {
 	if (!canUseStorage()) return null;
-	const stored = localStorage.getItem(STORAGE_KEY$1);
-	return stored ? JSON.parse(stored) : null;
+	const parsedCurrent = parseStoredResult(localStorage.getItem(STORAGE_KEY$1));
+	if (parsedCurrent) {
+		collectLegacyKeys().forEach((key) => localStorage.removeItem(key));
+		return parsedCurrent;
+	}
+	if (localStorage.getItem("socialtech_quiz_result") != null) localStorage.removeItem(STORAGE_KEY$1);
+	return migrateLegacyResultIfPresent();
 };
-var clearResult = () => canUseStorage() && localStorage.removeItem(STORAGE_KEY$1);
-var hasResult = () => canUseStorage() && localStorage.getItem(STORAGE_KEY$1) !== null;
+var clearResult = () => canUseStorage() && localStorage.removeItem("socialtech_quiz_result");
+var hasResult = () => !!loadResult();
 //#endregion
 //#region app/components/Header.jsx
 function Header() {
@@ -615,6 +657,8 @@ var annotationStorage = {
 //#endregion
 //#region app/components/YourContentPage.jsx
 var YourContentPage_exports = /* @__PURE__ */ __exportAll({ default: () => YourContentPage_default });
+var isQuizStorageKey = (key) => key === "socialtech_quiz_result" || key.startsWith("quiz-");
+var isDataKey = (key) => key === "tech-for-us-annotations" || key.startsWith("activity-") || isQuizStorageKey(key);
 var YourContentPage_default = UNSAFE_withComponentProps(function YourContentPage() {
 	const [result, setResult] = useState(null);
 	const [annotatedPages, setAnnotatedPages] = useState([]);
@@ -659,7 +703,7 @@ var YourContentPage_default = UNSAFE_withComponentProps(function YourContentPage
 		};
 		for (let i = 0; i < localStorage.length; i++) {
 			const key = localStorage.key(i);
-			if (key.startsWith("annotations-") || key.startsWith("activity-") || key.startsWith("quiz-")) backup.localStorage[key] = localStorage.getItem(key);
+			if (isDataKey(key)) backup.localStorage[key] = localStorage.getItem(key);
 		}
 		const activityKeys = Object.keys(backup.localStorage).filter((k) => k.startsWith("activity-"));
 		for (const key of activityKeys) {
@@ -706,7 +750,7 @@ var YourContentPage_default = UNSAFE_withComponentProps(function YourContentPage
 			const keysToRemove = [];
 			for (let i = 0; i < localStorage.length; i++) {
 				const key = localStorage.key(i);
-				if (key.startsWith("annotations-") || key.startsWith("activity-") || key.startsWith("quiz-")) keysToRemove.push(key);
+				if (isDataKey(key)) keysToRemove.push(key);
 			}
 			keysToRemove.forEach((key) => localStorage.removeItem(key));
 			await localFileStorage.clearAll();
@@ -3677,11 +3721,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/HomePage-CAIhG7Vk.js",
+			"module": "/assets/HomePage-CZA2GY6X.js",
 			"imports": [
-				"/assets/HomePage-BdsGMZsH.js",
+				"/assets/HomePage-fYNcWVvF.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js"
+				"/assets/Footer-DboUGWXx.js"
 			],
 			"css": ["/assets/HomePage-70OR2PUC.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3702,12 +3746,12 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/YourContentPage-CzXW59Lc.js",
+			"module": "/assets/YourContentPage-80ff_XNl.js",
 			"imports": [
-				"/assets/YourContentPage-B3d9lAM6.js",
+				"/assets/YourContentPage-aZtvIP0C.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js",
-				"/assets/annotationStorage-DQx2n2k4.js"
+				"/assets/Footer-DboUGWXx.js",
+				"/assets/annotationStorage-CcREfcvN.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3728,11 +3772,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Quiz-BNlc7AHv.js",
+			"module": "/assets/Quiz-CUmoMVdy.js",
 			"imports": [
-				"/assets/Quiz-dq8pOXLQ.js",
+				"/assets/Quiz-CCCgoYTg.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js",
+				"/assets/Footer-DboUGWXx.js",
 				"/assets/questions-CoY3XuON.js"
 			],
 			"css": ["/assets/Quiz-BYPZ9hme.css", "/assets/Footer-B9bAK1iH.css"],
@@ -3754,12 +3798,12 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Results-BxQwUV-4.js",
+			"module": "/assets/Results-BtnshSLO.js",
 			"imports": [
-				"/assets/Results-DpdCyvOg.js",
+				"/assets/Results-B_K3w8zP.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js",
-				"/assets/annotationStorage-DQx2n2k4.js",
+				"/assets/Footer-DboUGWXx.js",
+				"/assets/annotationStorage-CcREfcvN.js",
 				"/assets/questions-CoY3XuON.js"
 			],
 			"css": ["/assets/Results-6BxPi0UY.css", "/assets/Footer-B9bAK1iH.css"],
@@ -3781,11 +3825,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/TechnologyTypesPage-BAFoiQVG.js",
+			"module": "/assets/TechnologyTypesPage-PbAZzI9X.js",
 			"imports": [
-				"/assets/TechnologyTypesPage-Bd8b0Ijg.js",
+				"/assets/TechnologyTypesPage--Ru2dCTH.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js"
+				"/assets/Footer-DboUGWXx.js"
 			],
 			"css": ["/assets/TechnologyTypesPage-jeEItKQy.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3806,11 +3850,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitiesPage-CK_0yERz.js",
+			"module": "/assets/ActivitiesPage-DM4XGK4D.js",
 			"imports": [
-				"/assets/ActivitiesPage-DQOKnD0c.js",
+				"/assets/ActivitiesPage-DWVmvlh3.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js"
+				"/assets/Footer-DboUGWXx.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3831,11 +3875,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitySetsPage-B8LRULnw.js",
+			"module": "/assets/ActivitySetsPage-DIL02SS5.js",
 			"imports": [
-				"/assets/ActivitySetsPage-BgeNhFMi.js",
+				"/assets/ActivitySetsPage-W0nBOm4g.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js"
+				"/assets/Footer-DboUGWXx.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3856,11 +3900,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/AlternativeSocialTechPage-BVyIYjqg.js",
+			"module": "/assets/AlternativeSocialTechPage-C9wdNvTy.js",
 			"imports": [
-				"/assets/AlternativeSocialTechPage-D5LawpFb.js",
+				"/assets/AlternativeSocialTechPage-BdZ5nd6a.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js"
+				"/assets/Footer-DboUGWXx.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3881,11 +3925,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContributorsPage-kRKY5Te9.js",
+			"module": "/assets/ContributorsPage-CmUpIwCV.js",
 			"imports": [
-				"/assets/ContributorsPage-B_Dj8wa6.js",
+				"/assets/ContributorsPage-Cb15XakI.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-C-QR4OTB.js"
+				"/assets/Footer-DboUGWXx.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3906,22 +3950,22 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContentPage-BDKV1E1K.js",
+			"module": "/assets/ContentPage-gyRBy7Sk.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-BkxCM458.js",
-				"/assets/Quiz-dq8pOXLQ.js",
-				"/assets/ActivitiesPage-DQOKnD0c.js",
-				"/assets/ActivitySetsPage-BgeNhFMi.js",
-				"/assets/AlternativeSocialTechPage-D5LawpFb.js",
-				"/assets/ContributorsPage-B_Dj8wa6.js",
-				"/assets/Footer-C-QR4OTB.js",
-				"/assets/YourContentPage-B3d9lAM6.js",
-				"/assets/Results-DpdCyvOg.js",
-				"/assets/HomePage-BdsGMZsH.js",
-				"/assets/TechnologyTypesPage-Bd8b0Ijg.js",
+				"/assets/App-Bvv876hS.js",
+				"/assets/Quiz-CCCgoYTg.js",
+				"/assets/ActivitiesPage-DWVmvlh3.js",
+				"/assets/ActivitySetsPage-W0nBOm4g.js",
+				"/assets/AlternativeSocialTechPage-BdZ5nd6a.js",
+				"/assets/ContributorsPage-Cb15XakI.js",
+				"/assets/Footer-DboUGWXx.js",
+				"/assets/YourContentPage-aZtvIP0C.js",
+				"/assets/Results-B_K3w8zP.js",
+				"/assets/HomePage-fYNcWVvF.js",
+				"/assets/TechnologyTypesPage--Ru2dCTH.js",
 				"/assets/questions-CoY3XuON.js",
-				"/assets/annotationStorage-DQx2n2k4.js"
+				"/assets/annotationStorage-CcREfcvN.js"
 			],
 			"css": [
 				"/assets/Quiz-BYPZ9hme.css",
@@ -3948,22 +3992,22 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/NotFoundPage-QbQP2LWQ.js",
+			"module": "/assets/NotFoundPage--OAp2dqz.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-BkxCM458.js",
-				"/assets/Quiz-dq8pOXLQ.js",
-				"/assets/ActivitiesPage-DQOKnD0c.js",
-				"/assets/ActivitySetsPage-BgeNhFMi.js",
-				"/assets/AlternativeSocialTechPage-D5LawpFb.js",
-				"/assets/ContributorsPage-B_Dj8wa6.js",
-				"/assets/Footer-C-QR4OTB.js",
-				"/assets/YourContentPage-B3d9lAM6.js",
-				"/assets/Results-DpdCyvOg.js",
-				"/assets/HomePage-BdsGMZsH.js",
-				"/assets/TechnologyTypesPage-Bd8b0Ijg.js",
+				"/assets/App-Bvv876hS.js",
+				"/assets/Quiz-CCCgoYTg.js",
+				"/assets/ActivitiesPage-DWVmvlh3.js",
+				"/assets/ActivitySetsPage-W0nBOm4g.js",
+				"/assets/AlternativeSocialTechPage-BdZ5nd6a.js",
+				"/assets/ContributorsPage-Cb15XakI.js",
+				"/assets/Footer-DboUGWXx.js",
+				"/assets/YourContentPage-aZtvIP0C.js",
+				"/assets/Results-B_K3w8zP.js",
+				"/assets/HomePage-fYNcWVvF.js",
+				"/assets/TechnologyTypesPage--Ru2dCTH.js",
 				"/assets/questions-CoY3XuON.js",
-				"/assets/annotationStorage-DQx2n2k4.js"
+				"/assets/annotationStorage-CcREfcvN.js"
 			],
 			"css": [
 				"/assets/Quiz-BYPZ9hme.css",
@@ -3978,8 +4022,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-fab85d9a.js",
-	"version": "fab85d9a",
+	"url": "/assets/manifest-0012736a.js",
+	"version": "0012736a",
 	"sri": void 0
 };
 //#endregion
@@ -4041,10 +4085,7 @@ var prerender = [
 	"/content/results/WMGL",
 	"/content/sample-guide"
 ];
-var routeDiscovery = {
-	"mode": "lazy",
-	"manifestPath": "/__manifest"
-};
+var routeDiscovery = { "mode": "initial" };
 var publicPath = "/";
 var entry = { module: entry_server_node_exports };
 var routes = {
