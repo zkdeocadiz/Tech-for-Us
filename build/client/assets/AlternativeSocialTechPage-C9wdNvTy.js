@@ -1,1 +1,0 @@
-import{t as e}from"./AlternativeSocialTechPage-BdZ5nd6a.js";export{e as default};

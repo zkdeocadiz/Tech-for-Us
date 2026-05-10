@@ -273,20 +273,6 @@ export default function YourContentPage() {
             </button>
           </div>
         </section>
-
-        {/* Temporary Debug Section for localStorage */}
-        <section style={{ marginTop: '4rem', borderTop: '1px solid #eee', paddingTop: '2rem' }}>
-          <h2 style={{ fontFamily: 'ApfelGrotezk', fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-blue)' }}>Debug: All LocalStorage Keys</h2>
-          {allLocalStorageKeys.length > 0 ? (
-            <ul style={{ listStyle: 'disc', paddingLeft: '20px', fontSize: '0.9rem', color: '#555' }}>
-              {allLocalStorageKeys.map(key => (
-                <li key={key}><strong>{key}</strong>: {(localStorageMap[key] || '').substring(0, 100)}...</li>
-              ))}
-            </ul>
-          ) : (
-            <p style={{ fontStyle: 'italic', color: '#888' }}>No items found in localStorage.</p>
-          )}
-        </section>
       </main>
       <Footer />
     </div>

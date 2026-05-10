@@ -167,8 +167,17 @@ var hasResult = () => !!loadResult();
 //#region app/components/Header.jsx
 function Header() {
 	const [hasResult, setHasResult] = useState(false);
+	const [dropdownOpen, setDropdownOpen] = useState(false);
 	useEffect(() => {
 		setHasResult(!!loadResult());
+		const onStorage = (e) => {
+			if (!e) return;
+			const key = e.key;
+			if (!key) return;
+			if (key === "socialtech_quiz_result" || key.startsWith("quiz-")) setHasResult(!!loadResult());
+		};
+		window.addEventListener("storage", onStorage);
+		return () => window.removeEventListener("storage", onStorage);
 	}, []);
 	return /* @__PURE__ */ jsx("header", {
 		className: "site-header",
@@ -180,7 +189,7 @@ function Header() {
 				"aria-label": "Tech for Us home",
 				children: /* @__PURE__ */ jsx("img", {
 					className: "site-logo",
-					src: "https://www.figma.com/api/mcp/asset/52706c78-1f88-4ac6-971b-e14e57cdde26",
+					src: "Header/Logo.svg",
 					alt: "Tech for Us"
 				})
 			}), /* @__PURE__ */ jsx("nav", {
@@ -199,11 +208,58 @@ function Header() {
 						label: "Your Technology Type",
 						to: hasResult ? "/technology-types" : "/quiz"
 					}
-				].map((item) => /* @__PURE__ */ jsx(Link$1, {
-					className: "site-nav__item",
-					to: item.to,
-					children: item.label
-				}, item.label))
+				].map((item) => {
+					if (item.label !== "Your Technology Type") return /* @__PURE__ */ jsx(Link$1, {
+						className: "site-nav__item",
+						to: item.to,
+						children: item.label
+					}, item.label);
+					return /* @__PURE__ */ jsxs("div", {
+						className: "site-nav__item site-nav__dropdown",
+						onMouseEnter: () => setDropdownOpen(true),
+						onMouseLeave: () => setDropdownOpen(false),
+						style: { position: "relative" },
+						children: [/* @__PURE__ */ jsx(Link$1, {
+							className: "site-nav__item",
+							to: item.to,
+							children: item.label
+						}), /* @__PURE__ */ jsxs("div", {
+							className: "site-nav__dropdown-menu",
+							"aria-hidden": !dropdownOpen,
+							style: {
+								display: dropdownOpen ? "block" : "none",
+								position: "absolute",
+								top: "100%",
+								left: 0,
+								background: "#fff",
+								border: "1px solid rgba(0,0,0,0.12)",
+								boxShadow: "0 6px 12px rgba(0,0,0,0.08)",
+								padding: "0.25rem 0",
+								minWidth: "180px",
+								zIndex: 1e3
+							},
+							children: [/* @__PURE__ */ jsx(Link$1, {
+								to: hasResult ? "/quiz/results" : "/quiz",
+								className: "site-nav__dropdown-item",
+								style: {
+									display: "block",
+									padding: "0.5rem 1rem",
+									color: "#111"
+								},
+								children: hasResult ? "Your Type" : "Take the Quiz"
+							}), /* @__PURE__ */ jsx(Link$1, {
+								to: "/technology-types",
+								className: "site-nav__dropdown-item",
+								style: {
+									display: "block",
+									padding: "0.5rem 1rem",
+									color: "#111"
+								},
+								children: "About the Types"
+							})]
+						})]
+					}, item.label);
+				})
 			})]
 		})
 	});
@@ -284,48 +340,66 @@ function Footer({ columns = defaultFooterColumns }) {
 	});
 }
 //#endregion
+//#region app/components/activitiesData.js
+/**
+* Registry of all activities.
+* Add a new entry here whenever you add a .md file to /public/activities/
+*/
+var activities = [{
+	id: "20260512-datingprofile",
+	title: "How to Write a Better Dating Profile",
+	publishedDate: "2026-05-15",
+	description: "Learn how to create a dating profile that authentically represents you.",
+	tags: ["tag1", "tag2"],
+	tone: "white",
+	href: "/activities/how-to-write-a-better-dating-profile",
+	coverImage: "activities/0260512-datingprofile/cover.png",
+	ogImage: "activities/0260512-datingprofile/og-image.png"
+}, {
+	id: "20260512-valuesbaseddesign",
+	title: "Value-based Design",
+	publishedDate: "2026-05-15",
+	description: "Explore design principles centered on user values.",
+	tags: ["tag1", "tag2"],
+	tone: "pink",
+	href: "/activities/value-based-design",
+	coverImage: "activities/0260512-valuesbaseddesign/cover.png",
+	ogImage: "activities/0260512-valuesbaseddesign/og-image.png"
+}];
+//#endregion
 //#region app/features/home/HomePage.jsx
 var HomePage_exports = /* @__PURE__ */ __exportAll({ default: () => HomePage_default });
 var featureIcon = "https://www.figma.com/api/mcp/asset/4fd5c91c-08f2-495e-9015-86c7d517aab3";
-var heroLogo = "https://www.figma.com/api/mcp/asset/9512459b-36f1-4949-9572-fe0decf7dbfa";
+var heroLogo = "HomePage/Header.png";
 var features = [
 	{
+		image: "HomePage/Activities.png",
 		title: "Activities",
 		body: "This isn’t a passive reading exercise. Get hands-on practice through active exercises for all content."
 	},
 	{
+		image: "HomePage/Annotations.png",
 		title: "Annotations",
 		body: "You can annotate every post or activity, because everything should adapt to what you need."
 	},
 	{
+		image: "HomePage/Private.png",
 		title: "Private",
 		body: "Everything is only saved onto your computer - no data in the cloud and nothing sent to us unless you want us to see it."
 	},
 	{
-		title: "Co-created",
+		image: "HomePage/Co-Created.png",
+		title: "Co-Created",
 		body: "See something you think should be changed? Submit a change because Tech for Us is driven by the community."
 	}
 ];
-var activityCards = [
-	{
-		title: "How to write a better dating app",
-		text: "lorem ipsum",
-		tone: "white",
-		href: "/#activities"
-	},
-	{
-		title: "Value-based design",
-		text: "lorem ipsum",
-		tone: "pink",
-		href: "/#activities"
-	},
-	{
-		title: "Groupchat",
-		text: "lorem ipsum",
-		tone: "blue",
-		href: "/#activities"
-	}
-];
+var activityCards = activities.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate)).slice(0, 3).map((activity) => ({
+	title: activity.title,
+	text: activity.description,
+	tone: activity.tone,
+	href: activity.href,
+	coverImage: activity.coverImage
+}));
 var HomePage_default = UNSAFE_withComponentProps(function HomePage() {
 	return /* @__PURE__ */ jsxs("div", {
 		className: "home-page",
@@ -398,64 +472,62 @@ var HomePage_default = UNSAFE_withComponentProps(function HomePage() {
 					"aria-labelledby": "activities-heading",
 					children: /* @__PURE__ */ jsxs("div", {
 						className: "home-page__shell",
-						children: [/* @__PURE__ */ jsx("h2", {
-							className: "home-section-title",
-							id: "activities-heading",
-							children: "Newest Activities"
-						}), /* @__PURE__ */ jsxs("div", {
-							className: "activities__grid",
-							children: [/* @__PURE__ */ jsx("a", {
-								className: "activity-link activity-link--feature",
-								href: "/quiz",
-								"aria-label": "Open What’s your technology type activity",
-								children: /* @__PURE__ */ jsxs("article", {
-									className: "activity-feature",
-									children: [/* @__PURE__ */ jsx("div", { className: "activity-feature__visual" }), /* @__PURE__ */ jsxs("div", {
-										className: "activity-feature__content",
-										children: [/* @__PURE__ */ jsx("h3", {
-											className: "activity-feature__title",
-											children: "What’s your technology type?"
-										}), /* @__PURE__ */ jsx("p", {
-											className: "activity-feature__text",
-											children: "lorem ipsum"
+						children: [
+							/* @__PURE__ */ jsx("div", {
+								className: "activities__grid",
+								children: /* @__PURE__ */ jsx("a", {
+									className: "activity-link activity-link--feature",
+									href: "/quiz",
+									"aria-label": "Open What’s your technology type activity",
+									children: /* @__PURE__ */ jsxs("article", {
+										className: "activity-feature",
+										children: [/* @__PURE__ */ jsx("div", { className: "activity-feature__visual" }), /* @__PURE__ */ jsxs("div", {
+											className: "activity-feature__content",
+											children: [/* @__PURE__ */ jsx("h3", {
+												className: "activity-feature__title",
+												children: "What’s your technology type?"
+											}), /* @__PURE__ */ jsx("p", {
+												className: "activity-feature__text",
+												children: "lorem ipsum"
+											})]
 										})]
-									})]
+									})
 								})
-							}), activityCards.map((card) => /* @__PURE__ */ jsx("a", {
-								className: "activity-link",
-								href: card.href,
-								"aria-label": `Open ${card.title} activity`,
-								children: /* @__PURE__ */ jsxs("article", {
-									className: "activity-card",
-									children: [/* @__PURE__ */ jsx("div", { className: `activity-card__visual activity-card__visual--${card.tone}` }), /* @__PURE__ */ jsxs("div", {
-										className: "activity-card__body",
-										children: [/* @__PURE__ */ jsx("h3", {
-											className: "activity-card__title",
-											children: card.title
-										}), /* @__PURE__ */ jsx("p", {
-											className: "activity-card__text",
-											children: card.text
+							}),
+							/* @__PURE__ */ jsx("h2", {
+								id: "activities-heading",
+								children: "Newest Activities"
+							}),
+							/* @__PURE__ */ jsx("div", {
+								className: "activities__grid",
+								children: activityCards.map((card) => /* @__PURE__ */ jsx("a", {
+									className: "activity-link",
+									href: card.href,
+									"aria-label": `Open ${card.title} activity`,
+									children: /* @__PURE__ */ jsxs("article", {
+										className: "activity-card",
+										children: [/* @__PURE__ */ jsx("div", {
+											className: `activity-card__visual activity-card__visual--${card.tone}`,
+											children: /* @__PURE__ */ jsx("img", {
+												className: "activity-card__cover",
+												src: card.coverImage,
+												alt: "",
+												"aria-hidden": "true"
+											})
+										}), /* @__PURE__ */ jsxs("div", {
+											className: "activity-card__body",
+											children: [/* @__PURE__ */ jsx("h3", {
+												className: "activity-card__title",
+												children: card.title
+											}), /* @__PURE__ */ jsx("p", {
+												className: "activity-card__text",
+												children: card.text
+											})]
 										})]
-									})]
-								})
-							}, card.title))]
-						})]
-					})
-				}),
-				/* @__PURE__ */ jsx("section", {
-					className: "tracks home-page__section",
-					id: "tracks",
-					"aria-labelledby": "tracks-heading",
-					children: /* @__PURE__ */ jsxs("div", {
-						className: "home-page__shell",
-						children: [/* @__PURE__ */ jsx("h2", {
-							className: "home-section-title",
-							id: "tracks-heading",
-							children: "Curriculum Tracks"
-						}), /* @__PURE__ */ jsx("p", {
-							className: "tracks__text",
-							children: "Coming Soon"
-						})]
+									})
+								}, card.title))
+							})
+						]
 					})
 				})
 			] }),
@@ -934,41 +1006,6 @@ var YourContentPage_default = UNSAFE_withComponentProps(function YourContentPage
 								]
 							})
 						]
-					}),
-					/* @__PURE__ */ jsxs("section", {
-						style: {
-							marginTop: "4rem",
-							borderTop: "1px solid #eee",
-							paddingTop: "2rem"
-						},
-						children: [/* @__PURE__ */ jsx("h2", {
-							style: {
-								fontFamily: "ApfelGrotezk",
-								fontSize: "1.5rem",
-								marginBottom: "1rem",
-								color: "var(--color-blue)"
-							},
-							children: "Debug: All LocalStorage Keys"
-						}), allLocalStorageKeys.length > 0 ? /* @__PURE__ */ jsx("ul", {
-							style: {
-								listStyle: "disc",
-								paddingLeft: "20px",
-								fontSize: "0.9rem",
-								color: "#555"
-							},
-							children: allLocalStorageKeys.map((key) => /* @__PURE__ */ jsxs("li", { children: [
-								/* @__PURE__ */ jsx("strong", { children: key }),
-								": ",
-								(localStorageMap[key] || "").substring(0, 100),
-								"..."
-							] }, key))
-						}) : /* @__PURE__ */ jsx("p", {
-							style: {
-								fontStyle: "italic",
-								color: "#888"
-							},
-							children: "No items found in localStorage."
-						})]
 					})
 				]
 			}),
@@ -1673,11 +1710,11 @@ var Activity = ({ type, prompt, context, pageId, activityId }) => {
 			}),
 			/* @__PURE__ */ jsx("div", {
 				className: "markdown-page__activity-prompt",
-				children: prompt
+				children: /* @__PURE__ */ jsx(ReactMarkdown, { children: prompt })
 			}),
 			context && /* @__PURE__ */ jsx("div", {
 				className: "markdown-page__activity-context",
-				children: context
+				children: /* @__PURE__ */ jsx(ReactMarkdown, { children: context })
 			}),
 			type === "text" ? /* @__PURE__ */ jsx("textarea", {
 				className: "markdown-page__activity-textarea",
@@ -1715,6 +1752,36 @@ var Activity = ({ type, prompt, context, pageId, activityId }) => {
 		]
 	});
 };
+var resolveMarkdownHeroImage = (headerImage, code) => {
+	if (!headerImage) return "";
+	if (/^https?:\/\//i.test(headerImage)) return headerImage;
+	if (headerImage.startsWith("/")) return headerImage;
+	const normalized = headerImage.replace(/^\.\//, "");
+	return code ? `/Quiz/results/${normalized}` : `/${normalized}`;
+};
+var AXIS$1 = {
+	E: "energized",
+	W: "weary",
+	D: "desired",
+	M: "mandatory",
+	G: "genuine",
+	Ft: "filtered (tracked)",
+	Fp: "filtered (polished)",
+	C: "connected",
+	L: "lonely"
+};
+var expandCodeToLabels = (code) => {
+	if (!code || typeof code !== "string") return "";
+	const m = code.match(/^([EW])([DM])((?:Ft|Fp|G))([CL])$/i);
+	if (!m) return "";
+	const [, a, b, c, d] = m;
+	return [
+		AXIS$1[a],
+		AXIS$1[b],
+		AXIS$1[c],
+		AXIS$1[d]
+	].filter(Boolean).join(", ");
+};
 var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", markdownComponents = {}, metadata }) => {
 	const [annotations, setAnnotations] = useState([]);
 	const [selectedText, setSelectedText] = useState("");
@@ -1735,7 +1802,7 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 		creditName: "",
 		creditLink: "",
 		pageId,
-		pagePath: `results/${pageId}.md`
+		pagePath: suggestEditPagePath
 	});
 	const WORKER_URL = "https://hidden-thunder-0974.makingtechforus.workers.dev";
 	const contentRef = useRef(null);
@@ -1749,12 +1816,17 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 		position: "above"
 	});
 	const annotationInputRef = useRef(null);
+	const [heroImageFallbackUsed, setHeroImageFallbackUsed] = useState(false);
 	const selectionRef = useRef({
 		text: "",
 		range: null,
 		top: 0
 	});
 	const [inputVisible, setInputVisible] = useState(false);
+	const storedResult = typeof window !== "undefined" ? loadResult() : null;
+	const resultPageId = storedResult ? storedResult.fSubtype ? storedResult.code.replace("F", storedResult.fSubtype) : storedResult.code : null;
+	const isMatchingResultPage = !!storedResult && !!resultPageId && pageId.toUpperCase() === resultPageId.toUpperCase();
+	const suggestEditPagePath = /^\d{8}-/.test(pageId) ? `activities/${pageId}.md` : `Quiz/results/${pageId}.md`;
 	useEffect(() => {
 		if (!metadata) return;
 		if (metadata.title) document.title = `${metadata.title} | Tech for Us`;
@@ -1815,6 +1887,13 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 			document.title = "Tech for Us";
 		};
 	}, [metadata]);
+	useEffect(() => {
+		setHeroImageFallbackUsed(false);
+	}, [
+		metadata?.headerImage,
+		metadata?.code,
+		pageId
+	]);
 	useEffect(() => {
 		setAnnotations(annotationStorage.getPageAnnotations(pageId).sort((a, b) => (a.textPosition || 0) - (b.textPosition || 0)));
 	}, [pageId]);
@@ -2115,7 +2194,7 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 			creditName: "",
 			creditLink: "",
 			pageId,
-			pagePath: `results/${pageId}.md`
+			pagePath: suggestEditPagePath
 		});
 		setShowSuggestionModal(true);
 	};
@@ -2260,13 +2339,36 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 					return "";
 				}).join("");
 			};
-			const text = childrenToText(children).trim();
-			if (text.startsWith("[[ ACTIVITY") && text.endsWith("]]")) {
-				const parts = text.slice(11, -2).split("|").map((s) => s.trim());
+			const activityMatch = childrenToText(children).trim().match(/^\[\[\s*ACTIVITY\s*([\s\S]*?)\s*\]\]$/i);
+			if (activityMatch) {
+				const body = activityMatch[1] || "";
 				const props = {};
-				parts.forEach((p) => {
-					const [k, ...v] = p.split(":");
-					if (k && v) props[k.trim()] = v.join(":").trim();
+				if (body.includes("\n")) {
+					const lines = body.split(/\r?\n/);
+					for (let i = 0; i < lines.length; i++) {
+						const line = lines[i];
+						if (!line.trim()) continue;
+						const kv = line.match(/^([^:]+):\s*(.*)$/);
+						if (!kv) continue;
+						const key = kv[1].trim();
+						let val = kv[2] || "";
+						if (val === "|") {
+							const buf = [];
+							i++;
+							while (i < lines.length && !/^[^:\s]+:\s*/.test(lines[i])) {
+								buf.push(lines[i]);
+								i++;
+							}
+							i--;
+							val = buf.join("\n").replace(/^\s{0,2}/gm, "");
+						}
+						props[key] = (val || "").trim();
+					}
+				} else body.split("|").map((s) => s.trim()).filter(Boolean).forEach((p) => {
+					const idx = p.indexOf(":");
+					if (idx === -1) return;
+					const k = p.slice(0, idx).trim();
+					props[k] = p.slice(idx + 1).trim();
 				});
 				return /* @__PURE__ */ jsx(Activity, {
 					type: props.type || "text",
@@ -2279,36 +2381,39 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 			return /* @__PURE__ */ jsx("p", { children: renderHighlightedNode(children, "p") });
 		},
 		li: ({ children }) => /* @__PURE__ */ jsx("li", { children: renderHighlightedNode(children, "li") }),
-		h1: ({ children }) => /* @__PURE__ */ jsxs("div", {
-			style: { marginBottom: "2rem" },
-			children: [/* @__PURE__ */ jsx("h1", {
-				style: { marginBottom: "0.5rem" },
-				children: renderHighlightedNode(toTitleCaseNode(children), "h1")
-			}), metadata && metadata.publishedDate && /* @__PURE__ */ jsxs("div", {
-				style: {
-					fontSize: "0.9rem",
-					color: "var(--color-blue)",
-					opacity: .8,
-					fontFamily: "Inclusive Sans"
-				},
-				children: [new Date(metadata.publishedDate).toLocaleDateString(void 0, {
-					year: "numeric",
-					month: "long",
-					day: "numeric"
-				}), metadata.lastEditedDate && metadata.lastEditedDate !== metadata.publishedDate && /* @__PURE__ */ jsxs("span", {
+		h1: ({ children }) => {
+			if (metadata?.name) return null;
+			return /* @__PURE__ */ jsxs("div", {
+				style: { marginBottom: "2rem" },
+				children: [/* @__PURE__ */ jsx("h1", {
+					style: { marginBottom: "0.5rem" },
+					children: renderHighlightedNode(toTitleCaseNode(children), "h1")
+				}), metadata && metadata.publishedDate && /* @__PURE__ */ jsxs("div", {
 					style: {
-						marginLeft: "12px",
-						paddingLeft: "12px",
-						borderLeft: "1px solid currentColor"
+						fontSize: "0.9rem",
+						color: "var(--color-blue)",
+						opacity: .8,
+						fontFamily: "Inclusive Sans"
 					},
-					children: ["Updated: ", new Date(metadata.lastEditedDate).toLocaleDateString(void 0, {
+					children: [new Date(metadata.publishedDate).toLocaleDateString(void 0, {
 						year: "numeric",
 						month: "long",
 						day: "numeric"
+					}), metadata.lastEditedDate && metadata.lastEditedDate !== metadata.publishedDate && /* @__PURE__ */ jsxs("span", {
+						style: {
+							marginLeft: "12px",
+							paddingLeft: "12px",
+							borderLeft: "1px solid currentColor"
+						},
+						children: ["Updated: ", new Date(metadata.lastEditedDate).toLocaleDateString(void 0, {
+							year: "numeric",
+							month: "long",
+							day: "numeric"
+						})]
 					})]
 				})]
-			})]
-		}),
+			});
+		},
 		h2: ({ children }) => /* @__PURE__ */ jsx("h2", { children: renderHighlightedNode(children, "h2") }),
 		h3: ({ children }) => /* @__PURE__ */ jsx("h3", { children: renderHighlightedNode(children, "h3") }),
 		h4: ({ children }) => /* @__PURE__ */ jsx("h4", { children: renderHighlightedNode(children, "h4") }),
@@ -2339,16 +2444,55 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 							children: heading.text
 						}, heading.id))
 					}),
-					/* @__PURE__ */ jsx("div", {
+					/* @__PURE__ */ jsxs("div", {
 						className: "markdown-page__content",
 						ref: contentRef,
-						children: /* @__PURE__ */ jsx(ReactMarkdown, {
+						children: [/* @__PURE__ */ jsxs("div", {
+							className: "markdown-page__top-header",
+							children: [
+								isMatchingResultPage && /* @__PURE__ */ jsx("div", {
+									className: "markdown-page__you-are",
+									children: "YOU ARE"
+								}),
+								/* @__PURE__ */ jsx("h1", {
+									className: "markdown-page__type-name",
+									children: metadata?.name || metadata?.title || title || pageId
+								}),
+								(metadata?.headerImage || metadata?.code) && /* @__PURE__ */ jsx("div", {
+									className: "markdown-page__hero",
+									children: /* @__PURE__ */ jsx("img", {
+										className: "markdown-page__hero-image",
+										src: heroImageFallbackUsed && metadata?.code ? `/Quiz/results/images/${metadata.code}.png` : resolveMarkdownHeroImage(metadata.headerImage, metadata?.code),
+										alt: metadata?.name || metadata?.title || pageId,
+										loading: "eager",
+										decoding: "async",
+										onError: () => {
+											if (!heroImageFallbackUsed) setHeroImageFallbackUsed(true);
+										}
+									})
+								}),
+								/* @__PURE__ */ jsxs("div", {
+									className: "markdown-page__code-line",
+									children: [
+										/* @__PURE__ */ jsx("strong", { children: metadata && (metadata.code || metadata.id) || pageId }),
+										/* @__PURE__ */ jsx("span", {
+											className: "markdown-page__code-dash",
+											children: " - "
+										}),
+										/* @__PURE__ */ jsx("em", {
+											className: "markdown-page__code-labels",
+											children: expandCodeToLabels(metadata?.code || pageId) || metadata?.subtitle || ""
+										})
+									]
+								})
+							]
+						}), /* @__PURE__ */ jsx(ReactMarkdown, {
 							components: {
 								...defaultMarkdownComponents,
 								...enhancedMarkdownComponents
 							},
 							children: content
-						})
+						})]
 					}),
 					/* @__PURE__ */ jsxs("aside", {
 						className: "markdown-page__annotations",
@@ -2893,7 +3037,7 @@ var Results_default = UNSAFE_withComponentProps(function Results() {
 		setResult(stored);
 		const filename = stored.fSubtype ? stored.code.replace("F", stored.fSubtype) : stored.code;
 		setResultFileId(filename);
-		const resultsPath = `/results/${filename}.md`;
+		const resultsPath = `/Quiz/results/${filename}.md`;
 		fetch(resultsPath).then((res) => {
 			if (!res.ok) throw new Error(`No result file found for type ${stored.code}`);
 			return res.text();
@@ -2979,8 +3123,8 @@ var AXIS = {
 	D: "desired",
 	M: "mandatory",
 	G: "genuine",
-	Ft: "tracked",
-	Fp: "polished",
+	Ft: "filtered (tracked)",
+	Fp: "filtered (polished)",
 	C: "connected",
 	L: "lonely"
 };
@@ -3001,9 +3145,42 @@ var ALL_TYPES = MENTAL.flatMap((m) => SOCIAL.flatMap((s) => IDENTITY.flatMap((i)
 		AXIS[c]
 	]
 })))));
+var parseFrontmatter = (text) => {
+	const match = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+	if (!match) return {};
+	return match[1].split("\n").reduce((acc, line) => {
+		const separatorIndex = line.indexOf(":");
+		if (separatorIndex === -1) return acc;
+		const key = line.slice(0, separatorIndex).trim();
+		const value = line.slice(separatorIndex + 1).trim();
+		if (key) acc[key] = value;
+		return acc;
+	}, {});
+};
 var TechnologyTypesPage_default = UNSAFE_withComponentProps(function TechnologyTypesPage() {
 	const stored = loadResult();
 	const highlightedCode = stored ? stored.fSubtype ? stored.code.replace("F", stored.fSubtype) : stored.code : null;
+	const [typeNames, setTypeNames] = useState({});
+	useEffect(() => {
+		let cancelled = false;
+		const loadTypeNames = async () => {
+			const entries = await Promise.all(ALL_TYPES.map(async (type) => {
+				try {
+					const response = await fetch(`/Quiz/results/${type.code}.md`, { headers: { Accept: "text/plain" } });
+					if (!response.ok) return [type.code, ""];
+					const metadata = parseFrontmatter(await response.text());
+					return [type.code, metadata.name || ""];
+				} catch {
+					return [type.code, ""];
+				}
+			}));
+			if (!cancelled) setTypeNames(Object.fromEntries(entries));
+		};
+		loadTypeNames();
+		return () => {
+			cancelled = true;
+		};
+	}, []);
 	const orderedTypes = [...ALL_TYPES].sort((a, b) => {
 		if (a.code === highlightedCode) return -1;
 		if (b.code === highlightedCode) return 1;
@@ -3027,10 +3204,16 @@ var TechnologyTypesPage_default = UNSAFE_withComponentProps(function TechnologyT
 					/* @__PURE__ */ jsx("div", {
 						className: "types-grid",
 						children: orderedTypes.map((type) => {
+							const isActive = highlightedCode === type.code;
+							const typeName = typeNames[type.code];
 							return /* @__PURE__ */ jsxs("article", {
-								className: `types-card ${highlightedCode === type.code ? "active" : ""}`,
+								className: `types-card ${isActive ? "active" : ""}`,
 								children: [
-									/* @__PURE__ */ jsx("h2", { children: type.code }),
+									/* @__PURE__ */ jsx("h2", { children: typeName || type.code }),
+									/* @__PURE__ */ jsx("p", {
+										className: "types-code",
+										children: type.code
+									}),
 									/* @__PURE__ */ jsx("p", { children: type.labels.join(", ") }),
 									/* @__PURE__ */ jsx(Link$1, {
 										className: "types-link",
@@ -3047,41 +3230,6 @@ var TechnologyTypesPage_default = UNSAFE_withComponentProps(function TechnologyT
 		]
 	});
 });
-//#endregion
-//#region app/components/activitiesData.js
-/**
-* Registry of all activities.
-* Add a new entry here whenever you add a .md file to /public/activities/
-*/
-var activities = [
-	{
-		id: "mapping-your-network",
-		title: "Mapping Your Network",
-		publishedDate: "2024-05-15",
-		lastEditedDate: "2024-05-15",
-		description: "Visualize the different digital spaces you inhabit and who you meet there.",
-		tags: ["Reflection", "Visual"],
-		ogImage: "/activity-assets/mapping-your-network/og-image.jpg"
-	},
-	{
-		id: "digital-boundaries-workshop",
-		title: "Setting Digital Boundaries",
-		publishedDate: "2024-04-20",
-		lastEditedDate: "2024-05-01",
-		description: "A step-by-step guide to reclaiming your time from addictive algorithms.",
-		tags: ["Practical", "Advanced"],
-		ogImage: "/activity-assets/digital-boundaries-workshop/og-image.jpg"
-	},
-	{
-		id: "sample-guide",
-		title: "Sample Activity Guide",
-		publishedDate: "2023-10-27",
-		lastEditedDate: "2023-10-27",
-		description: "Learn how to use the interactive features of this site effectively.",
-		tags: ["Introduction"],
-		ogImage: "/activity-assets/sample-guide/og-image.jpg"
-	}
-];
 //#endregion
 //#region app/components/ActivitiesPage.jsx
 var ActivitiesPage_exports = /* @__PURE__ */ __exportAll({ default: () => ActivitiesPage_default });
@@ -3498,7 +3646,13 @@ function MarkdownPageLoader() {
 			try {
 				setLoading(true);
 				setError(null);
-				const paths = [
+				const paths = /^\d{8}-/.test(pageId) ? [
+					`/activities/${pageId}.md`,
+					`/Quiz/results/${pageId}.md`,
+					`/results/${pageId}.md`,
+					`/${pageId}.md`
+				] : [
+					`/Quiz/results/${pageId}.md`,
 					`/results/${pageId}.md`,
 					`/activities/${pageId}.md`,
 					`/${pageId}.md`
@@ -3518,7 +3672,7 @@ function MarkdownPageLoader() {
 					console.error(`Failed to fetch ${path}:`, e);
 					continue;
 				}
-				if (!success) throw new Error(`Could not find markdown file for "${pageId}". Make sure ${pageId}.md exists in /public/results/ or /public/`);
+				if (!success) throw new Error(`Could not find markdown file for "${pageId}". Make sure ${pageId}.md exists in the appropriate folder (/public/activities/, /public/Quiz/results/, /public/results/, or /public/)`);
 				console.log("Loaded markdown content:", text.substring(0, 100));
 				setContent(text);
 				const match = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
@@ -3538,6 +3692,8 @@ function MarkdownPageLoader() {
 				if (extractedMetadata["og-title"]) extractedMetadata.title = extractedMetadata["og-title"];
 				if (extractedMetadata["og-description"]) extractedMetadata.description = extractedMetadata["og-description"];
 				if (extractedMetadata["og-image"]) extractedMetadata.ogImage = extractedMetadata["og-image"];
+				if (extractedMetadata["header-image"]) extractedMetadata.headerImage = extractedMetadata["header-image"];
+				if (!extractedMetadata.ogImage && extractedMetadata.headerImage) extractedMetadata.ogImage = extractedMetadata.headerImage;
 				setFileMetadata(extractedMetadata);
 				setContent(cleanText);
 			} catch (err) {
@@ -3721,13 +3877,18 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/HomePage-CZA2GY6X.js",
+			"module": "/assets/HomePage-BqKLP2M3.js",
 			"imports": [
-				"/assets/HomePage-fYNcWVvF.js",
+				"/assets/HomePage-BaFMxn6h.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js"
+				"/assets/Footer-D1xgvyL7.js",
+				"/assets/activitiesData-Eafj1xju.js"
 			],
-			"css": ["/assets/HomePage-70OR2PUC.css", "/assets/Footer-B9bAK1iH.css"],
+			"css": [
+				"/assets/HomePage-Cq4_ly3J.css",
+				"/assets/App-2kWgLX4s.css",
+				"/assets/Footer-B9bAK1iH.css"
+			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -3746,12 +3907,12 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/YourContentPage-80ff_XNl.js",
+			"module": "/assets/YourContentPage-qfg68Lw-.js",
 			"imports": [
-				"/assets/YourContentPage-aZtvIP0C.js",
+				"/assets/YourContentPage-D9-zXTW_.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js",
-				"/assets/annotationStorage-CcREfcvN.js"
+				"/assets/Footer-D1xgvyL7.js",
+				"/assets/annotationStorage-B12SqVVm.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3772,14 +3933,18 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Quiz-CUmoMVdy.js",
+			"module": "/assets/Quiz-D5gxwHpS.js",
 			"imports": [
-				"/assets/Quiz-CCCgoYTg.js",
+				"/assets/Quiz-CTyBheRi.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js",
-				"/assets/questions-CoY3XuON.js"
+				"/assets/Footer-D1xgvyL7.js",
+				"/assets/questions-DxipSYNI.js"
 			],
-			"css": ["/assets/Quiz-BYPZ9hme.css", "/assets/Footer-B9bAK1iH.css"],
+			"css": [
+				"/assets/Quiz-CBSUGlBu.css",
+				"/assets/App-2kWgLX4s.css",
+				"/assets/Footer-B9bAK1iH.css"
+			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -3798,15 +3963,15 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Results-BtnshSLO.js",
+			"module": "/assets/Results-Ceh3OB62.js",
 			"imports": [
-				"/assets/Results-B_K3w8zP.js",
+				"/assets/Results-Fj5tj3eA.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js",
-				"/assets/annotationStorage-CcREfcvN.js",
-				"/assets/questions-CoY3XuON.js"
+				"/assets/Footer-D1xgvyL7.js",
+				"/assets/annotationStorage-B12SqVVm.js",
+				"/assets/questions-DxipSYNI.js"
 			],
-			"css": ["/assets/Results-6BxPi0UY.css", "/assets/Footer-B9bAK1iH.css"],
+			"css": ["/assets/Results-DE7C7vAJ.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -3825,13 +3990,13 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/TechnologyTypesPage-PbAZzI9X.js",
+			"module": "/assets/TechnologyTypesPage-DafwmTj0.js",
 			"imports": [
-				"/assets/TechnologyTypesPage--Ru2dCTH.js",
+				"/assets/TechnologyTypesPage-Dc2v7NgZ.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js"
+				"/assets/Footer-D1xgvyL7.js"
 			],
-			"css": ["/assets/TechnologyTypesPage-jeEItKQy.css", "/assets/Footer-B9bAK1iH.css"],
+			"css": ["/assets/TechnologyTypesPage-BOWfRdDW.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -3850,11 +4015,12 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitiesPage-DM4XGK4D.js",
+			"module": "/assets/ActivitiesPage-OvCDb5J9.js",
 			"imports": [
-				"/assets/ActivitiesPage-DWVmvlh3.js",
+				"/assets/ActivitiesPage-BGP0xbvO.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js"
+				"/assets/Footer-D1xgvyL7.js",
+				"/assets/activitiesData-Eafj1xju.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3875,11 +4041,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitySetsPage-DIL02SS5.js",
+			"module": "/assets/ActivitySetsPage-D8fgGSZq.js",
 			"imports": [
-				"/assets/ActivitySetsPage-W0nBOm4g.js",
+				"/assets/ActivitySetsPage-DH9Fl8Q1.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js"
+				"/assets/Footer-D1xgvyL7.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3900,11 +4066,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/AlternativeSocialTechPage-C9wdNvTy.js",
+			"module": "/assets/AlternativeSocialTechPage-BjfYMf5x.js",
 			"imports": [
-				"/assets/AlternativeSocialTechPage-BdZ5nd6a.js",
+				"/assets/AlternativeSocialTechPage-DaAlKOSu.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js"
+				"/assets/Footer-D1xgvyL7.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3925,11 +4091,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContributorsPage-CmUpIwCV.js",
+			"module": "/assets/ContributorsPage-CTFoKFAt.js",
 			"imports": [
-				"/assets/ContributorsPage-Cb15XakI.js",
+				"/assets/ContributorsPage-C5JnPRJD.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-DboUGWXx.js"
+				"/assets/Footer-D1xgvyL7.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -3950,29 +4116,31 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContentPage-gyRBy7Sk.js",
+			"module": "/assets/ContentPage-CNOwUIg-.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-Bvv876hS.js",
-				"/assets/Quiz-CCCgoYTg.js",
-				"/assets/ActivitiesPage-DWVmvlh3.js",
-				"/assets/ActivitySetsPage-W0nBOm4g.js",
-				"/assets/AlternativeSocialTechPage-BdZ5nd6a.js",
-				"/assets/ContributorsPage-Cb15XakI.js",
-				"/assets/Footer-DboUGWXx.js",
-				"/assets/YourContentPage-aZtvIP0C.js",
-				"/assets/Results-B_K3w8zP.js",
-				"/assets/HomePage-fYNcWVvF.js",
-				"/assets/TechnologyTypesPage--Ru2dCTH.js",
-				"/assets/questions-CoY3XuON.js",
-				"/assets/annotationStorage-CcREfcvN.js"
+				"/assets/App-BvlU3o1W.js",
+				"/assets/ActivitiesPage-BGP0xbvO.js",
+				"/assets/ActivitySetsPage-DH9Fl8Q1.js",
+				"/assets/AlternativeSocialTechPage-DaAlKOSu.js",
+				"/assets/ContributorsPage-C5JnPRJD.js",
+				"/assets/Footer-D1xgvyL7.js",
+				"/assets/YourContentPage-D9-zXTW_.js",
+				"/assets/activitiesData-Eafj1xju.js",
+				"/assets/Results-Fj5tj3eA.js",
+				"/assets/HomePage-BaFMxn6h.js",
+				"/assets/Quiz-CTyBheRi.js",
+				"/assets/TechnologyTypesPage-Dc2v7NgZ.js",
+				"/assets/annotationStorage-B12SqVVm.js",
+				"/assets/questions-DxipSYNI.js"
 			],
 			"css": [
-				"/assets/Quiz-BYPZ9hme.css",
 				"/assets/Footer-B9bAK1iH.css",
-				"/assets/Results-6BxPi0UY.css",
-				"/assets/HomePage-70OR2PUC.css",
-				"/assets/TechnologyTypesPage-jeEItKQy.css"
+				"/assets/Results-DE7C7vAJ.css",
+				"/assets/HomePage-Cq4_ly3J.css",
+				"/assets/App-2kWgLX4s.css",
+				"/assets/Quiz-CBSUGlBu.css",
+				"/assets/TechnologyTypesPage-BOWfRdDW.css"
 			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -3992,29 +4160,31 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/NotFoundPage--OAp2dqz.js",
+			"module": "/assets/NotFoundPage-BcOcxQrS.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-Bvv876hS.js",
-				"/assets/Quiz-CCCgoYTg.js",
-				"/assets/ActivitiesPage-DWVmvlh3.js",
-				"/assets/ActivitySetsPage-W0nBOm4g.js",
-				"/assets/AlternativeSocialTechPage-BdZ5nd6a.js",
-				"/assets/ContributorsPage-Cb15XakI.js",
-				"/assets/Footer-DboUGWXx.js",
-				"/assets/YourContentPage-aZtvIP0C.js",
-				"/assets/Results-B_K3w8zP.js",
-				"/assets/HomePage-fYNcWVvF.js",
-				"/assets/TechnologyTypesPage--Ru2dCTH.js",
-				"/assets/questions-CoY3XuON.js",
-				"/assets/annotationStorage-CcREfcvN.js"
+				"/assets/App-BvlU3o1W.js",
+				"/assets/ActivitiesPage-BGP0xbvO.js",
+				"/assets/ActivitySetsPage-DH9Fl8Q1.js",
+				"/assets/AlternativeSocialTechPage-DaAlKOSu.js",
+				"/assets/ContributorsPage-C5JnPRJD.js",
+				"/assets/Footer-D1xgvyL7.js",
+				"/assets/YourContentPage-D9-zXTW_.js",
+				"/assets/activitiesData-Eafj1xju.js",
+				"/assets/Results-Fj5tj3eA.js",
+				"/assets/HomePage-BaFMxn6h.js",
+				"/assets/Quiz-CTyBheRi.js",
+				"/assets/TechnologyTypesPage-Dc2v7NgZ.js",
+				"/assets/annotationStorage-B12SqVVm.js",
+				"/assets/questions-DxipSYNI.js"
 			],
 			"css": [
-				"/assets/Quiz-BYPZ9hme.css",
 				"/assets/Footer-B9bAK1iH.css",
-				"/assets/Results-6BxPi0UY.css",
-				"/assets/HomePage-70OR2PUC.css",
-				"/assets/TechnologyTypesPage-jeEItKQy.css"
+				"/assets/Results-DE7C7vAJ.css",
+				"/assets/HomePage-Cq4_ly3J.css",
+				"/assets/App-2kWgLX4s.css",
+				"/assets/Quiz-CBSUGlBu.css",
+				"/assets/TechnologyTypesPage-BOWfRdDW.css"
 			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -4022,8 +4192,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-0012736a.js",
-	"version": "0012736a",
+	"url": "/assets/manifest-0deb8ee3.js",
+	"version": "0deb8ee3",
 	"sri": void 0
 };
 //#endregion
@@ -4055,34 +4225,35 @@ var prerender = [
 	"/content/Categories",
 	"/content/Manifesto",
 	"/content/Privacy",
+	"/content/Quiz/results/EDFpC",
+	"/content/Quiz/results/EDFpL",
+	"/content/Quiz/results/EDFtC",
+	"/content/Quiz/results/EDFtL",
+	"/content/Quiz/results/EDGC",
+	"/content/Quiz/results/EDGL",
+	"/content/Quiz/results/EMFpC",
+	"/content/Quiz/results/EMFpL",
+	"/content/Quiz/results/EMFtC",
+	"/content/Quiz/results/EMFtL",
+	"/content/Quiz/results/EMGC",
+	"/content/Quiz/results/EMGL",
+	"/content/Quiz/results/WDFpC",
+	"/content/Quiz/results/WDFpL",
+	"/content/Quiz/results/WDFtC",
+	"/content/Quiz/results/WDFtL",
+	"/content/Quiz/results/WDGC",
+	"/content/Quiz/results/WDGL",
+	"/content/Quiz/results/WMFpC",
+	"/content/Quiz/results/WMFpL",
+	"/content/Quiz/results/WMFtC",
+	"/content/Quiz/results/WMFtL",
+	"/content/Quiz/results/WMGC",
+	"/content/Quiz/results/WMGL",
 	"/content/activities/20260512-datingprofile/datingprofile",
 	"/content/activities/20260512-valuesbaseddesign/valuesbaseddesign",
+	"/content/activities/TEMPLATE/ACTIVITY_TEMPLATE",
 	"/content/alternativesocialtech/Platforms",
 	"/content/contenttowrite",
-	"/content/results/EDFpC",
-	"/content/results/EDFpL",
-	"/content/results/EDFtC",
-	"/content/results/EDFtL",
-	"/content/results/EDGC",
-	"/content/results/EDGL",
-	"/content/results/EMFpC",
-	"/content/results/EMFpL",
-	"/content/results/EMFtC",
-	"/content/results/EMFtL",
-	"/content/results/EMGC",
-	"/content/results/EMGL",
-	"/content/results/WDFpC",
-	"/content/results/WDFpL",
-	"/content/results/WDFtC",
-	"/content/results/WDFtL",
-	"/content/results/WDGC",
-	"/content/results/WDGL",
-	"/content/results/WMFpC",
-	"/content/results/WMFpL",
-	"/content/results/WMFtC",
-	"/content/results/WMFtL",
-	"/content/results/WMGC",
-	"/content/results/WMGL",
 	"/content/sample-guide"
 ];
 var routeDiscovery = { "mode": "initial" };

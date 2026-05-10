@@ -1,0 +1,7 @@
+[] Copy this folder
+[] Rename the folder with the name scheme YYYYMMDD-yourtitle
+[] Update the ACTIVITY_TEMPLATE.md file with your content
+    - There's a default activity in it. These can either be text fields or file uploads
+[] Make sure to include a header image and an og-image
+[] Update app/components/activitiesData.js to add your information
+[] Delete this file after use

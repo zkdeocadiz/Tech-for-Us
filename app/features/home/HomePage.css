@@ -25,7 +25,8 @@
 
 .home-hero__logo {
   display: block;
-  width: min(565px, 86vw);
+  width: min(700px, 86vw);
+  width:100%;
   margin: 0 auto 24px;
   height: auto;
 }

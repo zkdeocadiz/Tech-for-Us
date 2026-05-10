@@ -33,7 +33,7 @@ export default function Results() {
 
     setResultFileId(filename);
 
-    const resultsPath = `${import.meta.env.BASE_URL}results/${filename}.md`;
+    const resultsPath = `${import.meta.env.BASE_URL}Quiz/results/${filename}.md`;
 
     fetch(resultsPath)
       .then(res => {

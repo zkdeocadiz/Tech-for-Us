@@ -4,30 +4,25 @@
  */
 export const activities = [
   {
-    id: 'mapping-your-network',
-    title: 'Mapping Your Network',
-    publishedDate: '2024-05-15',
-    lastEditedDate: '2024-05-15', // Example: same as published initially
-    description: 'Visualize the different digital spaces you inhabit and who you meet there.',
-    tags: ['Reflection', 'Visual'],
-    ogImage: '/activity-assets/mapping-your-network/og-image.jpg' // Example OG image path
+    id: '20260512-datingprofile',
+    title: 'How to Write a Better Dating Profile',
+    publishedDate: '2026-05-15',
+    description: 'Learn how to create a dating profile that authentically represents you.',
+    tags: ['tag1', 'tag2'],
+    tone: 'white',
+    href: '/activities/how-to-write-a-better-dating-profile',
+    coverImage: 'activities/0260512-datingprofile/cover.png',
+    ogImage: 'activities/0260512-datingprofile/og-image.png'
   },
   {
-    id: 'digital-boundaries-workshop',
-    title: 'Setting Digital Boundaries',
-    publishedDate: '2024-04-20',
-    lastEditedDate: '2024-05-01', // Example: updated later
-    description: 'A step-by-step guide to reclaiming your time from addictive algorithms.',
-    tags: ['Practical', 'Advanced'],
-    ogImage: '/activity-assets/digital-boundaries-workshop/og-image.jpg'
-  },
-  {
-    id: 'sample-guide',
-    title: 'Sample Activity Guide',
-    publishedDate: '2023-10-27',
-    lastEditedDate: '2023-10-27',
-    description: 'Learn how to use the interactive features of this site effectively.',
-    tags: ['Introduction'],
-    ogImage: '/activity-assets/sample-guide/og-image.jpg'
+    id: '20260512-valuesbaseddesign',
+    title: 'Value-based Design',
+    publishedDate: '2026-05-15',
+    description: 'Explore design principles centered on user values.',
+    tags: ['tag1', 'tag2'],
+    tone: 'pink',
+    href: '/activities/value-based-design',
+    coverImage: 'activities/0260512-valuesbaseddesign/cover.png',
+    ogImage: 'activities/0260512-valuesbaseddesign/og-image.png'
   }
 ];

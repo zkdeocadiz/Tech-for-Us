@@ -66,12 +66,23 @@ export default function MarkdownPageLoader() {
         setLoading(true);
         setError(null);
         
-        // Build paths to try - prioritize results folder
-        const paths = [
-          `/results/${pageId}.md`,
-          `/activities/${pageId}.md`,
-          `/${pageId}.md`,
-        ];
+        // Detect if this is an activity page (starts with date pattern like 20260512-*)
+        const isActivityPage = /^\d{8}-/.test(pageId);
+        
+        // Build paths to try - prioritize based on content type
+        const paths = isActivityPage
+          ? [
+              `/activities/${pageId}.md`,
+              `/Quiz/results/${pageId}.md`,
+              `/results/${pageId}.md`,
+              `/${pageId}.md`,
+            ]
+          : [
+              `/Quiz/results/${pageId}.md`,
+              `/results/${pageId}.md`,
+              `/activities/${pageId}.md`,
+              `/${pageId}.md`,
+            ];
 
         let success = false;
         let text = '';
@@ -95,7 +106,7 @@ export default function MarkdownPageLoader() {
         }
 
         if (!success) {
-          throw new Error(`Could not find markdown file for "${pageId}". Make sure ${pageId}.md exists in /public/results/ or /public/`);
+          throw new Error(`Could not find markdown file for "${pageId}". Make sure ${pageId}.md exists in the appropriate folder (/public/activities/, /public/Quiz/results/, /public/results/, or /public/)`);
         }
 
         console.log('Loaded markdown content:', text.substring(0, 100));
@@ -125,6 +136,8 @@ export default function MarkdownPageLoader() {
         if (extractedMetadata['og-title']) extractedMetadata.title = extractedMetadata['og-title'];
         if (extractedMetadata['og-description']) extractedMetadata.description = extractedMetadata['og-description'];
         if (extractedMetadata['og-image']) extractedMetadata.ogImage = extractedMetadata['og-image'];
+        if (extractedMetadata['header-image']) extractedMetadata.headerImage = extractedMetadata['header-image'];
+        if (!extractedMetadata.ogImage && extractedMetadata.headerImage) extractedMetadata.ogImage = extractedMetadata.headerImage;
 
         setFileMetadata(extractedMetadata);
         setContent(cleanText);

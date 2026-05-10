@@ -5,6 +5,7 @@ import Footer from '../../components/Footer';
 import { annotationStorage } from './annotationStorage';
 import { localFileStorage } from './localFileStorage';
 import './MarkdownPage.css';
+import { loadResult } from '../quiz/storage';
 
 /**
  * MarkdownPage - Template for rendering markdown content with annotations
@@ -87,8 +88,14 @@ const Activity = ({ type, prompt, context, pageId, activityId }) => {
   return (
     <div className="markdown-page__activity-card">
       <div className="markdown-page__activity-header">activity</div>
-      <div className="markdown-page__activity-prompt">{prompt}</div>
-      {context && <div className="markdown-page__activity-context">{context}</div>}
+      <div className="markdown-page__activity-prompt">
+        <ReactMarkdown>{prompt}</ReactMarkdown>
+      </div>
+      {context && (
+        <div className="markdown-page__activity-context">
+          <ReactMarkdown>{context}</ReactMarkdown>
+        </div>
+      )}
       
       {type === 'text' ? (
         <textarea 
@@ -128,6 +135,36 @@ const Activity = ({ type, prompt, context, pageId, activityId }) => {
   );
 };
 
+const resolveMarkdownHeroImage = (headerImage, code) => {
+  if (!headerImage) return '';
+  if (/^https?:\/\//i.test(headerImage)) return headerImage;
+  if (headerImage.startsWith('/')) return headerImage;
+
+  const normalized = headerImage.replace(/^\.\//, '');
+  return code ? `/Quiz/results/${normalized}` : `/${normalized}`;
+};
+
+const AXIS = {
+  E: 'energized',
+  W: 'weary',
+  D: 'desired',
+  M: 'mandatory',
+  G: 'genuine',
+  Ft: 'filtered (tracked)',
+  Fp: 'filtered (polished)',
+  C: 'connected',
+  L: 'lonely',
+};
+
+const expandCodeToLabels = (code) => {
+  if (!code || typeof code !== 'string') return '';
+  const m = code.match(/^([EW])([DM])((?:Ft|Fp|G))([CL])$/i);
+  if (!m) return '';
+  const [, a, b, c, d] = m;
+  const labels = [AXIS[a], AXIS[b], AXIS[c], AXIS[d]].filter(Boolean);
+  return labels.join(', ');
+};
+
 const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content', markdownComponents = {}, metadata }) => {
   const [annotations, setAnnotations] = useState([]);
   const [selectedText, setSelectedText] = useState('');
@@ -148,7 +185,7 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
     creditName: '',
     creditLink: '',
     pageId: pageId,
-    pagePath: `results/${pageId}.md`
+    pagePath: suggestEditPagePath
   });
   const WORKER_URL = 'https://hidden-thunder-0974.makingtechforus.workers.dev';
   const contentRef = useRef(null);
@@ -159,10 +196,22 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
   const [isMobile, setIsMobile] = useState(false);
   const [mobileModalPos, setMobileModalPos] = useState({ top: 0, position: 'above' });
   const annotationInputRef = useRef(null);
+  const [heroImageFallbackUsed, setHeroImageFallbackUsed] = useState(false);
   
   // Store current selection without triggering state updates that would clear it
   const selectionRef = useRef({ text: '', range: null, top: 0 });
   const [inputVisible, setInputVisible] = useState(false);
+
+  // Determine if this page matches the user's stored quiz result
+  const storedResult = typeof window !== 'undefined' ? loadResult() : null;
+  const resultPageId = storedResult
+    ? (storedResult.fSubtype ? storedResult.code.replace('F', storedResult.fSubtype) : storedResult.code)
+    : null;
+  const isMatchingResultPage = !!storedResult && !!resultPageId && pageId.toUpperCase() === resultPageId.toUpperCase();
+  
+  // Determine if this is an activity page (starts with date pattern like 20260512-*)
+  const isActivityPage = /^\d{8}-/.test(pageId);
+  const suggestEditPagePath = isActivityPage ? `activities/${pageId}.md` : `Quiz/results/${pageId}.md`;
 
   // Update page metadata for social sharing
   useEffect(() => {
@@ -242,6 +291,10 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
       document.title = 'Tech for Us';
     };
   }, [metadata]);
+
+  useEffect(() => {
+    setHeroImageFallbackUsed(false);
+  }, [metadata?.headerImage, metadata?.code, pageId]);
 
   // Load annotations from localStorage on mount
   useEffect(() => {
@@ -635,7 +688,7 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
       creditName: '',
       creditLink: '',
       pageId: pageId,
-      pagePath: `results/${pageId}.md`
+      pagePath: suggestEditPagePath
     });
     setShowSuggestionModal(true);
   };
@@ -861,20 +914,54 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
 
       const text = childrenToText(children).trim();
       
-      // Detect ACTIVITY tokens
-      if (text.startsWith('[[ ACTIVITY') && text.endsWith(']]')) {
-        const parts = text.slice(11, -2).split('|').map(s => s.trim());
+      // Detect ACTIVITY tokens (inline `|` form or multiline block form)
+      const activityMatch = text.match(/^\[\[\s*ACTIVITY\s*([\s\S]*?)\s*\]\]$/i);
+      if (activityMatch) {
+        const body = activityMatch[1] || '';
         const props = {};
-        parts.forEach(p => {
-          const [k, ...v] = p.split(':');
-          if (k && v) props[k.trim()] = v.join(':').trim();
-        });
+
+        if (body.includes('\n')) {
+          // Multiline form: parse lines like `key: value` and `key: |` for blocks
+          const lines = body.split(/\r?\n/);
+          for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            if (!line.trim()) continue;
+            const kv = line.match(/^([^:]+):\s*(.*)$/);
+            if (!kv) continue;
+            const key = kv[1].trim();
+            let val = kv[2] || '';
+
+            if (val === '|') {
+              // collect subsequent lines until next `key:` or end
+              const buf = [];
+              i++;
+              while (i < lines.length && !/^[^:\s]+:\s*/.test(lines[i])) {
+                buf.push(lines[i]);
+                i++;
+              }
+              i--; // step back so outer loop continues correctly
+              val = buf.join('\n').replace(/^\s{0,2}/gm, '');
+            }
+
+            props[key] = (val || '').trim();
+          }
+        } else {
+          // Legacy inline pipe-separated form: `type: text | prompt: X | id: foo`
+          const parts = body.split('|').map(s => s.trim()).filter(Boolean);
+          parts.forEach(p => {
+            const idx = p.indexOf(':');
+            if (idx === -1) return;
+            const k = p.slice(0, idx).trim();
+            const v = p.slice(idx + 1).trim();
+            props[k] = v;
+          });
+        }
 
         return (
-          <Activity 
-            type={props.type || 'text'} 
-            prompt={props.prompt} 
-            context={props.context} 
+          <Activity
+            type={props.type || 'text'}
+            prompt={props.prompt}
+            context={props.context}
             pageId={pageId}
             activityId={props.id || 'default'}
           />
@@ -883,19 +970,23 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
       return <p>{renderHighlightedNode(children, 'p')}</p>;
     },
     li: ({ children }) => <li>{renderHighlightedNode(children, 'li')}</li>,
-    h1: ({ children }) => (
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ marginBottom: '0.5rem' }}>{renderHighlightedNode(toTitleCaseNode(children), 'h1')}</h1>
-        {metadata && metadata.publishedDate && (
-          <div style={{ fontSize: '0.9rem', color: 'var(--color-blue)', opacity: 0.8, fontFamily: 'Inclusive Sans' }}>
-            {new Date(metadata.publishedDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
-            {metadata.lastEditedDate && metadata.lastEditedDate !== metadata.publishedDate && (
-              <span style={{ marginLeft: '12px', paddingLeft: '12px', borderLeft: '1px solid currentColor' }}>Updated: {new Date(metadata.lastEditedDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-            )}
-          </div>
-        )}
-      </div>
-    ),
+    h1: ({ children }) => {
+      // If metadata.name exists we render the title above the markdown and skip the H1 to avoid duplication
+      if (metadata?.name) return null;
+      return (
+        <div style={{ marginBottom: '2rem' }}>
+          <h1 style={{ marginBottom: '0.5rem' }}>{renderHighlightedNode(toTitleCaseNode(children), 'h1')}</h1>
+          {metadata && metadata.publishedDate && (
+            <div style={{ fontSize: '0.9rem', color: 'var(--color-blue)', opacity: 0.8, fontFamily: 'Inclusive Sans' }}>
+              {new Date(metadata.publishedDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+              {metadata.lastEditedDate && metadata.lastEditedDate !== metadata.publishedDate && (
+                <span style={{ marginLeft: '12px', paddingLeft: '12px', borderLeft: '1px solid currentColor' }}>Updated: {new Date(metadata.lastEditedDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+              )}
+            </div>
+          )}
+        </div>
+      );
+    },
     h2: ({ children }) => <h2>{renderHighlightedNode(children, 'h2')}</h2>,
     h3: ({ children }) => <h3>{renderHighlightedNode(children, 'h3')}</h3>,
     h4: ({ children }) => <h4>{renderHighlightedNode(children, 'h4')}</h4>,
@@ -941,6 +1032,35 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
           className="markdown-page__content"
           ref={contentRef}
         >
+          <div className="markdown-page__top-header">
+            {isMatchingResultPage && (
+              <div className="markdown-page__you-are">YOU ARE</div>
+            )}
+
+            <h1 className="markdown-page__type-name">{metadata?.name || metadata?.title || title || pageId}</h1>
+
+            { (metadata?.headerImage || metadata?.code) && (
+              <div className="markdown-page__hero">
+                <img
+                  className="markdown-page__hero-image"
+                  src={heroImageFallbackUsed && metadata?.code ? `/Quiz/results/images/${metadata.code}.png` : resolveMarkdownHeroImage(metadata.headerImage, metadata?.code)}
+                  alt={metadata?.name || metadata?.title || pageId}
+                  loading="eager"
+                  decoding="async"
+                  onError={() => {
+                    if (!heroImageFallbackUsed) setHeroImageFallbackUsed(true);
+                  }}
+                />
+              </div>
+            )}
+
+            <div className="markdown-page__code-line">
+              <strong>{(metadata && (metadata.code || metadata.id)) || pageId}</strong>
+              <span className="markdown-page__code-dash"> - </span>
+              <em className="markdown-page__code-labels">{expandCodeToLabels(metadata?.code || pageId) || metadata?.subtitle || ''}</em>
+            </div>
+          </div>
+
           <ReactMarkdown components={{ ...defaultMarkdownComponents, ...enhancedMarkdownComponents }}>
             {content}
           </ReactMarkdown>

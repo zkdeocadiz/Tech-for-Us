@@ -1,0 +1,1 @@
+import{t as e}from"./ActivitiesPage-BGP0xbvO.js";export{e as default};

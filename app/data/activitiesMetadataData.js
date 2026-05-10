@@ -27,5 +27,19 @@ export const data = [
     "og-title": "SEO-optimized Title for social sharing",
     "og-description": "Brief summary for previews",
     "og-image": "/path/to/preview.jpg"
+  },
+  {
+    "id": "TEMPLATE/ACTIVITY_TEMPLATE",
+    "title": "Display Title",
+    "description": "",
+    "tags": [
+      "tag1",
+      "tag2"
+    ],
+    "date": "2026-05-15",
+    "author": "",
+    "og-title": "SEO-optimized Title for social sharing",
+    "og-description": "Brief summary for previews",
+    "og-image": "/path/to/preview.jpg"
   }
 ];

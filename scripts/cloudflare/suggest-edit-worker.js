@@ -40,7 +40,7 @@ export default {
       pagePath = ''
     } = data;
 
-    const filePath = pagePath || (pageId ? `results/${pageId}.md` : 'results/unknown.md');
+    const filePath = pagePath || (pageId ? `Quiz/results/${pageId}.md` : 'Quiz/results/unknown.md');
 
     const issueBody = [
       `**File**: \`${filePath}\``,

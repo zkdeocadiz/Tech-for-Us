@@ -1,34 +1,46 @@
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { activities } from '../../components/activitiesData';
 import './HomePage.css';
+import '../../App.css';
 
 const featureIcon = 'https://www.figma.com/api/mcp/asset/4fd5c91c-08f2-495e-9015-86c7d517aab3';
-const heroLogo = 'https://www.figma.com/api/mcp/asset/9512459b-36f1-4949-9572-fe0decf7dbfa';
+const heroLogo = 'HomePage/Header.png';
 
 const features = [
   {
+    image: 'HomePage/Activities.png',
     title: 'Activities',
     body: 'This isn’t a passive reading exercise. Get hands-on practice through active exercises for all content.',
   },
   {
+    image: 'HomePage/Annotations.png',
     title: 'Annotations',
     body: 'You can annotate every post or activity, because everything should adapt to what you need.',
   },
   {
+    image: 'HomePage/Private.png',
     title: 'Private',
     body: 'Everything is only saved onto your computer - no data in the cloud and nothing sent to us unless you want us to see it.',
   },
   {
-    title: 'Co-created',
+    image: 'HomePage/Co-Created.png',
+    title: 'Co-Created',
     body: 'See something you think should be changed? Submit a change because Tech for Us is driven by the community.',
   },
 ];
 
-const activityCards = [
-  { title: 'How to write a better dating app', text: 'lorem ipsum', tone: 'white', href: '/#activities' },
-  { title: 'Value-based design', text: 'lorem ipsum', tone: 'pink', href: '/#activities' },
-  { title: 'Groupchat', text: 'lorem ipsum', tone: 'blue', href: '/#activities' },
-];
+// Get most recent activities sorted by publishedDate
+const activityCards = activities
+  .sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate))
+  .slice(0, 3)
+  .map((activity) => ({
+    title: activity.title,
+    text: activity.description,
+    tone: activity.tone,
+    href: activity.href,
+    coverImage: activity.coverImage,
+  }));
 
 export default function HomePage() {
   return (
@@ -67,9 +79,7 @@ export default function HomePage() {
 
         <section className="activities home-page__section" id="activities" aria-labelledby="activities-heading">
           <div className="home-page__shell">
-            <h2 className="home-section-title" id="activities-heading">
-              Newest Activities
-            </h2>
+            
 
             <div className="activities__grid">
               <a className="activity-link activity-link--feature" href="/quiz" aria-label="Open What’s your technology type activity">
@@ -81,11 +91,20 @@ export default function HomePage() {
                   </div>
                 </article>
               </a>
+            </div>
+
+            <h2 id="activities-heading">
+              Newest Activities
+            </h2>
+
+            <div className="activities__grid">
 
               {activityCards.map((card) => (
                 <a className="activity-link" href={card.href} key={card.title} aria-label={`Open ${card.title} activity`}>
                   <article className="activity-card">
-                    <div className={`activity-card__visual activity-card__visual--${card.tone}`} />
+                    <div className={`activity-card__visual activity-card__visual--${card.tone}`}>
+                      <img className="activity-card__cover" src={card.coverImage} alt="" aria-hidden="true" />
+                    </div>
                     <div className="activity-card__body">
                       <h3 className="activity-card__title">{card.title}</h3>
                       <p className="activity-card__text">{card.text}</p>
@@ -97,14 +116,14 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="tracks home-page__section" id="tracks" aria-labelledby="tracks-heading">
+        {/* <section className="tracks home-page__section" id="tracks" aria-labelledby="tracks-heading">
           <div className="home-page__shell">
-            <h2 className="home-section-title" id="tracks-heading">
+            <h2 id="tracks-heading">
               Curriculum Tracks
             </h2>
             <p className="tracks__text">Coming Soon</p>
           </div>
-        </section>
+        </section> */}
       </main>
 
       <Footer />
