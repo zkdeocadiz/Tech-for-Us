@@ -18,6 +18,26 @@ import { loadResult } from '../quiz/storage';
  * - Dynamic SEO meta tags from YAML frontmatter (og-title, og-description, og-image)
  */
 
+const childrenToText = (node) => {
+  const arr = Array.isArray(node) ? node : [node];
+  return arr
+    .map((child) => {
+      if (typeof child === 'string') return child;
+      if (isValidElement(child)) return childrenToText(child.props.children);
+      return '';
+    })
+    .join('');
+};
+
+// Robust slug generator to ensure sidebar IDs and content IDs always match
+const slugify = (text) => 
+  text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters like smart quotes, parentheses
+    .replace(/\s+/g, '-')     // Replace spaces with dashes
+    .replace(/-+/g, '-')      // Prevent double dashes
+    .trim();
+
 const Activity = ({ type, prompt, context, pageId, activityId }) => {
   const [textValue, setTextValue] = useState('');
   const [fileValue, setFileValue] = useState(null);
@@ -330,18 +350,49 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Handle global keyboard shortcuts for scrolling (like Cmd+Down / Cmd+Up)
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName) || e.target.isContentEditable) return;
+
+      const container = contentRef.current;
+      const isBottom = (e.metaKey && e.key === 'ArrowDown') || e.key === 'End';
+      const isTop = (e.metaKey && e.key === 'ArrowUp') || e.key === 'Home';
+
+      if (isBottom && container) {
+        e.preventDefault();
+        container.scrollTo({ 
+          top: container.scrollHeight, 
+          behavior: 'smooth' 
+        });
+      } else if (isTop && container) {
+        e.preventDefault();
+        container.scrollTo({ 
+          top: 0, 
+          behavior: 'smooth' 
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
+
   // Extract H2s from markdown to build navigation
   useEffect(() => {
-    const headings = [];
+    const extractedHeadings = [];
     const lines = content.split('\n');
     lines.forEach((line, index) => {
-      if (line.startsWith('## ')) {
-        const text = line.replace(/^## /, '').trim();
-        const id = `heading-${index}`;
-        headings.push({ id, text, lineIndex: index });
+      // Match H2s (## Heading)
+      const match = line.match(/^##\s+(.+)$/);
+      if (match) {
+        // Strip basic markdown formatting for the slug
+        const text = match[1].replace(/[*_~`]|\[|\]\(.*?\)/g, '').trim();
+        const id = `heading-${slugify(text)}`;
+        extractedHeadings.push({ id, text, lineIndex: index });
       }
     });
-    setHeadings(headings);
+    setHeadings(extractedHeadings);
   }, [content]);
 
   // Handle text selection in content area WITHOUT triggering state updates
@@ -837,10 +888,11 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
   // Navigate to heading
   const handleHeadingClick = (headingId) => {
     setActiveHeading(headingId);
-    // Scroll to the section
-    const section = document.querySelector(`[data-heading-id="${headingId}"]`);
+    
+    // Using standard ID attributes is more robust than data-attributes
+    const section = document.getElementById(headingId);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -921,15 +973,6 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
 
   const defaultMarkdownComponents = {
     p: ({ children }) => {
-      const childrenToText = (node) => {
-        const arr = Array.isArray(node) ? node : [node];
-        return arr.map(child => {
-          if (typeof child === 'string') return child;
-          if (isValidElement(child)) return childrenToText(child.props.children);
-          return '';
-        }).join('');
-      };
-
       const text = childrenToText(children).trim();
       
       // Check if this paragraph consists solely of an activity token
@@ -1007,7 +1050,11 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
         </div>
       );
     },
-    h2: ({ children }) => <h2>{renderHighlightedNode(children, 'h2')}</h2>,
+    h2: ({ children }) => {
+      const text = childrenToText(children).trim();
+      const id = `heading-${slugify(text)}`;
+      return <h2 id={id}>{renderHighlightedNode(children, 'h2')}</h2>;
+    },
     h3: ({ children }) => <h3>{renderHighlightedNode(children, 'h3')}</h3>,
     h4: ({ children }) => <h4>{renderHighlightedNode(children, 'h4')}</h4>,
     h5: ({ children }) => <h5>{renderHighlightedNode(children, 'h5')}</h5>,
@@ -1051,6 +1098,8 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
         <div
           className="markdown-page__content"
           ref={contentRef}
+          tabIndex="0"
+          aria-label="Article content"
         >
           <div className="markdown-page__top-header">
             {isMatchingResultPage && (

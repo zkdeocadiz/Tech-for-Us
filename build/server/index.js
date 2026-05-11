@@ -474,10 +474,10 @@ var HomePage_default = UNSAFE_withComponentProps(function HomePage() {
 									" for helping you figure out what role technology should have in your life and how to get there"
 								]
 							}),
-							/* @__PURE__ */ jsx("a", {
+							/* @__PURE__ */ jsx(Link$1, {
 								className: "home-button",
-								href: "#activities",
-								children: "The Manifesto"
+								to: "/content/Positionality",
+								children: "Why does this exist?"
 							})
 						]
 					})
@@ -1407,7 +1407,7 @@ function Question({ question, index, total, value, onChange }) {
 //#endregion
 //#region app/features/quiz/Quiz.jsx
 var Quiz_exports = /* @__PURE__ */ __exportAll({ default: () => Quiz_default });
-var quizBannerImage = "https://www.figma.com/api/mcp/asset/825fa458-8cd2-4d77-8a15-0aa4d5ab1944";
+var quizBannerImage = "/Quiz/TechTypeQuizHeader.png";
 function shuffleArray(array) {
 	const arr = [...array];
 	for (let i = arr.length - 1; i > 0; i--) {
@@ -1695,6 +1695,14 @@ function ScoreVisualization({ scores, fSubtype, showTitle = true }) {
 * - Public edit suggestions
 * - Dynamic SEO meta tags from YAML frontmatter (og-title, og-description, og-image)
 */
+var childrenToText = (node) => {
+	return (Array.isArray(node) ? node : [node]).map((child) => {
+		if (typeof child === "string") return child;
+		if (isValidElement(child)) return childrenToText(child.props.children);
+		return "";
+	}).join("");
+};
+var slugify = (text) => text.toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim();
 var Activity = ({ type, prompt, context, pageId, activityId }) => {
 	const [textValue, setTextValue] = useState("");
 	const [fileValue, setFileValue] = useState(null);
@@ -1968,19 +1976,43 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 	useEffect(() => {
-		const headings = [];
+		const handleGlobalKeyDown = (e) => {
+			if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) return;
+			const container = contentRef.current;
+			if (!container) return;
+			const isBottom = e.metaKey && e.key === "ArrowDown" || e.key === "End";
+			const isTop = e.metaKey && e.key === "ArrowUp" || e.key === "Home";
+			if (isBottom) {
+				e.preventDefault();
+				container.scrollTo({
+					top: container.scrollHeight,
+					behavior: "smooth"
+				});
+			} else if (isTop) {
+				e.preventDefault();
+				container.scrollTo({
+					top: 0,
+					behavior: "smooth"
+				});
+			}
+		};
+		window.addEventListener("keydown", handleGlobalKeyDown);
+		return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+	}, []);
+	useEffect(() => {
+		const extractedHeadings = [];
 		content.split("\n").forEach((line, index) => {
 			if (line.startsWith("## ")) {
 				const text = line.replace(/^## /, "").trim();
-				const id = `heading-${index}`;
-				headings.push({
+				const id = `heading-${slugify(text)}`;
+				extractedHeadings.push({
 					id,
 					text,
 					lineIndex: index
 				});
 			}
 		});
-		setHeadings(headings);
+		setHeadings(extractedHeadings);
 	}, [content]);
 	useEffect(() => {
 		let timeoutId;
@@ -2338,8 +2370,18 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 	};
 	const handleHeadingClick = (headingId) => {
 		setActiveHeading(headingId);
-		const section = document.querySelector(`[data-heading-id="${headingId}"]`);
-		if (section) section.scrollIntoView({ behavior: "smooth" });
+		const container = contentRef.current;
+		if (!container) return;
+		const section = container.querySelector(`[data-heading-id="${headingId}"]`);
+		if (section) {
+			const sectionRect = section.getBoundingClientRect();
+			const containerRect = container.getBoundingClientRect();
+			const scrollTarget = sectionRect.top - containerRect.top + container.scrollTop;
+			container.scrollTo({
+				top: scrollTarget - 24,
+				behavior: "smooth"
+			});
+		}
 	};
 	const formatDate = (isoString) => {
 		return new Date(isoString).toLocaleDateString(void 0, {
@@ -2396,13 +2438,6 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 	};
 	const defaultMarkdownComponents = {
 		p: ({ children }) => {
-			const childrenToText = (node) => {
-				return (Array.isArray(node) ? node : [node]).map((child) => {
-					if (typeof child === "string") return child;
-					if (isValidElement(child)) return childrenToText(child.props.children);
-					return "";
-				}).join("");
-			};
 			const text = childrenToText(children).trim();
 			if (activityMap.has(text)) {
 				const body = activityMap.get(text);
@@ -2479,7 +2514,12 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 				})]
 			});
 		},
-		h2: ({ children }) => /* @__PURE__ */ jsx("h2", { children: renderHighlightedNode(children, "h2") }),
+		h2: ({ children }) => {
+			return /* @__PURE__ */ jsx("h2", {
+				"data-heading-id": `heading-${slugify(childrenToText(children).trim())}`,
+				children: renderHighlightedNode(children, "h2")
+			});
+		},
 		h3: ({ children }) => /* @__PURE__ */ jsx("h3", { children: renderHighlightedNode(children, "h3") }),
 		h4: ({ children }) => /* @__PURE__ */ jsx("h4", { children: renderHighlightedNode(children, "h4") }),
 		h5: ({ children }) => /* @__PURE__ */ jsx("h5", { children: renderHighlightedNode(children, "h5") }),
@@ -2512,6 +2552,8 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 					/* @__PURE__ */ jsxs("div", {
 						className: "markdown-page__content",
 						ref: contentRef,
+						tabIndex: "0",
+						"aria-label": "Article content",
 						children: [/* @__PURE__ */ jsxs("div", {
 							className: "markdown-page__top-header",
 							children: [
@@ -2536,17 +2578,17 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 										}
 									})
 								}),
-								/* @__PURE__ */ jsxs("div", {
+								metadata?.code && /* @__PURE__ */ jsxs("div", {
 									className: "markdown-page__code-line",
 									children: [
-										/* @__PURE__ */ jsx("strong", { children: metadata && (metadata.code || metadata.id) || pageId }),
+										/* @__PURE__ */ jsx("strong", { children: metadata.code }),
 										/* @__PURE__ */ jsx("span", {
 											className: "markdown-page__code-dash",
 											children: " - "
 										}),
 										/* @__PURE__ */ jsx("em", {
 											className: "markdown-page__code-labels",
-											children: expandCodeToLabels(metadata?.code || pageId) || metadata?.subtitle || ""
+											children: expandCodeToLabels(metadata.code) || metadata?.subtitle || ""
 										})
 									]
 								})
@@ -3246,11 +3288,8 @@ var TechnologyTypesPage_default = UNSAFE_withComponentProps(function TechnologyT
 			cancelled = true;
 		};
 	}, []);
-	const orderedTypes = [...ALL_TYPES].sort((a, b) => {
-		if (a.code === highlightedCode) return -1;
-		if (b.code === highlightedCode) return 1;
-		return 0;
-	});
+	const userType = ALL_TYPES.find((t) => t.code === highlightedCode);
+	const gridTypes = highlightedCode ? ALL_TYPES.filter((t) => t.code !== highlightedCode) : ALL_TYPES;
 	return /* @__PURE__ */ jsxs("div", {
 		className: "types-page",
 		children: [
@@ -3258,30 +3297,77 @@ var TechnologyTypesPage_default = UNSAFE_withComponentProps(function TechnologyT
 			/* @__PURE__ */ jsxs("main", {
 				className: "types-main",
 				children: [
-					/* @__PURE__ */ jsx("p", {
-						className: "quiz-kicker",
-						children: "What’s your"
-					}),
-					/* @__PURE__ */ jsx("h1", {
-						className: "quiz-heading",
-						id: "quiz-heading",
-						children: "Technology Type?"
+					/* @__PURE__ */ jsxs("div", {
+						className: "types-header",
+						children: [/* @__PURE__ */ jsx("p", {
+							className: "quiz-kicker",
+							children: "What’s your"
+						}), /* @__PURE__ */ jsx("h1", {
+							className: "quiz-heading",
+							id: "quiz-heading",
+							children: "Technology Type?"
+						})]
 					}),
 					/* @__PURE__ */ jsx("p", {
 						className: "types-subtitle",
 						children: "Billions of people use social tech to stay connected to each other... but we all have our own personal relationship with it. Technology Types are a way to explore that relationship, to help you figure out ways to survive in an increasingly technology-driven world."
 					}),
+					/* @__PURE__ */ jsx(Link$1, {
+						to: "/content/Categories",
+						className: "quiz-button",
+						"aria-describedby": "quiz-heading",
+						children: "learn about the dimensions"
+					}),
+					userType && /* @__PURE__ */ jsxs("section", {
+						className: "types-featured",
+						children: [/* @__PURE__ */ jsx(Link$1, {
+							to: `/content/${userType.code}`,
+							className: "types-featured-link",
+							children: /* @__PURE__ */ jsxs("article", {
+								className: "types-featured-card",
+								children: [/* @__PURE__ */ jsx("img", {
+									src: `/Quiz/results/images/${userType.code}.png`,
+									alt: "",
+									"aria-hidden": "true",
+									className: "types-featured__image"
+								}), /* @__PURE__ */ jsxs("div", {
+									className: "types-featured__content",
+									children: [
+										/* @__PURE__ */ jsx("p", {
+											className: "types-featured__code",
+											children: "You are"
+										}),
+										/* @__PURE__ */ jsx("h3", {
+											className: "types-featured__name",
+											children: typeNames[userType.code] || userType.code
+										}),
+										/* @__PURE__ */ jsx("p", {
+											className: "types-featured__code",
+											children: userType.code
+										}),
+										/* @__PURE__ */ jsx("p", {
+											className: "types-featured__labels",
+											children: userType.labels.join(", ")
+										})
+									]
+								})]
+							})
+						}), /* @__PURE__ */ jsx(Link$1, {
+							to: "/quiz",
+							className: "types-retake",
+							children: "Not right? Retake the quiz"
+						})]
+					}),
 					/* @__PURE__ */ jsx("h2", { children: "All Technology Types" }),
 					/* @__PURE__ */ jsx("div", {
 						className: "types-grid",
-						children: orderedTypes.map((type) => {
-							const isActive = highlightedCode === type.code;
+						children: gridTypes.map((type) => {
 							const typeName = typeNames[type.code];
 							return /* @__PURE__ */ jsx(Link$1, {
 								to: `/content/${type.code}`,
 								className: "types-card-link",
 								children: /* @__PURE__ */ jsxs("article", {
-									className: `types-card ${isActive ? "active" : ""}`,
+									className: "types-card",
 									children: [/* @__PURE__ */ jsx("img", {
 										src: `/Quiz/results/images/${type.code}.png`,
 										alt: "",
@@ -3307,6 +3393,25 @@ var TechnologyTypesPage_default = UNSAFE_withComponentProps(function TechnologyT
 								})
 							}, type.code);
 						})
+					}),
+					/* @__PURE__ */ jsxs("div", {
+						className: "types-method",
+						children: [
+							/* @__PURE__ */ jsx("h2", { children: "Method" }),
+							/* @__PURE__ */ jsx("p", { children: "A selection of frustrations with technology were collected from a range of sources, including social media, research papers, and media outlets. These frustrations were sorted categorically to create the different dimensions. From there, speculative design methods were used to explore what types of people the Technology Types might represent." }),
+							/* @__PURE__ */ jsx("p", { children: "I tested it with the Open Project: Experimental Infrastructures class at Harvard GSD, and I’m especially grateful to all the reviewers who gave feedback and advice... especially the folks who told me this was an interesting idea and I should pursue it." }),
+							/* @__PURE__ */ jsx("p", { children: "All of the illustrations were drawn by me in Procreate, with only occasional drawing references taken by me or from stock photo sites." }),
+							/* @__PURE__ */ jsx("h3", { children: "AI Statement" }),
+							/* @__PURE__ */ jsx("p", { children: "ChatGPT 5.1 was used:" }),
+							/* @__PURE__ */ jsxs("ul", { children: [
+								/* @__PURE__ */ jsx("li", { children: "to ideate on titles for each of the Technology Types" }),
+								/* @__PURE__ */ jsx("li", { children: "suggesting names for the dimensions based on the descriptions of them, to explore word combinations that sounded good as a string when shortened to initials for the Technology Type codes" }),
+								/* @__PURE__ */ jsx("li", { children: "to shorten written descriptions, with explicit instructions to keep as much of the original phrasing as possible" }),
+								/* @__PURE__ */ jsx("li", { children: "to generate code to make the quiz work" }),
+								/* @__PURE__ */ jsx("li", { children: "to generate engineering templates for each of the pages (i.e. copy and pasting)" }),
+								/* @__PURE__ */ jsx("li", { children: "to research alternate social media platforms, as it is increasingly difficult to use search engines to find information" })
+							] })
+						]
 					})
 				]
 			}),
@@ -3658,7 +3763,7 @@ var ContributorsPage_default = UNSAFE_withComponentProps(function ContributorsPa
 				children: [/* @__PURE__ */ jsx("h1", {
 					style: { color: "var(--color-blue)" },
 					children: "Contributors"
-				}), /* @__PURE__ */ jsx("p", { children: "Tech for Us is co-created by a diverse community of thinkers, builders, and users." })]
+				}), /* @__PURE__ */ jsx("p", { children: "Tech for Us is co-created by a diverse community of thinkers, builders, and users. This page " })]
 			}),
 			/* @__PURE__ */ jsx(Footer, {})
 		]
@@ -3737,6 +3842,7 @@ function MarkdownPageLoader() {
 					`/${pageId}.md`
 				] : [
 					`/Quiz/results/${pageId}.md`,
+					`/Quiz/${pageId}.md`,
 					`/results/${pageId}.md`,
 					`/activities/${pageId}/${pageId}.md`,
 					`/${pageId}.md`
@@ -3961,9 +4067,9 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/HomePage-CqjplRjc.js",
+			"module": "/assets/HomePage-BrsCdV85.js",
 			"imports": [
-				"/assets/HomePage-C0ZKAUcS.js",
+				"/assets/HomePage-CYUSFF8P.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
 				"/assets/Footer-CMaTI95w.js",
 				"/assets/activitiesData-Dlm-n7zn.js"
@@ -4017,15 +4123,15 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Quiz-CK1a_Xlu.js",
+			"module": "/assets/Quiz-Ci2uhuYD.js",
 			"imports": [
-				"/assets/Quiz-BtrHoh-y.js",
+				"/assets/Quiz-5Gi0E7iN.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
 				"/assets/Footer-CMaTI95w.js",
 				"/assets/questions-DxipSYNI.js"
 			],
 			"css": [
-				"/assets/Quiz-CBSUGlBu.css",
+				"/assets/Quiz-D2I9eatw.css",
 				"/assets/App-2kWgLX4s.css",
 				"/assets/Footer-B9bAK1iH.css"
 			],
@@ -4047,9 +4153,9 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Results-Sxi5_uEk.js",
+			"module": "/assets/Results-BOUNEcVO.js",
 			"imports": [
-				"/assets/Results-dqPrtMS8.js",
+				"/assets/Results-CNNwpTz_.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
 				"/assets/Footer-CMaTI95w.js",
 				"/assets/annotationStorage-B12SqVVm.js",
@@ -4074,13 +4180,13 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/TechnologyTypesPage-D2ockUxO.js",
+			"module": "/assets/TechnologyTypesPage-D6oRYvre.js",
 			"imports": [
-				"/assets/TechnologyTypesPage-DYCxfOBf.js",
+				"/assets/TechnologyTypesPage-BmvjHhmb.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
 				"/assets/Footer-CMaTI95w.js"
 			],
-			"css": ["/assets/TechnologyTypesPage-B9OKRUor.css", "/assets/Footer-B9bAK1iH.css"],
+			"css": ["/assets/TechnologyTypesPage-D2fwowTg.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -4125,21 +4231,21 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContentPage-DqXUFH8L.js",
+			"module": "/assets/ContentPage-B7agKrLM.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-yIhL7M2l.js",
+				"/assets/App-Cd4yrNaB.js",
 				"/assets/ActivitiesPage-Dm6h8wUX.js",
 				"/assets/ActivitySetsPage-C6vXMbLo.js",
 				"/assets/AlternativeSocialTechPage-CxGnb2jb.js",
-				"/assets/ContributorsPage-qY3_Yrkd.js",
+				"/assets/ContributorsPage-BmWhG509.js",
 				"/assets/Footer-CMaTI95w.js",
 				"/assets/YourContentPage-BymoDLlx.js",
 				"/assets/activitiesData-Dlm-n7zn.js",
-				"/assets/Results-dqPrtMS8.js",
-				"/assets/HomePage-C0ZKAUcS.js",
-				"/assets/Quiz-BtrHoh-y.js",
-				"/assets/TechnologyTypesPage-DYCxfOBf.js",
+				"/assets/Results-CNNwpTz_.js",
+				"/assets/HomePage-CYUSFF8P.js",
+				"/assets/Quiz-5Gi0E7iN.js",
+				"/assets/TechnologyTypesPage-BmvjHhmb.js",
 				"/assets/annotationStorage-B12SqVVm.js",
 				"/assets/questions-DxipSYNI.js"
 			],
@@ -4148,8 +4254,8 @@ var server_manifest_default = {
 				"/assets/Results-DE7C7vAJ.css",
 				"/assets/HomePage-SRjABkf2.css",
 				"/assets/App-2kWgLX4s.css",
-				"/assets/Quiz-CBSUGlBu.css",
-				"/assets/TechnologyTypesPage-B9OKRUor.css"
+				"/assets/Quiz-D2I9eatw.css",
+				"/assets/TechnologyTypesPage-D2fwowTg.css"
 			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -4219,9 +4325,9 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContributorsPage-6sI5aoqc.js",
+			"module": "/assets/ContributorsPage-CEKPrxS9.js",
 			"imports": [
-				"/assets/ContributorsPage-qY3_Yrkd.js",
+				"/assets/ContributorsPage-BmWhG509.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
 				"/assets/Footer-CMaTI95w.js"
 			],
@@ -4244,21 +4350,21 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContentPage-DqXUFH8L.js",
+			"module": "/assets/ContentPage-B7agKrLM.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-yIhL7M2l.js",
+				"/assets/App-Cd4yrNaB.js",
 				"/assets/ActivitiesPage-Dm6h8wUX.js",
 				"/assets/ActivitySetsPage-C6vXMbLo.js",
 				"/assets/AlternativeSocialTechPage-CxGnb2jb.js",
-				"/assets/ContributorsPage-qY3_Yrkd.js",
+				"/assets/ContributorsPage-BmWhG509.js",
 				"/assets/Footer-CMaTI95w.js",
 				"/assets/YourContentPage-BymoDLlx.js",
 				"/assets/activitiesData-Dlm-n7zn.js",
-				"/assets/Results-dqPrtMS8.js",
-				"/assets/HomePage-C0ZKAUcS.js",
-				"/assets/Quiz-BtrHoh-y.js",
-				"/assets/TechnologyTypesPage-DYCxfOBf.js",
+				"/assets/Results-CNNwpTz_.js",
+				"/assets/HomePage-CYUSFF8P.js",
+				"/assets/Quiz-5Gi0E7iN.js",
+				"/assets/TechnologyTypesPage-BmvjHhmb.js",
 				"/assets/annotationStorage-B12SqVVm.js",
 				"/assets/questions-DxipSYNI.js"
 			],
@@ -4267,8 +4373,8 @@ var server_manifest_default = {
 				"/assets/Results-DE7C7vAJ.css",
 				"/assets/HomePage-SRjABkf2.css",
 				"/assets/App-2kWgLX4s.css",
-				"/assets/Quiz-CBSUGlBu.css",
-				"/assets/TechnologyTypesPage-B9OKRUor.css"
+				"/assets/Quiz-D2I9eatw.css",
+				"/assets/TechnologyTypesPage-D2fwowTg.css"
 			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -4288,21 +4394,21 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/NotFoundPage-BZgy5rn6.js",
+			"module": "/assets/NotFoundPage-BMf6ytlc.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-yIhL7M2l.js",
+				"/assets/App-Cd4yrNaB.js",
 				"/assets/ActivitiesPage-Dm6h8wUX.js",
 				"/assets/ActivitySetsPage-C6vXMbLo.js",
 				"/assets/AlternativeSocialTechPage-CxGnb2jb.js",
-				"/assets/ContributorsPage-qY3_Yrkd.js",
+				"/assets/ContributorsPage-BmWhG509.js",
 				"/assets/Footer-CMaTI95w.js",
 				"/assets/YourContentPage-BymoDLlx.js",
 				"/assets/activitiesData-Dlm-n7zn.js",
-				"/assets/Results-dqPrtMS8.js",
-				"/assets/HomePage-C0ZKAUcS.js",
-				"/assets/Quiz-BtrHoh-y.js",
-				"/assets/TechnologyTypesPage-DYCxfOBf.js",
+				"/assets/Results-CNNwpTz_.js",
+				"/assets/HomePage-CYUSFF8P.js",
+				"/assets/Quiz-5Gi0E7iN.js",
+				"/assets/TechnologyTypesPage-BmvjHhmb.js",
 				"/assets/annotationStorage-B12SqVVm.js",
 				"/assets/questions-DxipSYNI.js"
 			],
@@ -4311,8 +4417,8 @@ var server_manifest_default = {
 				"/assets/Results-DE7C7vAJ.css",
 				"/assets/HomePage-SRjABkf2.css",
 				"/assets/App-2kWgLX4s.css",
-				"/assets/Quiz-CBSUGlBu.css",
-				"/assets/TechnologyTypesPage-B9OKRUor.css"
+				"/assets/Quiz-D2I9eatw.css",
+				"/assets/TechnologyTypesPage-D2fwowTg.css"
 			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -4320,8 +4426,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-a7e38328.js",
-	"version": "a7e38328",
+	"url": "/assets/manifest-f6a58d30.js",
+	"version": "f6a58d30",
 	"sri": void 0
 };
 //#endregion
@@ -4350,9 +4456,9 @@ var prerender = [
 	"/activity-sets",
 	"/alternative-social-tech",
 	"/contributors",
-	"/content/Categories",
-	"/content/Manifesto",
+	"/content/Positionality",
 	"/content/Privacy",
+	"/content/Quiz/Categories",
 	"/content/Quiz/results/EDFpC",
 	"/content/Quiz/results/EDFpL",
 	"/content/Quiz/results/EDFtC",
