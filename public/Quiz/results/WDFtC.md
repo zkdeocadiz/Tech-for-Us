@@ -2,12 +2,12 @@
 og-image: 
 og-description: 
 og-title: 
-code: WDFC
+code: WDFtC
 name: The Exhausted Performer
-header-image: images/WDFC.png
+header-image: images/WDFtC.png
 ---
 
-# WDFC — The Exhausted Performer
+# WDFtC — The Exhausted Performer
 *weary, desired, filtered (tracked), connected*
 
 

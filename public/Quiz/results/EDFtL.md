@@ -2,12 +2,12 @@
 og-image: 
 og-description: 
 og-title: 
-code: EDFL
+code: EDFtL
 name: The Trophy Hunter
-header-image: images/EDFL.png
+header-image: images/EDFtL.png
 ---
 
-# EDFL — The Trophy Hunter
+# EDFtL — The Trophy Hunter
 *energized, desired, filtered (tracked), lonely*
 
 

@@ -9,6 +9,7 @@ export default [
   route("technology-types", "features/quiz/TechnologyTypesPage.jsx"),
   
   route("activities", "components/ActivitiesPage.jsx"),
+  route("activity/:pageId", "routes/ContentPage.jsx", { id: "activity-content-page" }),
   route("activity-sets", "components/ActivitySetsPage.jsx"),
   route("alternative-social-tech", "components/AlternativeSocialTechPage.jsx"),
   

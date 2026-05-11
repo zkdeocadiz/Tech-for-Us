@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, isValidElement, cloneElement } from 'react';
+import { useState, useEffect, useRef, isValidElement, cloneElement, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -97,14 +97,15 @@ const Activity = ({ type, prompt, context, pageId, activityId }) => {
         </div>
       )}
       
-      {type === 'text' ? (
+      {type === 'text' && (
         <textarea 
           className="markdown-page__activity-textarea"
           value={textValue}
           onChange={handleTextChange}
           placeholder="Type your response here..."
         />
-      ) : (
+      )}
+      {type === 'file' && (
         <div className="markdown-page__activity-file-zone">
           {!fileValue ? (
             <label className="markdown-page__activity-upload-btn">
@@ -166,6 +167,27 @@ const expandCodeToLabels = (code) => {
 };
 
 const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content', markdownComponents = {}, metadata }) => {
+  // Pre-process content to extract activities and replace them with tokens
+  // This prevents the markdown parser from breaking activity blocks that contain
+  // characters it recognizes as markdown (like bullet points or list items)
+  const { activityMap, sanitizedContent } = useMemo(() => {
+    const map = new Map();
+    const regex = /\[\[\s*ACTIVITY\s*([\s\S]*?)\s*\]\]/gi;
+    let i = 0;
+    const sanitized = content.replace(regex, (match, body) => {
+      const token = `__ACTIVITY_BLOCK_${i}__`;
+      map.set(token, body);
+      i++;
+      return token;
+    });
+    return { activityMap: map, sanitizedContent: sanitized };
+  }, [content]);
+
+  // Determine if this is an activity page (starts with date pattern like 20260512-*)
+  // These must be defined before they are used in useState initializers
+  const isActivityPage = /^\d{8}-/.test(pageId);
+  const suggestEditPagePath = isActivityPage ? `activities/${pageId}/${pageId}.md` : `Quiz/results/${pageId}.md`;
+
   const [annotations, setAnnotations] = useState([]);
   const [selectedText, setSelectedText] = useState('');
   const [selectedTextRange, setSelectedTextRange] = useState(null);
@@ -209,10 +231,6 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
     : null;
   const isMatchingResultPage = !!storedResult && !!resultPageId && pageId.toUpperCase() === resultPageId.toUpperCase();
   
-  // Determine if this is an activity page (starts with date pattern like 20260512-*)
-  const isActivityPage = /^\d{8}-/.test(pageId);
-  const suggestEditPagePath = isActivityPage ? `activities/${pageId}.md` : `Quiz/results/${pageId}.md`;
-
   // Update page metadata for social sharing
   useEffect(() => {
     if (!metadata) return;
@@ -914,32 +932,35 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
 
       const text = childrenToText(children).trim();
       
-      // Detect ACTIVITY tokens (inline `|` form or multiline block form)
-      const activityMatch = text.match(/^\[\[\s*ACTIVITY\s*([\s\S]*?)\s*\]\]$/i);
-      if (activityMatch) {
-        const body = activityMatch[1] || '';
+      // Check if this paragraph consists solely of an activity token
+      if (activityMap.has(text)) {
+        const body = activityMap.get(text);
         const props = {};
 
         if (body.includes('\n')) {
           // Multiline form: parse lines like `key: value` and `key: |` for blocks
           const lines = body.split(/\r?\n/);
-          for (let i = 0; i < lines.length; i++) {
-            const line = lines[i];
+          for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
+            const line = lines[lineIdx];
             if (!line.trim()) continue;
-            const kv = line.match(/^([^:]+):\s*(.*)$/);
+            
+            // Match keys at start of line (e.g., type, prompt, context, id)
+            const kv = line.match(/^([a-z]+):\s*(.*)$/i);
             if (!kv) continue;
+
             const key = kv[1].trim();
             let val = kv[2] || '';
 
             if (val === '|') {
-              // collect subsequent lines until next `key:` or end
+              // collect subsequent lines until next known key or end of the block
               const buf = [];
-              i++;
-              while (i < lines.length && !/^[^:\s]+:\s*/.test(lines[i])) {
-                buf.push(lines[i]);
-                i++;
+              lineIdx++;
+              const keyRegex = /^(type|prompt|context|id):\s*/i;
+              while (lineIdx < lines.length && !keyRegex.test(lines[lineIdx])) {
+                buf.push(lines[lineIdx]);
+                lineIdx++;
               }
-              i--; // step back so outer loop continues correctly
+              lineIdx--; // step back so outer loop continues correctly
               val = buf.join('\n').replace(/^\s{0,2}/gm, '');
             }
 
@@ -947,12 +968,11 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
           }
         } else {
           // Legacy inline pipe-separated form: `type: text | prompt: X | id: foo`
-          const parts = body.split('|').map(s => s.trim()).filter(Boolean);
-          parts.forEach(p => {
-            const idx = p.indexOf(':');
+          body.split('|').map(s => s.trim()).filter(Boolean).forEach(part => {
+            const idx = part.indexOf(':');
             if (idx === -1) return;
-            const k = p.slice(0, idx).trim();
-            const v = p.slice(idx + 1).trim();
+            const k = part.slice(0, idx).trim();
+            const v = part.slice(idx + 1).trim();
             props[k] = v;
           });
         }
@@ -1054,15 +1074,17 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
               </div>
             )}
 
-            <div className="markdown-page__code-line">
-              <strong>{(metadata && (metadata.code || metadata.id)) || pageId}</strong>
-              <span className="markdown-page__code-dash"> - </span>
-              <em className="markdown-page__code-labels">{expandCodeToLabels(metadata?.code || pageId) || metadata?.subtitle || ''}</em>
-            </div>
+            {metadata?.code && (
+              <div className="markdown-page__code-line">
+                <strong>{metadata.code}</strong>
+                <span className="markdown-page__code-dash"> - </span>
+                <em className="markdown-page__code-labels">{expandCodeToLabels(metadata.code) || metadata?.subtitle || ''}</em>
+              </div>
+            )}
           </div>
 
           <ReactMarkdown components={{ ...defaultMarkdownComponents, ...enhancedMarkdownComponents }}>
-            {content}
+            {sanitizedContent}
           </ReactMarkdown>
         </div>
 

@@ -7,7 +7,7 @@ name: The Community Socialite
 header-image: images/EDFpC.png
 ---
 
-# EDFC — The Community Socialite
+# EDFpC — The Community Socialite
 
 You're the epitome of the party host of social tech events—energetic, enthusiastic, and pretty great at keeping up with everything. The system feels like it's working for you and you generally benefit from social tech. But, much like a socialite, you have a specific face that you show to the world that hides the true messiness of what's going on in your life.
 

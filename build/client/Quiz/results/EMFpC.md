@@ -2,12 +2,12 @@
 og-image: 
 og-description: 
 og-title: 
-code: EMFC
+code: EMFpC
 name: The Chameleon
-header-image: images/EMFC.png
+header-image: images/EMFpC.png
 ---
 
-# EMFC — The Chameleon
+# EMFpC — The Chameleon
 *energized, mandatory, filtered (polished), connected*
 
 

@@ -2,12 +2,12 @@
 og-image: 
 og-description: 
 og-title: 
-code: EMFL
+code: EMFtL
 name: The Doom Scroller
-header-image: images/EMFL.png
+header-image: images/EMFtL.png
 ---
 
-# EMFL — The Doom Scroller
+# EMFtL — The Doom Scroller
 *energized, mandatory, filtered (tracked), lonely*
 
 

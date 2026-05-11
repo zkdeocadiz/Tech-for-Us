@@ -2,12 +2,12 @@
 og-image: 
 og-description: 
 og-title: 
-code: WMFL
+code: WMFtL
 name: The Hostage
-header-image: images/WMFL.png
+header-image: images/WMFtL.png
 ---
 
-# WMFL — The Hostage
+# WMFtL — The Hostage
 *weary, mandatory, filtered (tracked), lonely*
 
 

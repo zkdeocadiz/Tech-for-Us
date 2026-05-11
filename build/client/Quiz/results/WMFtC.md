@@ -2,12 +2,12 @@
 og-image: 
 og-description: 
 og-title: 
-code: WMFC
+code: WMFtC
 name: The Method Actor
-header-image: images/WMFC.png
+header-image: images/WMFtC.png
 ---
 
-# WMFC — The Method Actor
+# WMFtC — The Method Actor
 *weary, mandatory, filtered (tracked), connected*
 
 

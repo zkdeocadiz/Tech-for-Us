@@ -66,7 +66,37 @@ function handleRequest(request, responseStatusCode, responseHeaders, routerConte
 }
 //#endregion
 //#region app/root.jsx
-var root_exports = /* @__PURE__ */ __exportAll({ default: () => root_default });
+var root_exports = /* @__PURE__ */ __exportAll({
+	default: () => root_default,
+	meta: () => meta$1
+});
+var meta$1 = () => {
+	const defaultTitle = "Tech For Us";
+	const defaultDescription = "A co-created toolkit for helping you figure out what role technology should have in your life and how to get there";
+	return [
+		{ title: defaultTitle },
+		{
+			name: "description",
+			content: defaultDescription
+		},
+		{
+			property: "og:title",
+			content: defaultTitle
+		},
+		{
+			property: "og:description",
+			content: defaultDescription
+		},
+		{
+			property: "og:image",
+			content: "/HomePage/main-og.png"
+		},
+		{
+			property: "og:type",
+			content: "website"
+		}
+	];
+};
 var root_default = UNSAFE_withComponentProps(function Root() {
 	return /* @__PURE__ */ jsxs("html", {
 		lang: "en",
@@ -77,9 +107,29 @@ var root_default = UNSAFE_withComponentProps(function Root() {
 				content: "width=device-width, initial-scale=1.0"
 			}),
 			/* @__PURE__ */ jsx("link", {
+				rel: "apple-touch-icon",
+				sizes: "180x180",
+				href: "/apple-touch-icon.png"
+			}),
+			/* @__PURE__ */ jsx("link", {
 				rel: "icon",
-				type: "image/svg+xml",
-				href: "/favicon.svg"
+				type: "image/png",
+				sizes: "32x32",
+				href: "/favicon-32x32.png"
+			}),
+			/* @__PURE__ */ jsx("link", {
+				rel: "icon",
+				type: "image/png",
+				sizes: "16x16",
+				href: "/favicon-16x16.png"
+			}),
+			/* @__PURE__ */ jsx("link", {
+				rel: "manifest",
+				href: "/site.webmanifest"
+			}),
+			/* @__PURE__ */ jsx("meta", {
+				name: "theme-color",
+				content: "#FFADF2"
 			}),
 			/* @__PURE__ */ jsx(Meta, {}),
 			/* @__PURE__ */ jsx(Links, {}),
@@ -189,7 +239,7 @@ function Header() {
 				"aria-label": "Tech for Us home",
 				children: /* @__PURE__ */ jsx("img", {
 					className: "site-logo",
-					src: "Header/Logo.svg",
+					src: "/Header/Logo.svg",
 					alt: "Tech for Us"
 				})
 			}), /* @__PURE__ */ jsx("nav", {
@@ -347,48 +397,47 @@ function Footer({ columns = defaultFooterColumns }) {
 */
 var activities = [{
 	id: "20260512-datingprofile",
-	title: "How to Write a Better Dating Profile",
-	publishedDate: "2026-05-15",
-	description: "Learn how to create a dating profile that authentically represents you.",
-	tags: ["tag1", "tag2"],
+	title: "How do I write a better dating profile?",
+	publishedDate: "2026-05-14",
+	description: "Be more intentional in how you meet people on dating apps",
+	tags: ["relationships", "using platforms"],
 	tone: "white",
-	href: "/activities/how-to-write-a-better-dating-profile",
-	coverImage: "activities/0260512-datingprofile/cover.png",
-	ogImage: "activities/0260512-datingprofile/og-image.png"
+	href: "/activity/20260512-datingprofile",
+	coverImage: "/activities/20260512-datingprofile/cover.png",
+	ogImage: "/activities/20260512-datingprofile/og-image.png"
 }, {
 	id: "20260512-valuesbaseddesign",
 	title: "Value-based Design",
 	publishedDate: "2026-05-15",
 	description: "Explore design principles centered on user values.",
-	tags: ["tag1", "tag2"],
+	tags: ["design", "user-centered"],
 	tone: "pink",
-	href: "/activities/value-based-design",
-	coverImage: "activities/0260512-valuesbaseddesign/cover.png",
-	ogImage: "activities/0260512-valuesbaseddesign/og-image.png"
+	href: "/activity/20260512-valuesbaseddesign",
+	coverImage: "/activities/20260512-valuesbaseddesign/cover.png",
+	ogImage: "/activities/20260512-valuesbaseddesign/og-image.png"
 }];
 //#endregion
 //#region app/features/home/HomePage.jsx
 var HomePage_exports = /* @__PURE__ */ __exportAll({ default: () => HomePage_default });
-var featureIcon = "https://www.figma.com/api/mcp/asset/4fd5c91c-08f2-495e-9015-86c7d517aab3";
-var heroLogo = "HomePage/Header.png";
+var heroLogo = "/HomePage/Header.png";
 var features = [
 	{
-		image: "HomePage/Activities.png",
+		image: "/HomePage/activities.png",
 		title: "Activities",
 		body: "This isn’t a passive reading exercise. Get hands-on practice through active exercises for all content."
 	},
 	{
-		image: "HomePage/Annotations.png",
+		image: "/HomePage/annotations.png",
 		title: "Annotations",
 		body: "You can annotate every post or activity, because everything should adapt to what you need."
 	},
 	{
-		image: "HomePage/Private.png",
+		image: "/HomePage/private.png",
 		title: "Private",
 		body: "Everything is only saved onto your computer - no data in the cloud and nothing sent to us unless you want us to see it."
 	},
 	{
-		image: "HomePage/Co-Created.png",
+		image: "/HomePage/co-created.png",
 		title: "Co-Created",
 		body: "See something you think should be changed? Submit a change because Tech for Us is driven by the community."
 	}
@@ -449,7 +498,7 @@ var HomePage_default = UNSAFE_withComponentProps(function HomePage() {
 								children: [
 									/* @__PURE__ */ jsx("img", {
 										className: "feature-card__icon",
-										src: featureIcon,
+										src: feature.image,
 										alt: "",
 										"aria-hidden": "true"
 									}),
@@ -1716,12 +1765,13 @@ var Activity = ({ type, prompt, context, pageId, activityId }) => {
 				className: "markdown-page__activity-context",
 				children: /* @__PURE__ */ jsx(ReactMarkdown, { children: context })
 			}),
-			type === "text" ? /* @__PURE__ */ jsx("textarea", {
+			type === "text" && /* @__PURE__ */ jsx("textarea", {
 				className: "markdown-page__activity-textarea",
 				value: textValue,
 				onChange: handleTextChange,
 				placeholder: "Type your response here..."
-			}) : /* @__PURE__ */ jsx("div", {
+			}),
+			type === "file" && /* @__PURE__ */ jsx("div", {
 				className: "markdown-page__activity-file-zone",
 				children: !fileValue ? /* @__PURE__ */ jsxs("label", {
 					className: "markdown-page__activity-upload-btn",
@@ -1783,6 +1833,21 @@ var expandCodeToLabels = (code) => {
 	].filter(Boolean).join(", ");
 };
 var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", markdownComponents = {}, metadata }) => {
+	const { activityMap, sanitizedContent } = useMemo(() => {
+		const map = /* @__PURE__ */ new Map();
+		const regex = /\[\[\s*ACTIVITY\s*([\s\S]*?)\s*\]\]/gi;
+		let i = 0;
+		return {
+			activityMap: map,
+			sanitizedContent: content.replace(regex, (match, body) => {
+				const token = `__ACTIVITY_BLOCK_${i}__`;
+				map.set(token, body);
+				i++;
+				return token;
+			})
+		};
+	}, [content]);
+	const suggestEditPagePath = /^\d{8}-/.test(pageId) ? `activities/${pageId}/${pageId}.md` : `Quiz/results/${pageId}.md`;
 	const [annotations, setAnnotations] = useState([]);
 	const [selectedText, setSelectedText] = useState("");
 	const [selectedTextRange, setSelectedTextRange] = useState(null);
@@ -1826,7 +1891,6 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 	const storedResult = typeof window !== "undefined" ? loadResult() : null;
 	const resultPageId = storedResult ? storedResult.fSubtype ? storedResult.code.replace("F", storedResult.fSubtype) : storedResult.code : null;
 	const isMatchingResultPage = !!storedResult && !!resultPageId && pageId.toUpperCase() === resultPageId.toUpperCase();
-	const suggestEditPagePath = /^\d{8}-/.test(pageId) ? `activities/${pageId}.md` : `Quiz/results/${pageId}.md`;
 	useEffect(() => {
 		if (!metadata) return;
 		if (metadata.title) document.title = `${metadata.title} | Tech for Us`;
@@ -2339,36 +2403,37 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 					return "";
 				}).join("");
 			};
-			const activityMatch = childrenToText(children).trim().match(/^\[\[\s*ACTIVITY\s*([\s\S]*?)\s*\]\]$/i);
-			if (activityMatch) {
-				const body = activityMatch[1] || "";
+			const text = childrenToText(children).trim();
+			if (activityMap.has(text)) {
+				const body = activityMap.get(text);
 				const props = {};
 				if (body.includes("\n")) {
 					const lines = body.split(/\r?\n/);
-					for (let i = 0; i < lines.length; i++) {
-						const line = lines[i];
+					for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
+						const line = lines[lineIdx];
 						if (!line.trim()) continue;
-						const kv = line.match(/^([^:]+):\s*(.*)$/);
+						const kv = line.match(/^([a-z]+):\s*(.*)$/i);
 						if (!kv) continue;
 						const key = kv[1].trim();
 						let val = kv[2] || "";
 						if (val === "|") {
 							const buf = [];
-							i++;
-							while (i < lines.length && !/^[^:\s]+:\s*/.test(lines[i])) {
-								buf.push(lines[i]);
-								i++;
+							lineIdx++;
+							const keyRegex = /^(type|prompt|context|id):\s*/i;
+							while (lineIdx < lines.length && !keyRegex.test(lines[lineIdx])) {
+								buf.push(lines[lineIdx]);
+								lineIdx++;
 							}
-							i--;
+							lineIdx--;
 							val = buf.join("\n").replace(/^\s{0,2}/gm, "");
 						}
 						props[key] = (val || "").trim();
 					}
-				} else body.split("|").map((s) => s.trim()).filter(Boolean).forEach((p) => {
-					const idx = p.indexOf(":");
+				} else body.split("|").map((s) => s.trim()).filter(Boolean).forEach((part) => {
+					const idx = part.indexOf(":");
 					if (idx === -1) return;
-					const k = p.slice(0, idx).trim();
-					props[k] = p.slice(idx + 1).trim();
+					const k = part.slice(0, idx).trim();
+					props[k] = part.slice(idx + 1).trim();
 				});
 				return /* @__PURE__ */ jsx(Activity, {
 					type: props.type || "text",
@@ -2491,7 +2556,7 @@ var MarkdownPage = ({ content = "", pageId = "default-page", title = "Content", 
 								...defaultMarkdownComponents,
 								...enhancedMarkdownComponents
 							},
-							children: content
+							children: sanitizedContent
 						})]
 					}),
 					/* @__PURE__ */ jsxs("aside", {
@@ -3193,34 +3258,53 @@ var TechnologyTypesPage_default = UNSAFE_withComponentProps(function TechnologyT
 			/* @__PURE__ */ jsxs("main", {
 				className: "types-main",
 				children: [
+					/* @__PURE__ */ jsx("p", {
+						className: "quiz-kicker",
+						children: "What’s your"
+					}),
 					/* @__PURE__ */ jsx("h1", {
-						className: "types-title",
-						children: "All Technology Types"
+						className: "quiz-heading",
+						id: "quiz-heading",
+						children: "Technology Type?"
 					}),
 					/* @__PURE__ */ jsx("p", {
 						className: "types-subtitle",
-						children: "Browse all cards and compare where your current result sits."
+						children: "Billions of people use social tech to stay connected to each other... but we all have our own personal relationship with it. Technology Types are a way to explore that relationship, to help you figure out ways to survive in an increasingly technology-driven world."
 					}),
+					/* @__PURE__ */ jsx("h2", { children: "All Technology Types" }),
 					/* @__PURE__ */ jsx("div", {
 						className: "types-grid",
 						children: orderedTypes.map((type) => {
 							const isActive = highlightedCode === type.code;
 							const typeName = typeNames[type.code];
-							return /* @__PURE__ */ jsxs("article", {
-								className: `types-card ${isActive ? "active" : ""}`,
-								children: [
-									/* @__PURE__ */ jsx("h2", { children: typeName || type.code }),
-									/* @__PURE__ */ jsx("p", {
-										className: "types-code",
-										children: type.code
-									}),
-									/* @__PURE__ */ jsx("p", { children: type.labels.join(", ") }),
-									/* @__PURE__ */ jsx(Link$1, {
-										className: "types-link",
-										to: `/content/${type.code}`,
-										children: "View card"
-									})
-								]
+							return /* @__PURE__ */ jsx(Link$1, {
+								to: `/content/${type.code}`,
+								className: "types-card-link",
+								children: /* @__PURE__ */ jsxs("article", {
+									className: `types-card ${isActive ? "active" : ""}`,
+									children: [/* @__PURE__ */ jsx("img", {
+										src: `/Quiz/results/images/${type.code}.png`,
+										alt: "",
+										"aria-hidden": "true",
+										className: "types-card__image"
+									}), /* @__PURE__ */ jsxs("div", {
+										className: "types-card__content",
+										children: [
+											/* @__PURE__ */ jsx("h3", {
+												className: "types-card__name",
+												children: typeName || type.code
+											}),
+											/* @__PURE__ */ jsx("p", {
+												className: "types-card__code",
+												children: type.code
+											}),
+											/* @__PURE__ */ jsx("p", {
+												className: "types-card__labels",
+												children: type.labels.join(", ")
+											})
+										]
+									})]
+								})
 							}, type.code);
 						})
 					})
@@ -3293,7 +3377,7 @@ var ActivitiesPage_default = UNSAFE_withComponentProps(function ActivitiesPage()
 							gap: "2rem"
 						},
 						children: filteredActivities.map((activity) => /* @__PURE__ */ jsxs(Link$1, {
-							to: `/content/${activity.id}`,
+							to: `/activity/${activity.id}`,
 							className: "activity-card",
 							style: {
 								display: "flex",
@@ -3647,14 +3731,14 @@ function MarkdownPageLoader() {
 				setLoading(true);
 				setError(null);
 				const paths = /^\d{8}-/.test(pageId) ? [
-					`/activities/${pageId}.md`,
+					`/activities/${pageId}/${pageId}.md`,
 					`/Quiz/results/${pageId}.md`,
 					`/results/${pageId}.md`,
 					`/${pageId}.md`
 				] : [
 					`/Quiz/results/${pageId}.md`,
 					`/results/${pageId}.md`,
-					`/activities/${pageId}.md`,
+					`/activities/${pageId}/${pageId}.md`,
 					`/${pageId}.md`
 				];
 				let success = false;
@@ -3856,7 +3940,7 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/root-DGBe1jkV.js",
+			"module": "/assets/root-eSmMj-q1.js",
 			"imports": ["/assets/jsx-runtime-CyXxvS_Q.js"],
 			"css": ["/assets/root-Bdlnny9R.css"],
 			"clientActionModule": void 0,
@@ -3877,15 +3961,15 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/HomePage-BqKLP2M3.js",
+			"module": "/assets/HomePage-CqjplRjc.js",
 			"imports": [
-				"/assets/HomePage-BaFMxn6h.js",
+				"/assets/HomePage-C0ZKAUcS.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js",
-				"/assets/activitiesData-Eafj1xju.js"
+				"/assets/Footer-CMaTI95w.js",
+				"/assets/activitiesData-Dlm-n7zn.js"
 			],
 			"css": [
-				"/assets/HomePage-Cq4_ly3J.css",
+				"/assets/HomePage-SRjABkf2.css",
 				"/assets/App-2kWgLX4s.css",
 				"/assets/Footer-B9bAK1iH.css"
 			],
@@ -3907,11 +3991,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/YourContentPage-qfg68Lw-.js",
+			"module": "/assets/YourContentPage-DIjyz9bO.js",
 			"imports": [
-				"/assets/YourContentPage-D9-zXTW_.js",
+				"/assets/YourContentPage-BymoDLlx.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js",
+				"/assets/Footer-CMaTI95w.js",
 				"/assets/annotationStorage-B12SqVVm.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
@@ -3933,11 +4017,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Quiz-D5gxwHpS.js",
+			"module": "/assets/Quiz-CK1a_Xlu.js",
 			"imports": [
-				"/assets/Quiz-CTyBheRi.js",
+				"/assets/Quiz-BtrHoh-y.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js",
+				"/assets/Footer-CMaTI95w.js",
 				"/assets/questions-DxipSYNI.js"
 			],
 			"css": [
@@ -3963,11 +4047,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/Results-Ceh3OB62.js",
+			"module": "/assets/Results-Sxi5_uEk.js",
 			"imports": [
-				"/assets/Results-Fj5tj3eA.js",
+				"/assets/Results-dqPrtMS8.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js",
+				"/assets/Footer-CMaTI95w.js",
 				"/assets/annotationStorage-B12SqVVm.js",
 				"/assets/questions-DxipSYNI.js"
 			],
@@ -3990,13 +4074,13 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/TechnologyTypesPage-DafwmTj0.js",
+			"module": "/assets/TechnologyTypesPage-D2ockUxO.js",
 			"imports": [
-				"/assets/TechnologyTypesPage-Dc2v7NgZ.js",
+				"/assets/TechnologyTypesPage-DYCxfOBf.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js"
+				"/assets/Footer-CMaTI95w.js"
 			],
-			"css": ["/assets/TechnologyTypesPage-BOWfRdDW.css", "/assets/Footer-B9bAK1iH.css"],
+			"css": ["/assets/TechnologyTypesPage-B9OKRUor.css", "/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -4015,14 +4099,58 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitiesPage-OvCDb5J9.js",
+			"module": "/assets/ActivitiesPage-BHxzfgE3.js",
 			"imports": [
-				"/assets/ActivitiesPage-BGP0xbvO.js",
+				"/assets/ActivitiesPage-Dm6h8wUX.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js",
-				"/assets/activitiesData-Eafj1xju.js"
+				"/assets/Footer-CMaTI95w.js",
+				"/assets/activitiesData-Dlm-n7zn.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
+			"clientActionModule": void 0,
+			"clientLoaderModule": void 0,
+			"clientMiddlewareModule": void 0,
+			"hydrateFallbackModule": void 0
+		},
+		"activity-content-page": {
+			"id": "activity-content-page",
+			"parentId": "root",
+			"path": "activity/:pageId",
+			"index": void 0,
+			"caseSensitive": void 0,
+			"hasAction": false,
+			"hasLoader": false,
+			"hasClientAction": false,
+			"hasClientLoader": false,
+			"hasClientMiddleware": false,
+			"hasDefaultExport": true,
+			"hasErrorBoundary": false,
+			"module": "/assets/ContentPage-DqXUFH8L.js",
+			"imports": [
+				"/assets/jsx-runtime-CyXxvS_Q.js",
+				"/assets/App-yIhL7M2l.js",
+				"/assets/ActivitiesPage-Dm6h8wUX.js",
+				"/assets/ActivitySetsPage-C6vXMbLo.js",
+				"/assets/AlternativeSocialTechPage-CxGnb2jb.js",
+				"/assets/ContributorsPage-qY3_Yrkd.js",
+				"/assets/Footer-CMaTI95w.js",
+				"/assets/YourContentPage-BymoDLlx.js",
+				"/assets/activitiesData-Dlm-n7zn.js",
+				"/assets/Results-dqPrtMS8.js",
+				"/assets/HomePage-C0ZKAUcS.js",
+				"/assets/Quiz-BtrHoh-y.js",
+				"/assets/TechnologyTypesPage-DYCxfOBf.js",
+				"/assets/annotationStorage-B12SqVVm.js",
+				"/assets/questions-DxipSYNI.js"
+			],
+			"css": [
+				"/assets/Footer-B9bAK1iH.css",
+				"/assets/Results-DE7C7vAJ.css",
+				"/assets/HomePage-SRjABkf2.css",
+				"/assets/App-2kWgLX4s.css",
+				"/assets/Quiz-CBSUGlBu.css",
+				"/assets/TechnologyTypesPage-B9OKRUor.css"
+			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -4041,11 +4169,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ActivitySetsPage-D8fgGSZq.js",
+			"module": "/assets/ActivitySetsPage-Gv51AeBe.js",
 			"imports": [
-				"/assets/ActivitySetsPage-DH9Fl8Q1.js",
+				"/assets/ActivitySetsPage-C6vXMbLo.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js"
+				"/assets/Footer-CMaTI95w.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -4066,11 +4194,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/AlternativeSocialTechPage-BjfYMf5x.js",
+			"module": "/assets/AlternativeSocialTechPage-DAHIccVC.js",
 			"imports": [
-				"/assets/AlternativeSocialTechPage-DaAlKOSu.js",
+				"/assets/AlternativeSocialTechPage-CxGnb2jb.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js"
+				"/assets/Footer-CMaTI95w.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -4091,11 +4219,11 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContributorsPage-CTFoKFAt.js",
+			"module": "/assets/ContributorsPage-6sI5aoqc.js",
 			"imports": [
-				"/assets/ContributorsPage-C5JnPRJD.js",
+				"/assets/ContributorsPage-qY3_Yrkd.js",
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/Footer-D1xgvyL7.js"
+				"/assets/Footer-CMaTI95w.js"
 			],
 			"css": ["/assets/Footer-B9bAK1iH.css"],
 			"clientActionModule": void 0,
@@ -4116,31 +4244,31 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/ContentPage-CNOwUIg-.js",
+			"module": "/assets/ContentPage-DqXUFH8L.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-BvlU3o1W.js",
-				"/assets/ActivitiesPage-BGP0xbvO.js",
-				"/assets/ActivitySetsPage-DH9Fl8Q1.js",
-				"/assets/AlternativeSocialTechPage-DaAlKOSu.js",
-				"/assets/ContributorsPage-C5JnPRJD.js",
-				"/assets/Footer-D1xgvyL7.js",
-				"/assets/YourContentPage-D9-zXTW_.js",
-				"/assets/activitiesData-Eafj1xju.js",
-				"/assets/Results-Fj5tj3eA.js",
-				"/assets/HomePage-BaFMxn6h.js",
-				"/assets/Quiz-CTyBheRi.js",
-				"/assets/TechnologyTypesPage-Dc2v7NgZ.js",
+				"/assets/App-yIhL7M2l.js",
+				"/assets/ActivitiesPage-Dm6h8wUX.js",
+				"/assets/ActivitySetsPage-C6vXMbLo.js",
+				"/assets/AlternativeSocialTechPage-CxGnb2jb.js",
+				"/assets/ContributorsPage-qY3_Yrkd.js",
+				"/assets/Footer-CMaTI95w.js",
+				"/assets/YourContentPage-BymoDLlx.js",
+				"/assets/activitiesData-Dlm-n7zn.js",
+				"/assets/Results-dqPrtMS8.js",
+				"/assets/HomePage-C0ZKAUcS.js",
+				"/assets/Quiz-BtrHoh-y.js",
+				"/assets/TechnologyTypesPage-DYCxfOBf.js",
 				"/assets/annotationStorage-B12SqVVm.js",
 				"/assets/questions-DxipSYNI.js"
 			],
 			"css": [
 				"/assets/Footer-B9bAK1iH.css",
 				"/assets/Results-DE7C7vAJ.css",
-				"/assets/HomePage-Cq4_ly3J.css",
+				"/assets/HomePage-SRjABkf2.css",
 				"/assets/App-2kWgLX4s.css",
 				"/assets/Quiz-CBSUGlBu.css",
-				"/assets/TechnologyTypesPage-BOWfRdDW.css"
+				"/assets/TechnologyTypesPage-B9OKRUor.css"
 			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -4160,31 +4288,31 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/NotFoundPage-BcOcxQrS.js",
+			"module": "/assets/NotFoundPage-BZgy5rn6.js",
 			"imports": [
 				"/assets/jsx-runtime-CyXxvS_Q.js",
-				"/assets/App-BvlU3o1W.js",
-				"/assets/ActivitiesPage-BGP0xbvO.js",
-				"/assets/ActivitySetsPage-DH9Fl8Q1.js",
-				"/assets/AlternativeSocialTechPage-DaAlKOSu.js",
-				"/assets/ContributorsPage-C5JnPRJD.js",
-				"/assets/Footer-D1xgvyL7.js",
-				"/assets/YourContentPage-D9-zXTW_.js",
-				"/assets/activitiesData-Eafj1xju.js",
-				"/assets/Results-Fj5tj3eA.js",
-				"/assets/HomePage-BaFMxn6h.js",
-				"/assets/Quiz-CTyBheRi.js",
-				"/assets/TechnologyTypesPage-Dc2v7NgZ.js",
+				"/assets/App-yIhL7M2l.js",
+				"/assets/ActivitiesPage-Dm6h8wUX.js",
+				"/assets/ActivitySetsPage-C6vXMbLo.js",
+				"/assets/AlternativeSocialTechPage-CxGnb2jb.js",
+				"/assets/ContributorsPage-qY3_Yrkd.js",
+				"/assets/Footer-CMaTI95w.js",
+				"/assets/YourContentPage-BymoDLlx.js",
+				"/assets/activitiesData-Dlm-n7zn.js",
+				"/assets/Results-dqPrtMS8.js",
+				"/assets/HomePage-C0ZKAUcS.js",
+				"/assets/Quiz-BtrHoh-y.js",
+				"/assets/TechnologyTypesPage-DYCxfOBf.js",
 				"/assets/annotationStorage-B12SqVVm.js",
 				"/assets/questions-DxipSYNI.js"
 			],
 			"css": [
 				"/assets/Footer-B9bAK1iH.css",
 				"/assets/Results-DE7C7vAJ.css",
-				"/assets/HomePage-Cq4_ly3J.css",
+				"/assets/HomePage-SRjABkf2.css",
 				"/assets/App-2kWgLX4s.css",
 				"/assets/Quiz-CBSUGlBu.css",
-				"/assets/TechnologyTypesPage-BOWfRdDW.css"
+				"/assets/TechnologyTypesPage-B9OKRUor.css"
 			],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -4192,8 +4320,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-0deb8ee3.js",
-	"version": "0deb8ee3",
+	"url": "/assets/manifest-a7e38328.js",
+	"version": "a7e38328",
 	"sri": void 0
 };
 //#endregion
@@ -4249,12 +4377,14 @@ var prerender = [
 	"/content/Quiz/results/WMFtL",
 	"/content/Quiz/results/WMGC",
 	"/content/Quiz/results/WMGL",
-	"/content/activities/20260512-datingprofile/datingprofile",
+	"/content/activities/20260512-datingprofile/20260512-datingprofile",
 	"/content/activities/20260512-valuesbaseddesign/valuesbaseddesign",
 	"/content/activities/TEMPLATE/ACTIVITY_TEMPLATE",
 	"/content/alternativesocialtech/Platforms",
 	"/content/contenttowrite",
-	"/content/sample-guide"
+	"/activity/20260512-datingprofile",
+	"/activity/20260512-valuesbaseddesign",
+	"/activity/TEMPLATE"
 ];
 var routeDiscovery = { "mode": "initial" };
 var publicPath = "/";
@@ -4315,6 +4445,14 @@ var routes = {
 		index: void 0,
 		caseSensitive: void 0,
 		module: ActivitiesPage_exports
+	},
+	"activity-content-page": {
+		id: "activity-content-page",
+		parentId: "root",
+		path: "activity/:pageId",
+		index: void 0,
+		caseSensitive: void 0,
+		module: ContentPage_exports
 	},
 	"components/ActivitySetsPage": {
 		id: "components/ActivitySetsPage",

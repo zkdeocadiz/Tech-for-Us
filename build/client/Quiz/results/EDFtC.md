@@ -2,12 +2,12 @@
 og-image: 
 og-description: 
 og-title: 
-code: EDFC
+code: EDFtC
 name: The Community Socialite
-header-image: images/EDFC.png
+header-image: images/EDFtC.png
 ---
 
-# EDFC — The Community Socialite
+# EDFtC — The Community Socialite
 *energized, desired, filtered (tracked), connected*
 
 

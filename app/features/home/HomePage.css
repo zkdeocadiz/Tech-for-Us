@@ -86,9 +86,11 @@
 }
 
 .feature-card__icon {
-  width: 149px;
-  height: 149px;
+  width: 100%;
+  max-width: 30vw;
   object-fit: contain;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .feature-card__title {

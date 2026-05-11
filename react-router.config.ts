@@ -21,6 +21,7 @@ export default {
     ];
 
     const contentRoutes: string[] = [];
+    const activityRoutes: string[] = [];
     const publicDir = path.resolve(process.cwd(), "public");
     
     // Recursively scan all directories for markdown files to generate valid static routes
@@ -34,6 +35,16 @@ export default {
           } else if (entry.name.endsWith(".md")) {
             const routePath = path.join(dir, path.parse(entry.name).name).replace(/\\/g, "/");
             contentRoutes.push(`/content${routePath === "." ? "" : "/" + routePath}`);
+
+            // Also prerender activity detail routes so direct /activities/:pageId requests
+            // don't fall back to 404 HTML on static hosts (which causes hydration mismatch).
+            if (routePath.startsWith("activities/")) {
+              const relative = routePath.slice("activities/".length);
+              const [activityFolder] = relative.split("/");
+              if (activityFolder) {
+                activityRoutes.push(`/activity/${activityFolder}`);
+              }
+            }
           }
         });
       }
@@ -41,6 +52,6 @@ export default {
 
     scanDir(".");
 
-    return Array.from(new Set([...baseRoutes, ...contentRoutes]));
+    return Array.from(new Set([...baseRoutes, ...contentRoutes, ...activityRoutes]));
   },
 } satisfies Config;

@@ -2,12 +2,12 @@
 og-image: 
 og-description: 
 og-title: 
-code: WDFL
+code: WDFtL
 name: The Burned Out Pursuer
-header-image: images/WDFL.png
+header-image: images/WDFtL.png
 ---
 
-# WDFL — The Burned Out Pursuer
+# WDFtL — The Burned Out Pursuer
 *weary, desired, filtered, lonely*
 
 

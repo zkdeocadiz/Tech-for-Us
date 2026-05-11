@@ -68,15 +68,16 @@ export default function MarkdownPageLoader() {
         // Build paths to try - prioritize based on content type
         const paths = isActivityPage
           ? [
-              `/activities/${pageId}.md`,
+              `/activities/${pageId}/${pageId}.md`,
               `/Quiz/results/${pageId}.md`,
               `/results/${pageId}.md`,
               `/${pageId}.md`,
             ]
           : [
               `/Quiz/results/${pageId}.md`,
+              `/Quiz/${pageId}.md`,
               `/results/${pageId}.md`,
-              `/activities/${pageId}.md`,
+              `/activities/${pageId}/${pageId}.md`,
               `/${pageId}.md`,
             ];
 

@@ -60,7 +60,7 @@ export default function ActivitiesPage() {
           {filteredActivities.map(activity => (
             <Link 
               key={activity.id} 
-              to={`/content/${activity.id}`}
+              to={`/activity/${activity.id}`}
               className="activity-card"
               style={{
                 display: 'flex',

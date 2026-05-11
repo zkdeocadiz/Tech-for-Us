@@ -21,9 +21,9 @@
 }
 
 .quiz-banner {
-  width: min(1068px, 100%);
+  width: max(700px, 692px);
   height: auto;
-  max-height: 193px;
+  /* max-height: 193px; */
   object-fit: cover;
   object-position: center;
 }

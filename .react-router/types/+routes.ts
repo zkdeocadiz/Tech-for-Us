@@ -29,6 +29,11 @@ type Pages = {
   "/activities": {
     params: {};
   };
+  "/activity/:pageId": {
+    params: {
+      "pageId": string;
+    };
+  };
   "/activity-sets": {
     params: {};
   };
@@ -53,7 +58,7 @@ type Pages = {
 type RouteFiles = {
   "root.jsx": {
     id: "root";
-    page: "/" | "/your-content" | "/quiz" | "/quiz/results" | "/technology-types" | "/activities" | "/activity-sets" | "/alternative-social-tech" | "/contributors" | "/content/:pageId" | "/*";
+    page: "/" | "/your-content" | "/quiz" | "/quiz/results" | "/technology-types" | "/activities" | "/activity/:pageId" | "/activity-sets" | "/alternative-social-tech" | "/contributors" | "/content/:pageId" | "/*";
   };
   "features/home/HomePage.jsx": {
     id: "features/home/HomePage";
@@ -79,6 +84,13 @@ type RouteFiles = {
     id: "components/ActivitiesPage";
     page: "/activities";
   };
+  "routes/ContentPage.jsx": {
+    id: "activity-content-page";
+    page: "/activity/:pageId";
+  } | {
+    id: "routes/ContentPage";
+    page: "/content/:pageId";
+  };
   "components/ActivitySetsPage.jsx": {
     id: "components/ActivitySetsPage";
     page: "/activity-sets";
@@ -90,10 +102,6 @@ type RouteFiles = {
   "components/ContributorsPage.jsx": {
     id: "components/ContributorsPage";
     page: "/contributors";
-  };
-  "routes/ContentPage.jsx": {
-    id: "routes/ContentPage";
-    page: "/content/:pageId";
   };
   "routes/NotFoundPage.jsx": {
     id: "routes/NotFoundPage";
@@ -109,6 +117,7 @@ type RouteModules = {
   "features/quiz/Results": typeof import("./app/features/quiz/Results.jsx");
   "features/quiz/TechnologyTypesPage": typeof import("./app/features/quiz/TechnologyTypesPage.jsx");
   "components/ActivitiesPage": typeof import("./app/components/ActivitiesPage.jsx");
+  "activity-content-page": typeof import("./app/routes/ContentPage.jsx");
   "components/ActivitySetsPage": typeof import("./app/components/ActivitySetsPage.jsx");
   "components/AlternativeSocialTechPage": typeof import("./app/components/AlternativeSocialTechPage.jsx");
   "components/ContributorsPage": typeof import("./app/components/ContributorsPage.jsx");

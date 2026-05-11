@@ -8,7 +8,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './Quiz.css';
 
-const quizBannerImage = 'https://www.figma.com/api/mcp/asset/825fa458-8cd2-4d77-8a15-0aa4d5ab1944';
+const quizBannerImage = '/Quiz/TechTypeQuizHeader.png';
 
 function shuffleArray(array) {
   const arr = [...array];

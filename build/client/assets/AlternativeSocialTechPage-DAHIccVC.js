@@ -1,0 +1,1 @@
+import{t as e}from"./AlternativeSocialTechPage-CxGnb2jb.js";export{e as default};

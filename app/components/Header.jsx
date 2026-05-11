@@ -36,7 +36,7 @@ export default function Header() {
     <header className="site-header">
       <div className="site-shell site-header__inner">
         <Link className="site-logo-link" to="/" aria-label="Tech for Us home">
-          <img className="site-logo" src="Header/Logo.svg" alt="Tech for Us" />
+          <img className="site-logo" src="/Header/Logo.svg" alt="Tech for Us" />
         </Link>
 
         <nav className="site-nav" aria-label="Primary">

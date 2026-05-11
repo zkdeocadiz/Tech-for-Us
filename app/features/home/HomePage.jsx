@@ -3,28 +3,28 @@ import Footer from '../../components/Footer';
 import { activities } from '../../components/activitiesData';
 import './HomePage.css';
 import '../../App.css';
+import { Link } from 'react-router-dom';
 
-const featureIcon = 'https://www.figma.com/api/mcp/asset/4fd5c91c-08f2-495e-9015-86c7d517aab3';
-const heroLogo = 'HomePage/Header.png';
+const heroLogo = '/HomePage/Header.png';
 
 const features = [
   {
-    image: 'HomePage/Activities.png',
+    image: '/HomePage/activities.png',
     title: 'Activities',
     body: 'This isn’t a passive reading exercise. Get hands-on practice through active exercises for all content.',
   },
   {
-    image: 'HomePage/Annotations.png',
+    image: '/HomePage/annotations.png',
     title: 'Annotations',
     body: 'You can annotate every post or activity, because everything should adapt to what you need.',
   },
   {
-    image: 'HomePage/Private.png',
+    image: '/HomePage/private.png',
     title: 'Private',
     body: 'Everything is only saved onto your computer - no data in the cloud and nothing sent to us unless you want us to see it.',
   },
   {
-    image: 'HomePage/Co-Created.png',
+    image: '/HomePage/co-created.png',
     title: 'Co-Created',
     body: 'See something you think should be changed? Submit a change because Tech for Us is driven by the community.',
   },
@@ -54,9 +54,9 @@ export default function HomePage() {
             <p className="home-hero__copy">
               A <em>co-created toolkit</em> for helping you figure out what role technology should have in your life and how to get there
             </p>
-            <a className="home-button" href="#activities">
-              The Manifesto
-            </a>
+            <Link className="home-button" to="/content/Positionality">
+              Why does this exist?
+            </Link>
           </div>
         </section>
 
@@ -68,7 +68,7 @@ export default function HomePage() {
             <div className="feature-grid">
               {features.map((feature) => (
                 <article className="feature-card" key={feature.title}>
-                  <img className="feature-card__icon" src={featureIcon} alt="" aria-hidden="true" />
+                  <img className="feature-card__icon" src={feature.image} alt="" aria-hidden="true" />
                   <h2 className="feature-card__title">{feature.title}</h2>
                   <p className="feature-card__body">{feature.body}</p>
                 </article>

@@ -5,24 +5,24 @@
 export const activities = [
   {
     id: '20260512-datingprofile',
-    title: 'How to Write a Better Dating Profile',
-    publishedDate: '2026-05-15',
-    description: 'Learn how to create a dating profile that authentically represents you.',
-    tags: ['tag1', 'tag2'],
+    title: "How do I write a better dating profile?",
+    publishedDate: '2026-05-14',
+    description: 'Be more intentional in how you meet people on dating apps',
+    tags: ['relationships', 'using platforms'],
     tone: 'white',
-    href: '/activities/how-to-write-a-better-dating-profile',
-    coverImage: 'activities/0260512-datingprofile/cover.png',
-    ogImage: 'activities/0260512-datingprofile/og-image.png'
+    href: '/activity/20260512-datingprofile',
+    coverImage: '/activities/20260512-datingprofile/cover.png',
+    ogImage: '/activities/20260512-datingprofile/og-image.png'
   },
   {
     id: '20260512-valuesbaseddesign',
     title: 'Value-based Design',
     publishedDate: '2026-05-15',
     description: 'Explore design principles centered on user values.',
-    tags: ['tag1', 'tag2'],
+    tags: ['design', 'user-centered'],
     tone: 'pink',
-    href: '/activities/value-based-design',
-    coverImage: 'activities/0260512-valuesbaseddesign/cover.png',
-    ogImage: 'activities/0260512-valuesbaseddesign/og-image.png'
+    href: '/activity/20260512-valuesbaseddesign',
+    coverImage: '/activities/20260512-valuesbaseddesign/cover.png',
+    ogImage: '/activities/20260512-valuesbaseddesign/og-image.png'
   }
 ];
