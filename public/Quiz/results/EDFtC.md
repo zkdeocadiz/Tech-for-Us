@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EDFtC-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Community Socialite
 code: EDFtC
 name: The Community Socialite
 header-image: /Quiz/results/images/EDFtC.png

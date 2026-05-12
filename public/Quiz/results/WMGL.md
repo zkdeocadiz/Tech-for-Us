@@ -1,15 +1,13 @@
 ---
 og-image: /Quiz/results/images/WMGL-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Luddite
 code: WMGL
 name: The Luddite
 header-image: /Quiz/results/images/WMGL.png
 ---
 
 # WMGL — The Luddite
-*weary, mandatory, genuine, lonely*
-
 
 Contrary to the now-common use of the term, Luddites were not historically opposed to technology. What they were opposed to were the manufacturers that employed them not paying them a living wage, so they wrecked machines to protest for better working conditions. Similarly, you’re rather tired of the platforms demanding so much of you without giving you much in return. Maybe so much so that you’re more likely to want to burn down the institutions themselves.
 

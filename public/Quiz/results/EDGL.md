@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EDGL-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Rising Star
 code: EDGL
 name: The Rising Star
 header-image: /Quiz/results/images/EDGL.png

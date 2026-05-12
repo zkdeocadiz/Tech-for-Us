@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/WMFtC-og.png
-og-description: 
-og-title: Technology Types - The Method Actor
+og-description: One of the technology types
+og-title: The Method Actor
 code: WMFtC
 name: The Method Actor
 header-image: /Quiz/results/images/WMFtC.png

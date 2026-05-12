@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EDGC-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Digital Optimist
 code: EDGC
 name: The Digital Optimist
 header-image: /Quiz/results/images/EDGC.png

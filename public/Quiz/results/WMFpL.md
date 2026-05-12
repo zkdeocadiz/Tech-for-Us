@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/WMFpL-og.png
-og-description: 
-og-title: Technology Types - The Hostage
+og-description: One of the technology types
+og-title: The Hostage
 code: WMFpL
 name: The Hostage
 header-image: /Quiz/results/images/WMFpL.png

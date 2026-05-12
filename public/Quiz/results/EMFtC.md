@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EMFtC-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Chameleon
 code: EMFtC
 name: The Chameleon
 header-image: /Quiz/results/images/EMFtC.png

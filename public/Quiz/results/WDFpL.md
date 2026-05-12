@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/WDFpL-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Burned Out Pursuer
 code: WDFpL
 name: The Burned Out Pursuer
 header-image: /Quiz/results/images/WDFpL.png

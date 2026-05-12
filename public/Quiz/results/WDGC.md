@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/WDGC-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Reluctant Star
 code: WDGC
 name: The Reluctant Star
 header-image: /Quiz/results/images/WDGC.png

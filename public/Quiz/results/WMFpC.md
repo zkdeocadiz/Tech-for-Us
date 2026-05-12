@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/WMFpC-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Method Actor
 code: WMFpC
 name: The Method Actor
 header-image: /Quiz/results/images/WMFpC.png

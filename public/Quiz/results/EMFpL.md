@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EMFpL-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Doom Scroller
 code: EMFpL
 name: The Doom Scroller
 header-image: /Quiz/results/images/EMFpL.png

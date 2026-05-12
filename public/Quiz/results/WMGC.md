@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/WMGC-og.png
-og-description: 
-og-title: Technology TYpes - The Loyal Friend
+og-description: One of the technology types
+og-title: The Loyal Friend
 code: WMGC
 name: The Loyal Friend
 header-image: /Quiz/results/images/WMGC.png

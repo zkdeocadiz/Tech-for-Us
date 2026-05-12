@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EMGL-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Ghost in the Machine
 code: EMGL
 name: The Ghost in the Machine
 header-image: /Quiz/results/images/EMGL.png

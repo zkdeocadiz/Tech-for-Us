@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EMGC-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Community Member
 code: EMGC
 name: The Community Member
 header-image: /Quiz/results/images/EMGC.png

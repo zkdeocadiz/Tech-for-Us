@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EDFpL-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Trophy Hunter
 code: EDFpL
 name: The Trophy Hunter
 header-image: /Quiz/results/images/EDFpL.png

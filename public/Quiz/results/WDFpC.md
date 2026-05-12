@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/WDFpC-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Exhausted Performer
 code: WDFpC
 name: The Exhausted Performer
 header-image: /Quiz/results/images/WDFpC.png

@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/EDFpC-og.png
-og-description: 
-og-title: 
+og-description: One of the technology types
+og-title: The Community Socialite
 code: EDFpC
 name: The Community Socialite
 header-image: /Quiz/results/images/EDFpC.png

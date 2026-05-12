@@ -1,7 +1,7 @@
 ---
 og-image: /Quiz/results/images/WDGL-og.png
-og-description: 
-og-title: Technology Type - The Hamster on the Wheel
+og-description: One of the technology types
+og-title: The Hamster on the Wheel
 code: WDGL
 name: The Hamster on the Wheel
 header-image: /Quiz/results/images/WDGL.png
