@@ -84,10 +84,11 @@ export default function HomePage() {
             <div className="activities__grid">
               <a className="activity-link activity-link--feature" href="/quiz" aria-label="Open What’s your technology type activity">
                 <article className="activity-feature">
-                  <div className="activity-feature__visual" />
+                  <div className="activity-feature__visual">
+                  </div>
                   <div className="activity-feature__content">
                     <h3 className="activity-feature__title">What’s your technology type?</h3>
-                    <p className="activity-feature__text">lorem ipsum</p>
+                    <p className="activity-feature__text">Learn what you need to survive in a world with social media</p>
                   </div>
                 </article>
               </a>

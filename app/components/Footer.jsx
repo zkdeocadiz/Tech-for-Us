@@ -5,7 +5,7 @@ const defaultFooterColumns = [
     title: 'Activities',
     items: [
       { label: 'All Activities', href: '/activities' },
-      { label: 'Activity Sets', href: '/activity-sets' },
+      // { label: 'Activity Sets', href: '/activity-sets' },
       { label: 'Alternative Social Tech', href: '/alternative-social-tech' },
     ],
   },
@@ -14,15 +14,15 @@ const defaultFooterColumns = [
     items: [
       { label: 'View All', href: '/your-content' },
       { label: 'Technology Type Quiz', href: '/quiz' },
-      { label: 'Privacy', href: '/content/Privacy' },
+      // { label: 'Privacy', href: '/content/Privacy' },
     ],
   },
   {
     title: 'Tech for Us',
     items: [
       { label: 'Manifesto', href: '/content/Manifesto' },
-      { label: 'Contributors', href: '/contributors' },
-      { label: 'Github', href: 'https://github.com/' },
+      // { label: 'Contributors', href: '/contributors' },
+      { label: 'Github', href: 'https://github.com/zkdeocadiz/Tech-for-Us' },
     ],
   },
 ];

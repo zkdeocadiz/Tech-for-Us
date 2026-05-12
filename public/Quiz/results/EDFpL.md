@@ -16,13 +16,15 @@ You're energized by the game and playing it well, successfully building presence
 It's worth asking yourself if the prestige that you're building is something you *actually* want, or if it's just something that feels desirable because it's what the platform rewards. Understand that if you value deeper digital connections with people, you have to be willing to mutually share a little bit of your insides with someone else online.
 
 ### Words to describe your relationship with tech
-- 
+- rewards
+- searching
+- opportunity
 
 [[RESULT_BARS]]
 
-## What you need
+<!-- ## What you need
 
 x
 
 ### Inspiration
-- 
+-  -->

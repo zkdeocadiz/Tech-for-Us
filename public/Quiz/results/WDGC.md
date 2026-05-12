@@ -1,5 +1,5 @@
 ---
-og-image: 
+og-image: images/WDGC-og.png
 og-description: 
 og-title: 
 code: WDGC
@@ -16,13 +16,15 @@ You've built something real online—genuine connections and a reputation that a
 Being more intentional about where you invest your attention could help you keep what matters without burning out. Since you've made some good connections, maybe you can lean on those friendships to help energize you again.
 
 ### Words to describe your relationship with tech
-- 
+- blindsided
+- bought in
+- keeping up
 
 [[RESULT_BARS]]
 
-## What you need
+<!-- ## What you need
 
 x
 
 ### Inspiration
-- 
+-  -->

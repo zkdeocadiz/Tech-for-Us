@@ -172,7 +172,7 @@ export default function YourContentPage() {
       <Header />
       <main style={{ padding: '4rem 2rem', maxWidth: '800px', margin: '0 auto', minHeight: '60vh' }}>
         <h1 style={{ color: 'var(--color-blue)', marginBottom: '2rem' }}>Your Content</h1>
-        <p>This is where you'll find all the pages you've annotated or activity boxes you've filled in.</p>
+        <p>This is where you'll find all the pages you've annotated or activity boxes you've filled in. All of this information is private and only saved locally to your computer—never uploaded anywhere.</p>
         
         <section style={{ marginTop: '3rem' }}>
           <h2 style={{ fontFamily: 'ApfelGrotezk', fontSize: '2rem', marginBottom: '1.5rem' }}>Your Annotated Works & Activities</h2>
@@ -223,7 +223,7 @@ export default function YourContentPage() {
         <section style={{ marginTop: '4rem', padding: '2.5rem', backgroundColor: 'var(--color-blue)', color: 'white' }}>
           <h2 style={{ fontFamily: 'ApfelGrotezk', fontSize: '2rem', marginBottom: '1rem', color: 'white' }}>Backup & Sync</h2>
           <p style={{ marginBottom: '2rem', opacity: 0.9 }}>
-            Export all your annotations, activity responses, and uploaded files into a single file to move to another device or browser.
+            Because everything is saved locally, you have to manually upload your data if you want to use it on a different device. Export all your annotations, activity responses, and uploaded files into a single file to move to another device or browser.
           </p>
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <button 

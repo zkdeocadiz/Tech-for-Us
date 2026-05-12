@@ -16,13 +16,15 @@ You've built relationships online that you appreciate and value, but those relat
 Finding even one space——online or off——where you can just be yourself might go a long way to making you feel excited about the relationships that you've managed to build.
 
 ### Words to describe your relationship with tech
-- 
+- continuously striving
+- on the edge
+- putting on a face
 
 [[RESULT_BARS]]
-
+<!-- 
 ## What you need
 
 x
 
 ### Inspiration
-- 
+-  -->

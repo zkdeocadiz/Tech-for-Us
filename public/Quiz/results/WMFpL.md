@@ -1,15 +1,13 @@
 ---
-og-image: 
+og-image: images/WMFpL-og.png
 og-description: 
-og-title: 
+og-title: Technology Types - The Hostage
 code: WMFpL
 name: The Hostage
 header-image: images/WMFpL.png
 ---
 
 # WMFpL — The Hostage
-*weary, mandatory, filtered (polished), lonely*
-
 
 You use social platforms because, as much as you haven't seen the connections coming out of them that you want, you feel like you have no choice if you *do* want to make those connections in the future. But it feels like you're acting most of the time (how else will others want to get to know you?) which makes being on these platforms feel draining. 
 
@@ -17,13 +15,15 @@ A useful first step might be getting honest with yourself about what you'd actua
 
 
 ### Words to describe your relationship with tech
-- 
+- held at gunpoint
+- peer pressure
+- expectations
 
 [[RESULT_BARS]]
 
 ## What you need
 
 Social platforms can give you so much access, but most of the big platforms are incentivized to not create tight bonds, in favor of creating parasocial relationships——audiences rather than close friends. You might want to explore platforms that do better at that.
-
+<!-- 
 ### Inspiration
-- 
+-  -->

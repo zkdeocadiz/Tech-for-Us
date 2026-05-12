@@ -16,13 +16,17 @@ You genuinely thrive online — social tech energizes you, you've built real con
 The main thing worth keeping in mind is that your experience isn't universal. Staying curious about how others experience the same platforms will make you a better builder and a more empathetic friend. If you see people struggling with their use of technology, it might not be something *you* can fix so, listen to them.
 
 ### Words to describe your relationship with tech
-- 
+- joyous
+- useful
+- community and belonging
 
 [[RESULT_BARS]]
 
 ## What you need
 
-x
+Break out of your bubble a little bit and learn more about other people's experiences. This could look like reflecting on the group chats and servers that you've found a home in and seeing patterns in the types of people who are—and aren't—attracted to being in those spaces. 
 
-### Inspiration
-- 
+Now, it's not critical to always be looking for discomfort. Bubbles are good for protecting us and helping us thrive in the things that make us happy.
+
+<!-- ### Inspiration
+-  -->

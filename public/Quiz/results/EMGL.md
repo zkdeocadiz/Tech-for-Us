@@ -7,12 +7,6 @@ name: The Ghost in the Machine
 header-image: images/EMGL.png
 ---
 
-og-title: 
-og-description: 
-og-image: 
-
----
-
 # EMGL — The Ghost in the Machine
 *energized, mandatory, genuine, lonely*
 

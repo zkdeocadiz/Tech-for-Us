@@ -16,7 +16,8 @@ Now, that might not be a bad thing. Not everyone needs to know everything about 
 
 ### Words to describe your relationship with tech
 - playing the field
-- closed off
+- wary
+- connection en masse
 
 [[RESULT_BARS]]
 
@@ -24,12 +25,12 @@ Now, that might not be a bad thing. Not everyone needs to know everything about 
 
 The current systems honestly work for you—you know how to leverage them in the best ways that move you towards your goals—but it might be good to carve out some space to connect with others more deeply and more authentically.
 
-If this is something that you feel like you want, try to make a list of the top 5 people who you want to know more
+If this is something that you feel like you want, try to make a list of the top 5 people who you want to know more and make the effort to ask more about their lives.
 
 You can also think about trying platforms that are meant for intimacy, rather than broadcasting, and see if a range of different platforms might suit you better. 
 - Have a group that you're already close with and want to be more authentic with? Try [Letterloop](https://www.letterloop.co), a private newsletter shared amongst a select group of friends or family. 
 - A Discord bot like [Groupchat](https://), a bot that prompts friends in a server to disclose deeper feelings about things and returns it in the form of poetry or humor, might also 
 
-
+<!-- 
 ### Inspiration
-- 
+-  -->

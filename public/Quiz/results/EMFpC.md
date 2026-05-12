@@ -34,6 +34,6 @@ This might not be easy to do in a public space, like on most social media platfo
 ### People you might see yourself in
 - [📖 Who Would I Be Without Instagram? An investigation. by Tavi Gevinson](https://www.thecut.com/2019/09/who-would-tavi-gevinson-be-without-instagram.html)
 
-## Tools to help you build
+<!-- ## Tools to help you build
 
-x
+x -->

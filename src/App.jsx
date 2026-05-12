@@ -34,7 +34,7 @@ export function NotFoundPage() {
         alignItems: 'center'
       }}>
         <h1 style={{ color: 'var(--color-blue)', fontSize: '4rem', marginBottom: '1rem' }}>404</h1>
-        <h2 style={{ fontFamily: 'ApfelGrotezk', marginBottom: '2rem' }}>This page doesn't exist yet.</h2>
+        <h2 style={{ fontFamily: 'Apfel Grotezk', marginBottom: '2rem' }}>This page doesn't exist yet.</h2>
         <p style={{ marginBottom: '3rem' }}>Maybe it's still being built, or the link has changed.</p>
         <Link to="/" className="home-button">Back to Safety</Link>
       </main>

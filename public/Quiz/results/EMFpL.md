@@ -16,13 +16,15 @@ Social tech holds your attention and keeps you coming back — but it's not deli
 It may be worth asking yourself what you're actually getting out of using social tech. What are your goals by using it and how can it best serve *you*?
 
 ### Words to describe your relationship with tech
-- 
+- socially encouraged addiction
+- continuous intake
+- searching for better
 
 [[RESULT_BARS]]
 
-## What you need
+<!-- ## What you need
 
 x
 
 ### Inspiration
-- 
+-  -->

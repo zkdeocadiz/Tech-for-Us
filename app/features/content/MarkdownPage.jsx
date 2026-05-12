@@ -195,7 +195,7 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
     const regex = /\[\[\s*ACTIVITY\s*([\s\S]*?)\s*\]\]/gi;
     let i = 0;
     const sanitized = content.replace(regex, (match, body) => {
-      const token = `__ACTIVITY_BLOCK_${i}__`;
+      const token = `ACTIVITYTOKEN${i}`;
       map.set(token, body);
       i++;
       return token;
@@ -1132,7 +1132,21 @@ const MarkdownPage = ({ content = '', pageId = 'default-page', title = 'Content'
             )}
           </div>
 
-          <ReactMarkdown components={{ ...defaultMarkdownComponents, ...enhancedMarkdownComponents }}>
+          <ReactMarkdown 
+            components={{ 
+              ...defaultMarkdownComponents, 
+              ...enhancedMarkdownComponents,
+              p: (props) => {
+                const text = childrenToText(props.children).trim();
+                // Check activities first using the internal renderer
+                if (activityMap.has(text)) {
+                  return defaultMarkdownComponents.p(props);
+                }
+                // Fall back to external renderers (like result bars in App.jsx) or standard P
+                return enhancedMarkdownComponents.p ? enhancedMarkdownComponents.p(props) : defaultMarkdownComponents.p(props);
+              }
+            }}
+          >
             {sanitizedContent}
           </ReactMarkdown>
         </div>

@@ -16,13 +16,15 @@ You're chasing the benefits you see others getting from social tech, but you con
 It might be good to reflect on what you're *really* looking for: what would actually make you feel happy? Are you actually meaningfully moving towards that goal or are you getting in your own way? Are there alternatives that you can pursue that don't feel as draining?
 
 ### Words to describe your relationship with tech
-- 
+- running at a moving goal
+- smiling through the pain
+- tired
 
 [[RESULT_BARS]]
 
-## What you need
+<!-- ## What you need
 
 x
 
 ### Inspiration
-- 
+-  -->

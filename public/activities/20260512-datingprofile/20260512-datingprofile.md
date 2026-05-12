@@ -1,14 +1,14 @@
 ---
-title: "How do I write a better dating profile?"
-og-title: "How do I write a better dating profile?"
-og-description: "Be more intentional in how you meet people"
-og-image: "/activities/20260512-datingprofile/og-image.png"
-header-image: "/activities/20260512-datingprofile/cover-image.png"
+title: How do I write a better dating profile?
+og-title: How do I write a better dating profile?
+og-description: Be more intentional in how you meet people
+og-image: /activities/20260512-datingprofile/og-image.png
+header-image: /activities/20260512-datingprofile/cover-image.png
 tags: ["relationships", "using platforms"]
-date: "2026-05-14"
+date: 2026-05-14
 ---
 
-# How do I write a better dating profile?
+
 Disclaimer: The aim of this is not to get ***more*** matches, but to get ***better*** matches from dating apps
 
 ## What’s the aim of a dating profile?

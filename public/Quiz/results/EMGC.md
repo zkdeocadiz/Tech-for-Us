@@ -7,14 +7,7 @@ name: The Community Member
 header-image: images/EMGC.png
 ---
 
-og-title: 
-og-description: 
-og-image: 
-
----
-
 # EMGC — The Community Member
-*energized, mandatory, genuine, connected*
 
 You're not on social media for status— you're there because that's where everyone is. Within that you've found genuine value: real connections and a version of yourself that you recognize. That being said, it feels like social tech is becoming more and more of something that feels like an obligation if you want those connections—because everyone is on there, you don't have a choice about being on if you want to be part of a wider community of people.
 

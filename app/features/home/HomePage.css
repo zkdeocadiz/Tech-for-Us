@@ -95,7 +95,7 @@
 
 .feature-card__title {
   margin: 0;
-  font-family: 'ApfelGrotezk', sans-serif;
+  font-family: 'Apfel Grotezk', sans-serif;
   font-size: 1.25rem;
   line-height: 1;
 }
@@ -110,7 +110,17 @@
 .home-section-title {
   margin: 0;
   text-align: center;
-  font-family: 'ApfelGrotezk', sans-serif;
+  font-family: 'Apfel Grotezk', sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+#activities-heading {
+  margin: 0;
+  margin-top: 48px;
+  text-align: center;
+  font-family: 'Apfel Grotezk', sans-serif;
   font-size: 2rem;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -135,7 +145,10 @@
 }
 
 .activity-feature__visual {
-  background: var(--color-yellow);
+  background: var(--color-hotter-pink);
+  background-image: url('/Quiz/TechTypeQuizHeader.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .activity-feature__content {
@@ -149,7 +162,7 @@
 .activity-feature__title,
 .activity-card__title {
   margin: 0;
-  font-family: 'ApfelGrotezk', sans-serif;
+  font-family: 'Apfel Grotezk', sans-serif;
 }
 
 .activity-feature__title {
@@ -169,6 +182,10 @@
 .activity-card {
   background: var(--color-green);
   color: var(--color-white);
+}
+
+.activity-card__cover {
+  width:100%;
 }
 
 .activity-link {
@@ -195,7 +212,9 @@
 }
 
 .activity-card__visual {
-  height: 149px;
+  /* height: 149px; */
+  padding-top:1em;
+  padding-bottom:1em;
 }
 
 .activity-card__visual--white {
