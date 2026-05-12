@@ -1,10 +1,10 @@
 ---
-og-image: images/WMFpL-og.png
+og-image: /Quiz/results/images/WMFpL-og.png
 og-description: 
 og-title: Technology Types - The Hostage
 code: WMFpL
 name: The Hostage
-header-image: images/WMFpL.png
+header-image: /Quiz/results/images/WMFpL.png
 ---
 
 # WMFpL — The Hostage
@@ -24,6 +24,3 @@ A useful first step might be getting honest with yourself about what you'd actua
 ## What you need
 
 Social platforms can give you so much access, but most of the big platforms are incentivized to not create tight bonds, in favor of creating parasocial relationships——audiences rather than close friends. You might want to explore platforms that do better at that.
-<!-- 
-### Inspiration
--  -->

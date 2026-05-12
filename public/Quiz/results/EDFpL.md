@@ -1,15 +1,13 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/EDFpL-og.png
 og-description: 
 og-title: 
 code: EDFpL
 name: The Trophy Hunter
-header-image: images/EDFpL.png
+header-image: /Quiz/results/images/EDFpL.png
 ---
 
 # EDFpL — The Trophy Hunter
-*energized, desired, filtered (polished), lonely*
-
 
 You're energized by the game and playing it well, successfully building presence and status as you use social tech. But the performance might come at the cost of deeper connections and genuine self-expression. The person you portray yourself as is a carefully curated persona that doesn't allow others to always see all the ways you navigate and understand the world. You've been incentivized by what the platform rewards and have found gratification in the ways you have used social tech, but some part of you is wondering if there's anything more to digital spaces than this. 
 
@@ -21,10 +19,3 @@ It's worth asking yourself if the prestige that you're building is something you
 - opportunity
 
 [[RESULT_BARS]]
-
-<!-- ## What you need
-
-x
-
-### Inspiration
--  -->

@@ -1,10 +1,10 @@
 ---
-og-image: images/WMFtC-og.png
+og-image: /Quiz/results/images/WMFtC-og.png
 og-description: 
 og-title: Technology Types - The Method Actor
 code: WMFtC
 name: The Method Actor
-header-image: images/WMFtC.png
+header-image: /Quiz/results/images/WMFtC.png
 ---
 
 # WMFtC — The Method Actor
@@ -17,10 +17,3 @@ You have real connections that you've made through social platforms, in spite of
 - being in the loop
 
 [[RESULT_BARS]]
-
-<!-- ## What you need
-
-x
-
-### Inspiration
--  -->

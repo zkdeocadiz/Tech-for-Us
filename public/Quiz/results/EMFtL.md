@@ -1,10 +1,10 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/EMFtL-og.png
 og-description: 
 og-title: 
 code: EMFtL
 name: The Doom Scroller
-header-image: images/EMFtL.png
+header-image: /Quiz/results/images/EMFtL.png
 ---
 
 # EMFtL — The Doom Scroller
@@ -19,10 +19,3 @@ It may be worth asking yourself what you're actually getting out of using social
 - searching yet suspicious
 
 [[RESULT_BARS]]
-
-## What you need
-
-x
-
-### Inspiration
-- 

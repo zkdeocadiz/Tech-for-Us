@@ -1,15 +1,13 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/WDFpL-og.png
 og-description: 
 og-title: 
 code: WDFpL
 name: The Burned Out Pursuer
-header-image: images/WDFpL.png
+header-image: /Quiz/results/images/WDFpL.png
 ---
 
 # WDFpL — The Burned Out Pursuer
-*weary, desired, filtered (polished), lonely*
-
 
 You're chasing the benefits you see others getting from social tech, but you constantly feel like you're playing a role and the lack of close connections on there is draining you. This is an unsustainable combination because it's not fulfilling you. Something needs to change—whether that's what you're chasing, how you're showing up, or whether you're on these platforms at all. 
 
@@ -21,10 +19,3 @@ It might be good to reflect on what you're *really* looking for: what would actu
 - tired
 
 [[RESULT_BARS]]
-
-<!-- ## What you need
-
-x
-
-### Inspiration
--  -->

@@ -1,15 +1,13 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/EDGL-og.png
 og-description: 
 og-title: 
 code: EDGL
 name: The Rising Star
-header-image: images/EDGL.png
+header-image: /Quiz/results/images/EDGL.png
 ---
 
 # EDGL — The Rising Star
-*energized, desired, genuine, lonely*
-
 
 You building a real presence and reputation online, but you're still feeling lonely. Close, real connections aren't quite there yet, even though you're surrounded by increasing numbers of people. Shouldn't you know some people better by now? 
 
@@ -20,10 +18,3 @@ You might have found an audience rather than friends, or started to think that y
 - incentivized
 
 [[RESULT_BARS]]
-
-## What you need
-
-x
-<!-- 
-### Inspiration
--  -->

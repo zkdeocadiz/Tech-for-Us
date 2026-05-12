@@ -1,10 +1,10 @@
 ---
-og-image: images/WDGL-og.png
+og-image: /Quiz/results/images/WDGL-og.png
 og-description: 
 og-title: Technology Type - The Hamster on the Wheel
 code: WDGL
 name: The Hamster on the Wheel
-header-image: images/WDGL.png
+header-image: /Quiz/results/images/WDGL.png
 ---
 
 # WDGL — The Hamster on the Wheel
@@ -23,7 +23,3 @@ It's worth stepping back and asking whether what you're chasing is actually what
 ## What you need
 
 Find your own metrics around what success looks like, because you don't feel like you're getting what you want out of these social platforms. What platforms might have incentives that match what you're really looking for? Does it look like meaningful connections? 
-
-<!-- 
-### Inspiration
--  -->

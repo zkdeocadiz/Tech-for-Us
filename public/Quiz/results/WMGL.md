@@ -1,10 +1,10 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/WMGL-og.png
 og-description: 
 og-title: 
 code: WMGL
 name: The Luddite
-header-image: images/WMGL.png
+header-image: /Quiz/results/images/WMGL.png
 ---
 
 # WMGL — The Luddite
@@ -29,6 +29,3 @@ It’s not technology you hate, it’s the tech companies. Of course you’d lov
 You’re going to hate any tech that doesn’t actually meet your values. But what *are* those values? It might be helpful to define that for yourself.
 
 It’s also important to know the implications of the features that you build on how it makes people behave, lest you become what you hate and replicate the bad things you hate about the large tech companies. Explore how the interfaces you use influence your behavior, even without an algorithm guiding it.
-<!-- 
-### Inspiration
--  -->

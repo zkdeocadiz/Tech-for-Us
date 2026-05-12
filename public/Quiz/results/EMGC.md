@@ -1,10 +1,10 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/EMGC-og.png
 og-description: 
 og-title: 
 code: EMGC
 name: The Community Member
-header-image: images/EMGC.png
+header-image: /Quiz/results/images/EMGC.png
 ---
 
 # EMGC — The Community Member
@@ -14,13 +14,8 @@ You're not on social media for status— you're there because that's where every
 Now, it's not the worst to have spaces pop up that help facilitate you connecting with the people you want to meet. But it may be worth considering *which* platforms you show up on and if they are designed for the ways you want to connect with people. Maybe one of the reasons you find yourself feeling obligated to be online is that you're only on platforms that don't reward the ways you would like to connect with others.
 
 ### Words to describe your relationship with tech
-- 
+- obligation to community
+- tech facilitates your work
+- frustration at tools
 
 [[RESULT_BARS]]
-
-## What you need
-
-x
-
-### Inspiration
-- 

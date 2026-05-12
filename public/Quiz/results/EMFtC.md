@@ -1,10 +1,10 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/EMFtC-og.png
 og-description: 
 og-title: 
 code: EMFtC
 name: The Chameleon
-header-image: images/EMFtC.png
+header-image: /Quiz/results/images/EMFtC.png
 ---
 
 # EMFtC — The Chameleon

@@ -1,10 +1,10 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/WMFpC-og.png
 og-description: 
 og-title: 
 code: WMFpC
 name: The Method Actor
-header-image: images/WMFpC.png
+header-image: /Quiz/results/images/WMFpC.png
 ---
 
 # WMFpC — The Method Actor
@@ -19,10 +19,3 @@ The question is whether there are spaces, online or off, where you can stray awa
 - being in the loop
 
 [[RESULT_BARS]]
-
-<!-- ## What you need
-
-x
-
-### Inspiration
--  -->

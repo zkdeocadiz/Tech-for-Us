@@ -1,15 +1,13 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/WDFtC-og.png
 og-description: 
 og-title: 
 code: WDFtC
 name: The Exhausted Performer
-header-image: images/WDFtC.png
+header-image: /Quiz/results/images/WDFtC.png
 ---
 
 # WDFtC — The Exhausted Performer
-*weary, desired, filtered (tracked), connected*
-
 
 You've built relationships online that you appreciate and value, but those relationships aren't enough to make the performance of it all any less draining on you. You constantly feel like you're putting on a face that isn't quite the real you, and keeping it up takes energy...even if it's the version of yourself that's safe for people to know.
 
@@ -21,10 +19,3 @@ Finding even one space——online or off——where you can just be yourself mi
 - putting on a face
 
 [[RESULT_BARS]]
-<!-- 
-## What you need
-
-x
-
-### Inspiration
--  -->

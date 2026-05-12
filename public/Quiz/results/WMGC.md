@@ -1,10 +1,10 @@
 ---
-og-image: images/WMGC-og.png
+og-image: /Quiz/results/images/WMGC-og.png
 og-description: 
 og-title: Technology TYpes - The Loyal Friend
 code: WMGC
 name: The Loyal Friend
-header-image: images/WMGC.png
+header-image: /Quiz/results/images/WMGC.png
 ---
 
 # WMGC — The Loyal Friend
@@ -19,10 +19,3 @@ It's worth looking at whether there are lower-cost ways to maintain those relati
 - constant demands
 
 [[RESULT_BARS]]
-
-<!-- ## What you need
-
-x
-
-### Inspiration
--  -->

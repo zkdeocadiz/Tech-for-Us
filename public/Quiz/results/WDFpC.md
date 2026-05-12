@@ -1,10 +1,10 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/WDFpC-og.png
 og-description: 
 og-title: 
 code: WDFpC
 name: The Exhausted Performer
-header-image: images/WDFpC.png
+header-image: /Quiz/results/images/WDFpC.png
 ---
 
 # WDFpC — The Exhausted Performer
@@ -19,10 +19,3 @@ Finding even one space—online or off—where you can just be yourself might go
 - putting on a face
 
 [[RESULT_BARS]]
-
-<!-- ## What you need
-
-x
-
-### Inspiration
--  -->

@@ -1,15 +1,13 @@
 ---
-og-image: images/WDGC-og.png
+og-image: /Quiz/results/images/WDGC-og.png
 og-description: 
 og-title: 
 code: WDGC
 name: The Reluctant Star
-header-image: images/WDGC.png
+header-image: /Quiz/results/images/WDGC.png
 ---
 
 # WDGC — The Reluctant Star
-*weary, desired, genuine, connected*
-
 
 You've built something real online—genuine connections and a reputation that actually reflects who you are—but the demands of maintaining it are draining. Being thrust into the spotlight, with all the eyes on you, has begun to chafe even as you see yourself enjoying the benefits. You're good at this; you just wish it didn't cost you so much to sustain it. 
 
@@ -21,10 +19,3 @@ Being more intentional about where you invest your attention could help you keep
 - keeping up
 
 [[RESULT_BARS]]
-
-<!-- ## What you need
-
-x
-
-### Inspiration
--  -->

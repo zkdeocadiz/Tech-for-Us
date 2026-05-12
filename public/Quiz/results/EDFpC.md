@@ -1,10 +1,10 @@
 ---
-og-image: 
+og-image: /Quiz/results/images/EDFpC-og.png
 og-description: 
 og-title: 
 code: EDFpC
 name: The Community Socialite
-header-image: images/EDFpC.png
+header-image: /Quiz/results/images/EDFpC.png
 ---
 
 # EDFpC — The Community Socialite
@@ -30,7 +30,3 @@ If this is something that you feel like you want, try to make a list of the top 
 You can also think about trying platforms that are meant for intimacy, rather than broadcasting, and see if a range of different platforms might suit you better. 
 - Have a group that you're already close with and want to be more authentic with? Try [Letterloop](https://www.letterloop.co), a private newsletter shared amongst a select group of friends or family. 
 - A Discord bot like [Groupchat](https://), a bot that prompts friends in a server to disclose deeper feelings about things and returns it in the form of poetry or humor, might also 
-
-<!-- 
-### Inspiration
--  -->
